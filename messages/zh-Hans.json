@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "否",
+    "yes": "是"
+  },
+  "tabs": {
+    "flash": "快闪",
+    "explore": "发现",
+    "favorites": "收藏",
+    "profile": "我的"
+  },
+  "feed": {
+    "pullToRefresh": "下拉刷新",
+    "releaseToRefresh": "松开刷新",
+    "refreshing": "正在刷新...",
+    "loadingMore": "正在加载更多...",
+    "loadMoreIdle": "上拉加载更多",
+    "noMore": "没有更多内容了",
+    "backToTop": "回到顶部"
+  },
+  "flash": {
+    "topStory": "头条快讯",
+    "briefing": "实时简报",
+    "focus": "焦点",
+    "watch": "关注",
+    "expandDetails": "展开详情",
+    "collapseDetails": "收起详情",
+    "transitAlert": "交通提醒",
+    "severityFault": "故障",
+    "severitySevere": "严重",
+    "severityWarning": "警告",
+    "severityNotice": "提醒",
+    "cause": "原因",
+    "direction": "方向",
+    "line": "Line",
+    "shuttle": "接驳车",
+    "empty": {
+      "title": "快讯加载失败",
+      "description": "可下拉刷新，或点击下方按钮重试。",
+      "retry": "重新加载",
+      "noContentTitle": "当前暂无快讯",
+      "noContentDescription": "稍后再回来查看最新内容。"
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "添加到桌面",
+    "title": "添加到桌面",
+    "description": "把 FlashMaple 添加到手机桌面，像 App 一样快速打开。",
+    "gotIt": "知道了",
+    "steps": {
+      "share": "共享",
+      "viewMore": "查看更多",
+      "addToHomeScreen": "添加到桌面",
+      "add": "添加",
+      "shareStart": "点击地址栏的",
+      "shareMiddle": "按钮，或打开浏览器菜单并点击",
+      "shareEnd": "。",
+      "expandStart": "展开",
+      "expandEnd": "。",
+      "addStart": "点击",
+      "addEnd": "。",
+      "confirmStart": "点击",
+      "confirmEnd": "。"
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "搜索新闻",
+      "noResult": "没有找到匹配内容"
+    },
+    "empty": {
+      "title": "当前标签页加载失败",
+      "description": "可下拉刷新，或点击下方按钮重试。",
+      "retry": "重新加载",
+      "noContentTitle": "当前标签暂无内容"
+    },
+    "tabs": {
+      "local": "本地生活",
+      "immigration": "移民",
+      "education": "教育",
+      "health": "健康",
+      "entertainment": "娱乐",
+      "headline": "时讯"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "需要先登录",
+    "loginRequiredDescription": "收藏功能需要用户登录，请先登录",
+    "loginAction": "去登录",
+    "empty": "你还没有收藏的内容",
+    "searchPlaceholder": "搜索收藏",
+    "noSearchResult": "没有找到匹配的收藏内容",
+    "loadFailedTitle": "收藏加载失败",
+    "loadFailedDescription": "可下拉刷新，或点击下方按钮重试。",
+    "loadFailedRetry": "重新加载",
+    "remove": "取消收藏"
+  },
+  "profile": {
+    "statusLoggedIn": "已登录 · {{provider}}",
+    "statusLoggedOut": "未登录",
+    "login": "登录",
+    "logout": "退出",
+    "logoutConfirmTitle": "退出登录",
+    "logoutConfirmDescription": "退出登录后将无法使用收藏等功能，是否继续？",
+    "sections": {
+      "setting": "设置",
+      "about": "关于"
+    },
+    "menu": {
+      "theme": "主题设置",
+      "language": "语言设置",
+      "region": "区域设置",
+      "voice": "语音设置",
+      "privacy": "隐私政策",
+      "terms": "使用条款",
+      "aboutApp": "关于我们",
+      "feedback": "留言反馈"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "邮箱",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "titleLogin": "登录账号",
+    "titleRegister": "创建账号",
+    "subtitleLogin": "欢迎回来，继续你的内容流",
+    "subtitleRegister": "一键注册，开始你的个性订阅",
+    "email": "邮箱",
+    "password": "密码",
+    "verifyCode": "验证码",
+    "sendVerifyCode": "发送",
+    "emailError": "请输入正确的邮箱格式",
+    "passwordError": "密码必须为8-24位非空白可见字符",
+    "verifyCodeError": "请输入正确的验证码",
+    "forgotPassword": "忘记密码？",
+    "emailLogin": "邮箱登录",
+    "emailRegister": "邮箱注册",
+    "quickLogin": "或使用快捷登录",
+    "noAccount": "还没有账号？",
+    "hasAccount": "已有账号？",
+    "goRegister": "去注册",
+    "goLogin": "去登录",
+    "requestRegisterSuccess": "验证码已发送",
+    "success": "{{provider}}{{action}}成功",
+    "socialCancelled": "已取消第三方登录",
+    "socialConfigMissing": "{{provider}}登录尚未完成配置",
+    "socialTokenMissing": "未能获取有效的{{provider}}登录凭证"
+  },
+  "resetPasswordPage": {
+    "title": "重置密码",
+    "subtitle": "请验证邮箱并设置新密码",
+    "email": "邮箱",
+    "emailError": "请输入正确的邮箱格式",
+    "verifyCode": "验证码",
+    "sendVerifyCode": "发送",
+    "verifyCodeError": "请输入正确的验证码",
+    "newPassword": "新密码",
+    "passwordError": "密码必须为8-24位非空白可见字符",
+    "submit": "重置密码",
+    "requestResetSuccess": "验证码已发送",
+    "resetSuccess": "密码重置成功"
+  },
+  "setting": {
+    "language": {
+      "title": "语言设置"
+    },
+    "region": {
+      "title": "区域设置"
+    },
+    "theme": {
+      "title": "主题设置",
+      "followSystem": "跟随系统",
+      "lightMode": "浅色模式",
+      "darkMode": "深色模式",
+      "moodThemeTitle": "心情主题"
+    },
+    "voice": {
+      "title": "语音设置",
+      "voice": { "title": "声音" },
+      "rate": { "title": "语速" },
+      "pitch": { "title": "音高" },
+      "volume": { "title": "音量" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "仅展示最新消息",
+    "title": "消息中心",
+    "empty": "你还没有收到消息",
+    "delete": "删除消息",
+    "clearAll": "清空消息",
+    "markAllRead": "标记已读",
+    "clearAllDescription": "是否将消息列表清空？",
+    "markAllReadDescription": "是否将所有消息标记为已读？",
+    "subscribedSuccess": "订阅成功",
+    "unsubscribed": "已取消订阅",
+    "unsubscribeConfirmTitle": "取消订阅",
+    "unsubscribeConfirmDescription": "取消订阅后将不再接受新消息，是否继续？",
+    "unsupported": "当前设备不支持推送",
+    "browserPermissionBlocked": "已被浏览器阻止，请先允许",
+    "systemPermissionBlocked": "已被系统阻止，请先开启",
+    "failed": "设置保存失败"
+  },
+  "privacyPolicy": {
+    "title": "隐私政策",
+    "s1Title": "1. 我们收集的信息",
+    "s1Body": "我们可能会收集账号信息、设备基础信息、语言与地区偏好，以及必要的使用日志，用于提供和优化服务。",
+    "s2Title": "2. 信息使用方式",
+    "s2Body": "你的数据会用于账号认证、内容个性化推荐、功能质量改进以及安全风控。",
+    "s3Title": "3. 信息共享说明",
+    "s3Body": "我们不会出售你的个人信息。仅在提供核心功能所必需时，才会与合规服务提供方共享必要数据。",
+    "s4Title": "4. 你的权利",
+    "s4Body": "你可以申请查看、更新或删除个人信息。如需处理，请通过应用内反馈页面联系我们。"
+  },
+  "termsPage": {
+    "title": "使用条款",
+    "s1Title": "1. 条款接受",
+    "s1Body": "当你访问或使用 FlashMaple，即表示你同意遵守本条款及相关法律法规。",
+    "s2Title": "2. 账号与安全",
+    "s2Body": "你需妥善保管账号及密码，并对账号下发生的行为负责。请勿与他人共享登录凭证。",
+    "s3Title": "3. 合规使用",
+    "s3Body": "你不得滥用服务、干扰平台正常运行，或发布违法、侵权、恶意内容。",
+    "s4Title": "4. 条款更新",
+    "s4Body": "我们可能会不定期更新条款。更新后继续使用服务，即视为你接受新的条款内容。"
+  },
+  "aboutAppPage": {
+    "title": "关于我们",
+    "s1Title": "1. 产品使命",
+    "s1Body": "FlashMaple 帮助加拿大移民用户更快了解本地生活与实用信息，在阅读真实内容的过程中自然提升英语能力。",
+    "s2Title": "2. 核心功能",
+    "s2Body": "当前版本支持快讯浏览、分类发现、消息推送、收藏管理，以及多语言界面切换、心情主题切换等功能。",
+    "s3Title": "3. 联系与反馈",
+    "s3Body": "如果你有建议或问题，欢迎通过反馈页面联系我们。我们会认真查看每一条反馈。",
+    "s4Title": "4. 免责声明",
+    "s4Body": "应用内展示的新闻内容均来自公开网络，仅供信息参考。如相关内容涉及侵权，请联系我们处理删除。",
+    "s5Title": "5. 了解更多",
+    "s5Body": "如果你想了解更多关于我们的产品、服务以及最新动态，欢迎访问我们的官网",
+    "s5MoreApps": "如果想发现更多 Web App，请访问",
+    "s5SentenceEnd": "。"
+  },
+  "newsDetail": {
+    "viewOriginal": "查看原文",
+    "previousArticle": "上一条",
+    "nextArticle": "下一条",
+    "shareMessage": "分享这条新闻",
+    "sharePostTitle": "【FlashMaple】今日头条",
+    "shareNewsFallback": "新闻",
+    "shareRednoteLabel": "小红书",
+    "shareImageLabel": "分享图片",
+    "shareImageLoading": "正在准备图片…",
+    "shareImageUnavailable": "图片暂不可用",
+    "playAudio": "播放语音",
+    "audioFailed": "语音播放失败",
+    "loadFailedTitle": "新闻加载失败",
+    "loadFailedDescription": "可点击下方按钮重试。",
+    "loadFailedRetry": "重新加载",
+    "nextLoadFailed": "下一条新闻加载失败，请稍后重试",
+    "noMoreContent": "已经是最后一条新闻"
+  },
+  "time": {
+    "justNow": "刚刚更新",
+    "minuteAgo": "1 分钟前",
+    "minutesAgo": "{{value}} 分钟前",
+    "hourAgo": "1 小时前",
+    "hoursAgo": "{{value}} 小时前",
+    "dayAgo": "1 天前",
+    "daysAgo": "{{value}} 天前",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "留言反馈",
+    "emailOptional": "邮箱（可选）",
+    "content": "反馈内容",
+    "type": "反馈类型",
+    "typeBug": "Bug",
+    "typeSuggestion": "建议",
+    "typeOther": "其他",
+    "submit": "提交",
+    "submitSuccess": "反馈提交成功"
+  },
+  "network": {
+    "requestFailed": "请求失败",
+    "networkErrorUser": "网络异常，请检查网络",
+    "networkErrorServer": "服务异常，请稍后重试"
+  },
+  "homePage": {
+    "title": "FlashMaple - 加拿大新移民头条资讯",
+    "seoTitle": "FlashMaple - 加拿大新移民头条资讯",
+    "seoDescription": "面向加拿大新移民的本地新闻、移民资讯和地区动态，支持多语言阅读，并通过真实新闻自然提升英语能力。",
+    "intro": "了解加拿大本地新闻、移民资讯和地区动态，在阅读真实新闻的过程中自然提升英语能力。",
+    "getStarted": "开始使用",
+    "pushLabel": "推送提醒",
+    "explore": "了解产品功能",
+    "themeLabel": "主题",
+    "signalLabel": "你的本地资讯",
+    "liveLabel": "实时简报",
+    "topStory": "头条快讯",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "语言"
+      },
+      {
+        "value": "7",
+        "label": "地区"
+      },
+      {
+        "value": "8+",
+        "label": "新闻源"
+      },
+      {
+        "value": "24/7",
+        "label": "实时更新"
+      }
+    ],
+    "faqNav": "常见问题",
+    "changelogNav": "更新日志",
+    "changelogEarlierReleases": "更早版本",
+    "discoverMoreNav": "发现更多",
+    "privacyNav": "隐私政策",
+    "termsNav": "使用条款",
+    "featuresKicker": "产品功能",
+    "features": [
+      {
+        "eyebrow": "01 / 快闪",
+        "title": "从当下最重要的内容开始",
+        "body": "头条、实用更新和本地提醒快速汇总，让你打开应用就能知道今天发生了什么。",
+        "tags": [
+          "实时简报",
+          "交通提醒",
+          "头条快讯"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / 发现",
+        "title": "多个新闻源，一个资讯流",
+        "body": "从本地生活、移民、教育、健康、娱乐到头条资讯，在一个专注的空间里探索加拿大新闻。",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / 地区",
+        "title": "真正与你所在的地方有关",
+        "body": "选择加拿大地区，从多伦多、温哥华到蒙特利尔及其他城市，让每次简报都更贴近本地。",
+        "tags": [
+          "多伦多",
+          "温哥华",
+          "蒙特利尔",
+          "卡尔加里",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / 语言",
+        "title": "用熟悉的语言阅读",
+        "body": "用多种语言阅读加拿大新闻，并通过真实新闻自然提升英语能力。",
+        "tags": [
+          "中文",
+          "EN",
+          "FR",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / 推送",
+        "title": "重要新闻主动找到你",
+        "body": "开启推送，即使没有打开 FlashMaple，也能及时收到重要新闻提醒。",
+        "tags": [
+          "实时推送",
+          "消息中心"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / 个性化",
+        "title": "把应用变成你的样子",
+        "body": "收藏新闻、通过关键词搜索感兴趣的内容，并根据每天的状态调整应用。",
+        "tags": [
+          "收藏",
+          "主题"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "进入应用",
+    "faq": [
+      {
+        "question": "加拿大新移民可以在哪里了解本地新闻？",
+        "answer": "FlashMaple 汇总加拿大本地新闻、移民资讯、实用信息和地区动态，集中呈现在一个资讯流中。"
+      },
+      {
+        "question": "可以切换语言和地区吗？",
+        "answer": "可以。应用支持多种界面语言和加拿大地区，可以在设置中随时调整。"
+      },
+      {
+        "question": "可以接收突发新闻吗？",
+        "answer": "可以。在应用中开启浏览器通知，就能收到及时更新，并在消息中心管理通知。"
+      },
+      {
+        "question": "新闻内容来自哪里？",
+        "answer": "FlashMaple 汇总覆盖本地生活、移民资讯和地区动态的可信加拿大新闻来源，并在每篇新闻中标明来源，方便你继续查看原始报道。"
+      },
+      {
+        "question": "可以收藏和搜索新闻吗？",
+        "answer": "可以。你可以收藏想要再次阅读的新闻，也可以通过关键词搜索更多相关内容。"
+      },
+      {
+        "question": "如何把 FlashMaple 添加到桌面？",
+        "answer": "添加后可以从桌面快速打开 FlashMaple，像普通 App 一样使用。进入应用并点击“添加到桌面”；如果没有直接弹出安装提示，请打开浏览器的共享或菜单，选择“查看更多”和“添加到桌面”，最后点击“添加”。"
+      }
+    ],
+    "footer": "为新移民提供多语言加拿大新闻。"
+  }
+}

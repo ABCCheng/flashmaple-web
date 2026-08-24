@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "Non",
+    "yes": "Oui"
+  },
+  "tabs": {
+    "flash": "Flash",
+    "explore": "Explorer",
+    "favorites": "Favoris",
+    "profile": "Profil"
+  },
+  "feed": {
+    "pullToRefresh": "Tirez pour actualiser",
+    "releaseToRefresh": "Relâchez pour actualiser",
+    "refreshing": "Actualisation...",
+    "loadingMore": "Chargement...",
+    "loadMoreIdle": "Faites défiler pour en voir plus",
+    "noMore": "Aucun autre article",
+    "backToTop": "Retour en haut"
+  },
+  "flash": {
+    "topStory": "À la une",
+    "briefing": "Résumé en temps réel",
+    "focus": "Focus",
+    "watch": "À suivre",
+    "expandDetails": "Développer les détails",
+    "collapseDetails": "Réduire les détails",
+    "transitAlert": "Alertes de transport",
+    "severityFault": "Panne",
+    "severitySevere": "Grave",
+    "severityWarning": "Avertissement",
+    "severityNotice": "Avis",
+    "cause": "Cause",
+    "direction": "Direction",
+    "line": "Line",
+    "shuttle": "Navette",
+    "empty": {
+      "title": "Impossible de charger Flash",
+      "description": "Tirez vers le bas pour actualiser ou touchez ci-dessous pour réessayer.",
+      "retry": "Réessayer",
+      "noContentTitle": "Aucune actualité Flash pour le moment",
+      "noContentDescription": "Revenez plus tard pour découvrir les dernières nouvelles."
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "Ajouter à l’écran d’accueil",
+    "title": "Ajouter à l’écran d’accueil",
+    "description": "Ajoutez FlashMaple à votre écran d’accueil et utilisez-le comme une application.",
+    "gotIt": "Compris",
+    "steps": {
+      "share": "Partager",
+      "viewMore": "Afficher plus",
+      "addToHomeScreen": "Ajouter à l’écran d’accueil",
+      "add": "Ajouter",
+      "shareStart": "Touchez la barre d’adresse",
+      "shareMiddle": ", ou ouvrez le menu du navigateur et touchez ",
+      "shareEnd": ".",
+      "expandStart": "Développez ",
+      "expandEnd": ".",
+      "addStart": "Touchez ",
+      "addEnd": ".",
+      "confirmStart": "Touchez ",
+      "confirmEnd": "."
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "Rechercher",
+      "noResult": "Aucun résultat correspondant"
+    },
+    "empty": {
+      "title": "Impossible de charger cet onglet",
+      "description": "Tirez vers le bas pour actualiser ou touchez ci-dessous pour réessayer.",
+      "retry": "Réessayer",
+      "noContentTitle": "Aucun article dans cet onglet pour le moment"
+    },
+    "tabs": {
+      "local": "Vie locale",
+      "immigration": "Immigration",
+      "education": "Éducation",
+      "health": "Santé",
+      "entertainment": "Divertissement",
+      "headline": "À la une"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "Connexion requise",
+    "loginRequiredDescription": "Un compte est nécessaire pour utiliser les favoris. Veuillez d’abord vous connecter",
+    "loginAction": "Se connecter",
+    "empty": "Aucun favori",
+    "searchPlaceholder": "Rechercher dans les favoris",
+    "noSearchResult": "Aucun favori correspondant",
+    "loadFailedTitle": "Impossible de charger les favoris",
+    "loadFailedDescription": "Tirez vers le bas pour actualiser ou touchez ci-dessous pour réessayer.",
+    "loadFailedRetry": "Réessayer",
+    "remove": "Retirer des favoris"
+  },
+  "profile": {
+    "statusLoggedIn": "Connecté · {{provider}}",
+    "statusLoggedOut": "Non connecté",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "logoutConfirmTitle": "Se déconnecter",
+    "logoutConfirmDescription": "Après vous être déconnecté, certaines fonctions comme les favoris ne seront plus disponibles. Continuer ?",
+    "sections": {
+      "setting": "Paramètres",
+      "about": "À propos"
+    },
+    "menu": {
+      "theme": "Thème",
+      "language": "Langue",
+      "region": "Région",
+      "voice": "Voix",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d’utilisation",
+      "aboutApp": "À propos de nous",
+      "feedback": "Commentaires"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "Courriel",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "Se connecter",
+    "register": "S’inscrire",
+    "titleLogin": "Se connecter",
+    "titleRegister": "Créer un compte",
+    "subtitleLogin": "Bon retour, reprenez votre fil d’actualité",
+    "subtitleRegister": "Créez votre compte et commencez votre parcours",
+    "email": "Courriel",
+    "password": "Mot de passe",
+    "verifyCode": "Code de vérification",
+    "sendVerifyCode": "Envoyer",
+    "emailError": "Saisissez une adresse courriel valide",
+    "passwordError": "Le mot de passe doit contenir de 8 à 24 caractères sans espace",
+    "verifyCodeError": "Saisissez un code de vérification valide",
+    "forgotPassword": "Mot de passe oublié?",
+    "emailLogin": "Se connecter par courriel",
+    "emailRegister": "S’inscrire par courriel",
+    "quickLogin": "Ou utilisez la connexion rapide",
+    "noAccount": "Vous n’avez pas de compte?",
+    "hasAccount": "Vous avez déjà un compte?",
+    "goRegister": "S’inscrire",
+    "goLogin": "Se connecter",
+    "requestRegisterSuccess": "Code de vérification envoyé",
+    "success": "{{action}} avec {{provider}} réussi",
+    "socialCancelled": "La connexion avec un service tiers a été annulée",
+    "socialConfigMissing": "La connexion avec {{provider}} n’est pas encore configurée",
+    "socialTokenMissing": "Impossible d’obtenir un jeton de connexion {{provider}} valide"
+  },
+  "resetPasswordPage": {
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Vérifiez votre courriel et définissez un nouveau mot de passe",
+    "email": "Courriel",
+    "emailError": "Saisissez une adresse courriel valide",
+    "verifyCode": "Code de vérification",
+    "sendVerifyCode": "Envoyer",
+    "verifyCodeError": "Saisissez un code de vérification valide",
+    "newPassword": "Nouveau mot de passe",
+    "passwordError": "Le mot de passe doit contenir de 8 à 24 caractères sans espace",
+    "submit": "Réinitialiser le mot de passe",
+    "requestResetSuccess": "Code de vérification envoyé",
+    "resetSuccess": "Mot de passe réinitialisé"
+  },
+  "setting": {
+    "language": {
+      "title": "Langue"
+    },
+    "region": {
+      "title": "Région"
+    },
+    "theme": {
+      "title": "Thème",
+      "followSystem": "Selon le système",
+      "lightMode": "Mode clair",
+      "darkMode": "Mode sombre",
+      "moodThemeTitle": "Thème selon l’ambiance"
+    },
+    "voice": {
+      "title": "Voix",
+      "voice": { "title": "Voix" },
+      "rate": { "title": "Vitesse" },
+      "pitch": { "title": "Hauteur" },
+      "volume": { "title": "Volume" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "Seuls les messages les plus récents sont affichés",
+    "title": "Centre de notifications",
+    "empty": "Vous n’avez encore reçu aucun message",
+    "delete": "Supprimer le message",
+    "clearAll": "Effacer les messages",
+    "markAllRead": "Marquer comme lu",
+    "clearAllDescription": "Effacer la liste des messages ?",
+    "markAllReadDescription": "Marquer tous les messages comme lus ?",
+    "subscribedSuccess": "Abonnement réussi",
+    "unsubscribed": "Abonnement annulé",
+    "unsubscribeConfirmTitle": "Annuler l’abonnement",
+    "unsubscribeConfirmDescription": "Après l’annulation, vous ne recevrez plus de nouveaux messages. Continuer ?",
+    "unsupported": "Notifications non prises en charge",
+    "browserPermissionBlocked": "Bloqué par le navigateur, autorisez d’abord",
+    "systemPermissionBlocked": "Bloqué par le système, activez d’abord",
+    "failed": "Échec de l’enregistrement"
+  },
+  "privacyPolicy": {
+    "title": "Politique de confidentialité",
+    "s1Title": "1. Informations recueillies",
+    "s1Body": "Nous pouvons recueillir les renseignements du compte, des informations de base sur l’appareil, les préférences de langue et de région ainsi que les journaux d’utilisation afin de fournir et d’améliorer notre service.",
+    "s2Title": "2. Utilisation des informations",
+    "s2Body": "Vos données servent à l’authentification du compte, à la recommandation de contenu personnalisé, à l’amélioration des fonctionnalités et à la gestion des risques de sécurité.",
+    "s3Title": "3. Partage des données",
+    "s3Body": "Nous ne vendons pas vos données personnelles. Elles ne sont partagées qu’avec des fournisseurs de services conformes lorsque le fonctionnement des fonctions essentielles l’exige.",
+    "s4Title": "4. Vos droits",
+    "s4Body": "Vous pouvez demander à consulter, modifier ou supprimer vos données personnelles. Pour toute demande, communiquez avec nous depuis la page de commentaires de l’application."
+  },
+  "termsPage": {
+    "title": "Conditions d’utilisation",
+    "s1Title": "1. Acceptation",
+    "s1Body": "En accédant à FlashMaple ou en l’utilisant, vous acceptez ces conditions ainsi que toutes les lois et réglementations applicables.",
+    "s2Title": "2. Compte et sécurité",
+    "s2Body": "Vous êtes responsable de la sécurité de votre compte et de toutes les activités qui y sont effectuées. Ne communiquez pas vos identifiants.",
+    "s3Title": "3. Utilisation acceptable",
+    "s3Body": "Vous vous engagez à ne pas utiliser le service de façon abusive, perturber son fonctionnement normal ni publier de contenu illégal ou préjudiciable.",
+    "s4Title": "4. Modification des conditions",
+    "s4Body": "Nous pouvons mettre ces conditions à jour. En continuant à utiliser le service après une mise à jour, vous acceptez les conditions révisées."
+  },
+  "aboutAppPage": {
+    "title": "À propos de nous",
+    "s1Title": "1. Mission du produit",
+    "s1Body": "FlashMaple aide les immigrants au Canada à suivre la vie locale et les informations pratiques, tout en améliorant naturellement leur anglais grâce à des lectures tirées du quotidien.",
+    "s2Title": "2. Fonctions principales",
+    "s2Body": "La version actuelle prend en charge la consultation des nouvelles Flash, l’exploration par catégorie, les notifications push, la gestion des favoris, le changement de langue de l’interface, le changement de thème d’humeur, et plus encore.",
+    "s3Title": "3. Contact et commentaires",
+    "s3Body": "Si vous avez des suggestions ou des questions, envoyez-nous un message depuis la page de commentaires. Nous examinons chaque envoi.",
+    "s4Title": "4. Avis de non-responsabilité",
+    "s4Body": "Toutes les actualités présentées dans l’application proviennent de contenus publics en ligne et sont fournies uniquement à titre informatif. Si un contenu porte atteinte à vos droits, communiquez avec nous pour demander son retrait.",
+    "s5Title": "5. En savoir plus",
+    "s5Body": "Si vous souhaitez en savoir plus sur nos produits, nos services et nos dernières actualités, veuillez visiter notre site officiel",
+    "s5MoreApps": "Pour découvrir davantage d’applications web, visitez",
+    "s5SentenceEnd": "."
+  },
+  "newsDetail": {
+    "viewOriginal": "Voir l’original",
+    "previousArticle": "Précédent",
+    "nextArticle": "Suivant",
+    "shareMessage": "Partager cet article",
+    "sharePostTitle": "【FlashMaple】Actu",
+    "shareNewsFallback": "Actualité",
+    "shareRednoteLabel": "RedNote",
+    "shareImageLabel": "Partager l’image",
+    "shareImageLoading": "Préparation de l’image…",
+    "shareImageUnavailable": "Image indisponible",
+    "playAudio": "Lire l’audio",
+    "audioFailed": "Impossible de lire l’audio",
+    "loadFailedTitle": "Impossible de charger cet article",
+    "loadFailedDescription": "Touchez ci-dessous pour réessayer.",
+    "loadFailedRetry": "Réessayer",
+    "nextLoadFailed": "Impossible de charger l’article suivant. Veuillez réessayer plus tard",
+    "noMoreContent": "Vous avez atteint le dernier article"
+  },
+  "time": {
+    "justNow": "À l’instant",
+    "minuteAgo": "Il y a une minute",
+    "minutesAgo": "Il y a {{value}} minutes",
+    "hourAgo": "Il y a une heure",
+    "hoursAgo": "Il y a {{value}} heures",
+    "dayAgo": "Il y a un jour",
+    "daysAgo": "Il y a {{value}} jours",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "Commentaires",
+    "emailOptional": "Courriel (facultatif)",
+    "content": "Votre commentaire",
+    "type": "Type de commentaire",
+    "typeBug": "Problème",
+    "typeSuggestion": "Suggestion",
+    "typeOther": "Autre",
+    "submit": "Envoyer",
+    "submitSuccess": "Commentaire envoyé"
+  },
+  "network": {
+    "requestFailed": "Échec de la requête",
+    "networkErrorUser": "Erreur réseau. Vérifiez votre connexion",
+    "networkErrorServer": "Le service est indisponible. Veuillez réessayer plus tard"
+  },
+  "homePage": {
+    "title": "FlashMaple - Principales nouvelles canadiennes pour les nouveaux arrivants",
+    "seoTitle": "FlashMaple - Principales nouvelles canadiennes pour les nouveaux arrivants",
+    "seoDescription": "Actualités locales au Canada, informations sur l’immigration et nouvelles régionales pour les nouveaux arrivants. Lisez en plusieurs langues et améliorez votre anglais grâce à l’actualité.",
+    "intro": "Suivez l’actualité locale au Canada, les informations sur l’immigration et les nouvelles régionales, tout en améliorant naturellement votre anglais grâce à des lectures tirées du quotidien.",
+    "getStarted": "Commencer",
+    "pushLabel": "Alerte push",
+    "explore": "Découvrir les fonctionnalités",
+    "themeLabel": "Thème",
+    "signalLabel": "Votre signal local",
+    "liveLabel": "Briefing en direct",
+    "topStory": "À la une",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "Langues"
+      },
+      {
+        "value": "7",
+        "label": "Régions"
+      },
+      {
+        "value": "8+",
+        "label": "Sources"
+      },
+      {
+        "value": "24/7",
+        "label": "Mises à jour"
+      }
+    ],
+    "faqNav": "FAQ",
+    "changelogNav": "Journal des modifications",
+    "changelogEarlierReleases": "Versions précédentes",
+    "discoverMoreNav": "Découvrir plus",
+    "privacyNav": "Politique de confidentialité",
+    "termsNav": "Conditions d’utilisation",
+    "featuresKicker": "Présentation du produit",
+    "features": [
+      {
+        "eyebrow": "01 / Flash",
+        "title": "Commencez par l’essentiel",
+        "body": "Un résumé rapide des grands titres, des informations pratiques et des alertes locales, prêt dès le début de votre journée.",
+        "tags": [
+          "Briefs en direct",
+          "Alertes transport",
+          "Dernières nouvelles"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / Explorer",
+        "title": "Un fil, de nombreuses sources fiables",
+        "body": "Découvrez l’actualité locale au Canada dans les domaines de l’immigration, de l’éducation, de la santé, du divertissement et des grands titres, à partir de sources fiables.",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / Région",
+        "title": "Des nouvelles qui savent où vous êtes",
+        "body": "Choisissez une région du Canada — de Toronto et Vancouver à Montréal et au-delà — pour rendre chaque résumé plus local.",
+        "tags": [
+          "Toronto",
+          "Vancouver",
+          "Montréal",
+          "Calgary",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / Langue",
+        "title": "Lisez dans plusieurs langues",
+        "body": "Lisez les actualités canadiennes dans plusieurs langues et utilisez des articles du quotidien pour améliorer votre anglais.",
+        "tags": [
+          "FR",
+          "EN",
+          "中文",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / Notifications",
+        "title": "Laissez les informations importantes vous trouver",
+        "body": "Activez les notifications pour les nouvelles urgentes et restez informé, même lorsque FlashMaple est fermé.",
+        "tags": [
+          "Notifications en temps réel",
+          "Centre de notifications"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / Personnaliser",
+        "title": "Faites-en votre application",
+        "body": "Enregistrez des articles, recherchez par mot-clé et adaptez l’application à votre journée.",
+        "tags": [
+          "Favoris",
+          "Thèmes"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "Lancer l’application",
+    "faq": [
+      {
+        "question": "Où les nouveaux arrivants peuvent-ils trouver l’actualité locale au Canada ?",
+        "answer": "FlashMaple rassemble l’actualité locale canadienne, les informations sur l’immigration, les informations pratiques et les nouvelles régionales dans un même fil."
+      },
+      {
+        "question": "Puis-je changer de langue et de région ?",
+        "answer": "Oui. L’application prend en charge plusieurs langues d’interface et régions canadiennes, que vous pouvez modifier dans les réglages."
+      },
+      {
+        "question": "Puis-je recevoir les nouvelles urgentes ?",
+        "answer": "Oui. Activez les notifications du navigateur dans l’application pour recevoir les mises à jour importantes et les gérer dans le centre de notifications."
+      },
+      {
+        "question": "D’où viennent les actualités ?",
+        "answer": "FlashMaple rassemble des sources d’actualité canadiennes fiables sur la vie locale, l’immigration et les nouvelles régionales. Chaque article indique sa source et permet d’ouvrir le reportage original."
+      },
+      {
+        "question": "Puis-je enregistrer et rechercher des articles ?",
+        "answer": "Oui. Enregistrez les articles à relire et utilisez la recherche pour trouver d’autres nouvelles par mot-clé."
+      },
+      {
+        "question": "Comment ajouter FlashMaple à mon écran d’accueil ?",
+        "answer": "Ajoutez FlashMaple à l’écran d’accueil pour l’ouvrir rapidement comme une application. Ouvrez l’application et choisissez Ajouter à l’écran d’accueil. Si aucune invitation ne s’affiche, ouvrez le menu Partager ou le menu du navigateur, choisissez Voir plus, puis Ajouter à l’écran d’accueil et confirmez Ajouter."
+      }
+    ],
+    "footer": "Actualités canadiennes multilingues pour les nouveaux arrivants."
+  }
+}

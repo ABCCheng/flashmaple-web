@@ -1,0 +1,83 @@
+name: FlashMaple Web CI/CD
+
+on:
+  push:
+    branches:
+      - main  # 监听 main 分支提交
+
+jobs:
+  build-and-deploy:
+    environment: production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 检出代码
+        uses: actions/checkout@v4
+
+      - name: ☕️ 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.14.1'
+          cache: 'yarn'
+
+      - name: 📦 安装依赖并构建项目
+        env:
+          NEXT_PUBLIC_API_ORIGIN: ${{ vars.NEXT_PUBLIC_API_ORIGIN }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID: ${{ vars.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID }}
+          NEXT_PUBLIC_FUSIONAUTH_AUTHORIZATION_ENDPOINT: ${{ vars.NEXT_PUBLIC_FUSIONAUTH_AUTHORIZATION_ENDPOINT }}
+          NEXT_PUBLIC_FUSIONAUTH_CLIENT_ID: ${{ vars.NEXT_PUBLIC_FUSIONAUTH_CLIENT_ID }}
+          NEXT_PUBLIC_FUSIONAUTH_GOOGLE_IDP_ID: ${{ vars.NEXT_PUBLIC_FUSIONAUTH_GOOGLE_IDP_ID }}
+          NEXT_PUBLIC_COOKIE_DOMAIN: ${{ vars.NEXT_PUBLIC_COOKIE_DOMAIN }}
+        run: yarn install --frozen-lockfile && yarn build:prod 
+
+      - name: 🐳 安装 Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
+          echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+      - name: 📦 构建 Docker 镜像
+        run: docker build -t flashmaple-web:latest -f Dockerfile .
+
+      - name: 📤 传输镜像并重启 Docker
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+          SSH_SERVER_IP: ${{ secrets.SSH_SERVER_IP }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${SSH_SERVER_IP} >> ~/.ssh/known_hosts
+          
+          # 生成新镜像文件
+          echo "Saving new flashmaple-web.tar..."
+          docker save flashmaple-web:latest -o flashmaple-web.tar
+          
+          # 上传新镜像文件
+          echo "Uploading compressed flashmaple-web.tar to server..."
+          scp -i private_key flashmaple-web.tar ${SSH_USERNAME}@${SSH_SERVER_IP}:/www/wwwroot/flashmaple
+          echo "File upload completed successfully."
+          
+          # 远程执行 Docker 运行新版本
+          echo "Restart docker server..."
+          ssh -i private_key ${SSH_USERNAME}@${SSH_SERVER_IP} << EOF
+            cd /www/wwwroot/flashmaple
+          
+            # 停止并删除旧容器
+            docker stop flashmaple-web || true
+            docker rm flashmaple-web || true
+
+            # 加载 Docker 镜像
+            docker load -i flashmaple-web.tar
+          
+            # 构建并运行新容器，指定 8085 端口，加入 baota_net 网络
+            docker run -d --name flashmaple-web --restart unless-stopped --network baota_net -p 8085:8085 -v /www/wwwroot/flashmaple/logs:/app/logs flashmaple-web:latest
+            
+            # 清理无用镜像
+            docker image prune -f
+          EOF
+          echo "Restart docker completed successfully."

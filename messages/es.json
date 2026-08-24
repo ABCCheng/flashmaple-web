@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "No",
+    "yes": "Sí"
+  },
+  "tabs": {
+    "flash": "Flash",
+    "explore": "Explorar",
+    "favorites": "Favoritos",
+    "profile": "Perfil"
+  },
+  "feed": {
+    "pullToRefresh": "Desliza para actualizar",
+    "releaseToRefresh": "Suelta para actualizar",
+    "refreshing": "Actualizando...",
+    "loadingMore": "Cargando más...",
+    "loadMoreIdle": "Desliza para cargar más",
+    "noMore": "No hay más noticias",
+    "backToTop": "Volver arriba"
+  },
+  "flash": {
+    "topStory": "Noticias principales",
+    "briefing": "Resumen en tiempo real",
+    "focus": "Enfoque",
+    "watch": "Seguimiento",
+    "expandDetails": "Expandir detalles",
+    "collapseDetails": "Contraer detalles",
+    "transitAlert": "Alertas de transporte",
+    "severityFault": "Falla",
+    "severitySevere": "Grave",
+    "severityWarning": "Advertencia",
+    "severityNotice": "Aviso",
+    "cause": "Causa",
+    "direction": "Dirección",
+    "line": "Line",
+    "shuttle": "Servicio de enlace",
+    "empty": {
+      "title": "No se pudo cargar Flash",
+      "description": "Desliza hacia abajo para actualizar o toca el botón para volver a intentarlo.",
+      "retry": "Reintentar",
+      "noContentTitle": "No hay actualizaciones por ahora",
+      "noContentDescription": "Vuelve más tarde para ver las últimas novedades."
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "Añadir a pantalla de inicio",
+    "title": "Añadir a pantalla de inicio",
+    "description": "Añade FlashMaple a tu pantalla de inicio y úsalo como una app.",
+    "gotIt": "Entendido",
+    "steps": {
+      "share": "Compartir",
+      "viewMore": "Ver más",
+      "addToHomeScreen": "Añadir a pantalla de inicio",
+      "add": "Añadir",
+      "shareStart": "Toca el botón",
+      "shareMiddle": " de la barra de direcciones, o abre el menú del navegador y toca ",
+      "shareEnd": ".",
+      "expandStart": "Expande ",
+      "expandEnd": ".",
+      "addStart": "Toca ",
+      "addEnd": ".",
+      "confirmStart": "Toca ",
+      "confirmEnd": "."
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "Buscar",
+      "noResult": "No se encontraron resultados coincidentes"
+    },
+    "empty": {
+      "title": "No se pudo cargar esta pestaña",
+      "description": "Desliza hacia abajo para actualizar o toca el botón para volver a intentarlo.",
+      "retry": "Reintentar",
+      "noContentTitle": "No hay noticias en esta pestaña por ahora"
+    },
+    "tabs": {
+      "local": "Vida local",
+      "immigration": "Inmigración",
+      "education": "Educación",
+      "health": "Salud",
+      "entertainment": "Entretenimiento",
+      "headline": "Titulares"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "Inicio de sesión requerido",
+    "loginRequiredDescription": "La función de favoritos requiere iniciar sesión. Inicia sesión primero",
+    "loginAction": "Iniciar sesión",
+    "empty": "Aún no tienes favoritos",
+    "searchPlaceholder": "Buscar en favoritos",
+    "noSearchResult": "No se encontraron favoritos que coincidan",
+    "loadFailedTitle": "No se pudieron cargar los favoritos",
+    "loadFailedDescription": "Desliza hacia abajo para actualizar o toca el botón para volver a intentarlo.",
+    "loadFailedRetry": "Reintentar",
+    "remove": "Quitar favorito"
+  },
+  "profile": {
+    "statusLoggedIn": "Sesión iniciada · {{provider}}",
+    "statusLoggedOut": "Sin iniciar sesión",
+    "login": "Entrar",
+    "logout": "Salir",
+    "logoutConfirmTitle": "Cerrar sesión",
+    "logoutConfirmDescription": "Después de cerrar sesión, funciones como favoritos no estarán disponibles. ¿Continuar?",
+    "sections": {
+      "setting": "Configuración",
+      "about": "Acerca de"
+    },
+    "menu": {
+      "theme": "Tema",
+      "language": "Idioma",
+      "region": "Región",
+      "voice": "Voz",
+      "privacy": "Política de privacidad",
+      "terms": "Términos de uso",
+      "aboutApp": "Sobre nosotros",
+      "feedback": "Comentarios"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "Correo",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "titleLogin": "Iniciar sesión",
+    "titleRegister": "Crear cuenta",
+    "subtitleLogin": "Bienvenido de nuevo",
+    "subtitleRegister": "Crea tu cuenta y empieza tu recorrido",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "verifyCode": "Código de verificación",
+    "sendVerifyCode": "Enviar",
+    "emailError": "Ingresa una dirección de correo válida",
+    "passwordError": "La contraseña: 8-24 caracteres sin espacios",
+    "verifyCodeError": "Ingresa un código de verificación válido",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "emailLogin": "Iniciar sesión con correo",
+    "emailRegister": "Registrarse con correo",
+    "quickLogin": "O usa acceso rápido",
+    "noAccount": "¿No tienes una cuenta?",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "goRegister": "Registrarse",
+    "goLogin": "Iniciar sesión",
+    "requestRegisterSuccess": "Código de verificación enviado",
+    "success": "{{provider}} {{action}} correcto",
+    "socialCancelled": "Se canceló el inicio de sesión de terceros",
+    "socialConfigMissing": "El acceso con {{provider}} aún no está configurado",
+    "socialTokenMissing": "No se pudo obtener un token válido de {{provider}}"
+  },
+  "resetPasswordPage": {
+    "title": "Restablecer contraseña",
+    "subtitle": "Verifica tu correo y configura una nueva contraseña",
+    "email": "Correo electrónico",
+    "emailError": "Ingresa una dirección de correo válida",
+    "verifyCode": "Código de verificación",
+    "sendVerifyCode": "Enviar",
+    "verifyCodeError": "Ingresa un código de verificación válido",
+    "newPassword": "Nueva contraseña",
+    "passwordError": "La contraseña: 8-24 caracteres sin espacios",
+    "submit": "Restablecer contraseña",
+    "requestResetSuccess": "Código de verificación enviado",
+    "resetSuccess": "Contraseña restablecida con éxito"
+  },
+  "setting": {
+    "language": {
+      "title": "Idioma"
+    },
+    "region": {
+      "title": "Región"
+    },
+    "theme": {
+      "title": "Tema",
+      "followSystem": "Seguir sistema",
+      "lightMode": "Modo claro",
+      "darkMode": "Modo oscuro",
+      "moodThemeTitle": "Tema de ánimo"
+    },
+    "voice": {
+      "title": "Voz",
+      "voice": { "title": "Voz" },
+      "rate": { "title": "Velocidad" },
+      "pitch": { "title": "Tono" },
+      "volume": { "title": "Volumen" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "Solo se muestran los mensajes más récents",
+    "title": "Centro de notificaciones",
+    "empty": "Aún no has recibido mensajes",
+    "delete": "Eliminar mensaje",
+    "clearAll": "Borrar mensajes",
+    "markAllRead": "Marcar como leído",
+    "clearAllDescription": "¿Borrar la lista de mensajes?",
+    "markAllReadDescription": "¿Marcar todos los mensajes como leídos?",
+    "subscribedSuccess": "Suscripción completada",
+    "unsubscribed": "Suscripción cancelada",
+    "unsubscribeConfirmTitle": "Cancelar suscripción",
+    "unsubscribeConfirmDescription": "Después de cancelar la suscripción, dejarás de recibir mensajes nuevos. ¿Continuar?",
+    "unsupported": "Notificaciones no compatibles",
+    "browserPermissionBlocked": "Bloqueado por el navegador, permite primero",
+    "systemPermissionBlocked": "Bloqueado por el sistema, activa primero",
+    "failed": "Error al guardar la configuración"
+  },
+  "privacyPolicy": {
+    "title": "Política de privacidad",
+    "s1Title": "1. Información que recopilamos",
+    "s1Body": "Podemos recopilar datos de cuenta, información básica del dispositivo, preferencias de idioma y región, y registros de uso necesarios para mejorar el servicio.",
+    "s2Title": "2. Cómo usamos la información",
+    "s2Body": "Tus datos se usan para autenticación, personalización de contenido, mejora de calidad del producto y control de seguridad.",
+    "s3Title": "3. Compartición de datos",
+    "s3Body": "No vendemos tus datos personales. Solo compartimos datos necesarios con proveedores que cumplen normativa para operar funciones clave.",
+    "s4Title": "4. Tus derechos",
+    "s4Body": "Puedes solicitar ver, actualizar o eliminar tus datos personales. Para ello, contáctanos desde la página de comentarios en la app."
+  },
+  "termsPage": {
+    "title": "Términos de uso",
+    "s1Title": "1. Aceptación",
+    "s1Body": "Al usar FlashMaple, aceptas estos términos y las leyes y normas aplicables.",
+    "s2Title": "2. Cuenta y seguridad",
+    "s2Body": "Eres responsable de la seguridad de tu cuenta y de las actividades realizadas con ella. No compartas tus credenciales.",
+    "s3Title": "3. Uso permitido",
+    "s3Body": "No debes abusar del servicio, interferir con su operación normal ni publicar contenido ilegal o dañino.",
+    "s4Title": "4. Cambios de términos",
+    "s4Body": "Podemos actualizar estos términos periódicamente. Si continúas usando el servicio, se considerará que aceptas los cambios."
+  },
+  "aboutAppPage": {
+    "title": "Sobre nosotros",
+    "s1Title": "1. Misión del producto",
+    "s1Body": "FlashMaple ayuda a los inmigrantes en Canadá a conocer más rápido la vida local y la información práctica, mientras mejoran su inglés de forma natural a través de lecturas reales.",
+    "s2Title": "2. Funciones principales",
+    "s2Body": "La versión actual permite consultar noticias breves, explorar por categorías, recibir notificaciones push, gestionar favoritos, cambiar el idioma de la interfaz, cambiar el tema de estado de ánimo y mucho más.",
+    "s3Title": "3. Contacto y comentarios",
+    "s3Body": "Si tienes sugerencias o preguntas, envíanos un mensaje desde la página de comentarios. Revisamos cada envío.",
+    "s4Title": "4. Aviso legal",
+    "s4Body": "Todo el contenido de noticias mostrado en la app proviene de fuentes públicas en internet y se ofrece solo como referencia. Si algún contenido infringe tus derechos, contáctanos para retirarlo.",
+    "s5Title": "5. Más información",
+    "s5Body": "Si quieres conocer mejor nuestros productos, servicios y las últimas novedades, visita nuestro sitio web oficial",
+    "s5MoreApps": "Para descubrir más aplicaciones web, visita",
+    "s5SentenceEnd": "."
+  },
+  "newsDetail": {
+    "viewOriginal": "Ver original",
+    "previousArticle": "Anterior",
+    "nextArticle": "Siguiente",
+    "shareMessage": "Comparte esta noticia",
+    "sharePostTitle": "【FlashMaple】Hoy",
+    "shareNewsFallback": "Noticias",
+    "shareRednoteLabel": "RedNote",
+    "shareImageLabel": "Compartir imagen",
+    "shareImageLoading": "Preparando la imagen…",
+    "shareImageUnavailable": "Imagen no disponible",
+    "playAudio": "Reproducir audio",
+    "audioFailed": "No se pudo reproducir el audio",
+    "loadFailedTitle": "No se pudo cargar este artículo",
+    "loadFailedDescription": "Toca abajo para volver a intentarlo.",
+    "loadFailedRetry": "Reintentar",
+    "nextLoadFailed": "No se pudo cargar la siguiente noticia. Inténtalo más tarde",
+    "noMoreContent": "Ya estás en la última noticia"
+  },
+  "time": {
+    "justNow": "Actualizado ahora",
+    "minuteAgo": "Hace un minuto",
+    "minutesAgo": "Hace {{value}} minutos",
+    "hourAgo": "Hace una hora",
+    "hoursAgo": "Hace {{value}} horas",
+    "dayAgo": "Hace un día",
+    "daysAgo": "Hace {{value}} días",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "Comentarios",
+    "emailOptional": "Correo (opcional)",
+    "content": "Contenido de comentarios",
+    "type": "Tipo de comentario",
+    "typeBug": "Bug",
+    "typeSuggestion": "Sugerencia",
+    "typeOther": "Otro",
+    "submit": "Enviar",
+    "submitSuccess": "Comentarios enviados correctamente"
+  },
+  "network": {
+    "requestFailed": "Solicitud fallida",
+    "networkErrorUser": "Error de red, revisa tu conexión",
+    "networkErrorServer": "Error del servicio, inténtalo más tarde"
+  },
+  "homePage": {
+    "title": "FlashMaple - Noticias principales de Canadá para recién llegados",
+    "seoTitle": "FlashMaple - Noticias principales de Canadá para recién llegados",
+    "seoDescription": "Noticias locales de Canadá, novedades sobre inmigración e historias regionales para recién llegados. Lee en varios idiomas y mejora tu inglés con noticias reales.",
+    "intro": "Sigue las noticias locales de Canadá, las novedades sobre inmigración y la información regional, mientras mejoras tu inglés de forma natural con lecturas reales.",
+    "getStarted": "Comenzar",
+    "pushLabel": "Alerta push",
+    "explore": "Explorar funciones",
+    "themeLabel": "Tema",
+    "signalLabel": "Tu señal local",
+    "liveLabel": "Resumen en vivo",
+    "topStory": "Noticias principales",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "Idiomas"
+      },
+      {
+        "value": "7",
+        "label": "Regiones"
+      },
+      {
+        "value": "8+",
+        "label": "Fuentes"
+      },
+      {
+        "value": "24/7",
+        "label": "Actualizaciones"
+      }
+    ],
+    "faqNav": "FAQ",
+    "changelogNav": "Registro de cambios",
+    "changelogEarlierReleases": "Versiones anteriores",
+    "discoverMoreNav": "Descubrir más",
+    "privacyNav": "Política de privacidad",
+    "termsNav": "Términos de uso",
+    "featuresKicker": "Descripción del producto",
+    "features": [
+      {
+        "eyebrow": "01 / Flash",
+        "title": "Empieza por lo más importante",
+        "body": "Un resumen rápido de las noticias principales, actualizaciones prácticas y alertas locales, listo cuando comienza tu día.",
+        "tags": [
+          "Boletines en vivo",
+          "Alertas de tránsito",
+          "Últimas noticias"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / Explorar",
+        "title": "Un solo feed, muchas fuentes confiables",
+        "body": "Explora las noticias locales de Canadá sobre inmigración, educación, salud, entretenimiento y titulares de fuentes confiables.",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / Región",
+        "title": "Noticias que saben dónde estás",
+        "body": "Elige una región de Canadá —de Toronto y Vancouver a Montreal y más allá— para que cada resumen sea más local.",
+        "tags": [
+          "Toronto",
+          "Vancouver",
+          "Montreal",
+          "Calgary",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / Idioma",
+        "title": "Lee en varios idiomas",
+        "body": "Lee noticias canadienses en varios idiomas y usa noticias reales para mejorar tu inglés.",
+        "tags": [
+          "ES",
+          "EN",
+          "中文",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / Notificaciones",
+        "title": "Deja que las noticias importantes te encuentren",
+        "body": "Activa las notificaciones de última hora y mantente al tanto, incluso cuando FlashMaple no esté abierto.",
+        "tags": [
+          "Notificaciones en tiempo real",
+          "Centro de notificaciones"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / Personal",
+        "title": "Hazlo tuyo",
+        "body": "Guarda noticias, busca por palabra clave y adapta la aplicación a tu día.",
+        "tags": [
+          "Favoritos",
+          "Temas"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "Abrir la aplicación",
+    "faq": [
+      {
+        "question": "¿Dónde pueden encontrar noticias locales de Canadá los recién llegados?",
+        "answer": "FlashMaple reúne noticias locales de Canadá, novedades sobre inmigración, información práctica e historias regionales en un mismo feed."
+      },
+      {
+        "question": "¿Puedo cambiar el idioma y la región?",
+        "answer": "Sí. La aplicación admite varios idiomas de interfaz y regiones de Canadá, y puedes cambiar ambos desde Ajustes."
+      },
+      {
+        "question": "¿Puedo recibir noticias de última hora?",
+        "answer": "Sí. Activa las notificaciones del navegador desde la aplicación para recibir actualizaciones oportunas y gestionarlas en el Centro de notificaciones."
+      },
+      {
+        "question": "¿De dónde provienen las noticias?",
+        "answer": "FlashMaple reúne fuentes de noticias canadienses confiables sobre la vida local, la inmigración y las novedades regionales. Cada noticia identifica su fuente y permite abrir el artículo original."
+      },
+      {
+        "question": "¿Puedo guardar y buscar noticias?",
+        "answer": "Sí. Guarda las noticias que quieras volver a leer y usa la búsqueda para encontrar más contenido por palabra clave."
+      },
+      {
+        "question": "¿Cómo añado FlashMaple a la pantalla de inicio?",
+        "answer": "Añade FlashMaple a la pantalla de inicio para abrirlo rápidamente como una aplicación. Abre la aplicación y elige Añadir a la pantalla de inicio. Si no aparece la instalación, abre Compartir o el menú del navegador, elige Ver más, luego Añadir a la pantalla de inicio y confirma Añadir."
+      }
+    ],
+    "footer": "Noticias canadienses multilingües para recién llegados."
+  }
+}

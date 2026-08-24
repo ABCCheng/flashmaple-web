@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "いいえ",
+    "yes": "はい"
+  },
+  "tabs": {
+    "flash": "速報",
+    "explore": "見つける",
+    "favorites": "お気に入り",
+    "profile": "プロフィール"
+  },
+  "feed": {
+    "pullToRefresh": "引き下げて更新",
+    "releaseToRefresh": "離して更新",
+    "refreshing": "更新中...",
+    "loadingMore": "読み込み中...",
+    "loadMoreIdle": "スクロールしてさらに表示",
+    "noMore": "これ以上の記事はありません",
+    "backToTop": "先頭へ戻る"
+  },
+  "flash": {
+    "topStory": "トップニュース",
+    "briefing": "リアルタイム速報",
+    "focus": "焦点",
+    "watch": "注目",
+    "expandDetails": "詳細を展開",
+    "collapseDetails": "詳細を折りたたむ",
+    "transitAlert": "交通機関のお知らせ",
+    "severityFault": "障害",
+    "severitySevere": "重大",
+    "severityWarning": "警告",
+    "severityNotice": "通知",
+    "cause": "原因",
+    "direction": "方向",
+    "line": "Line",
+    "shuttle": "シャトル",
+    "empty": {
+      "title": "速報を読み込めませんでした",
+      "description": "下に引いて更新するか、下のボタンをタップしてもう一度お試しください。",
+      "retry": "再試行",
+      "noContentTitle": "現在、速報はありません",
+      "noContentDescription": "最新情報は後ほどもう一度ご確認ください。"
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "ホーム画面に追加",
+    "title": "ホーム画面に追加",
+    "description": "FlashMapleをホーム画面に追加すると、アプリのように利用できます。",
+    "gotIt": "了解",
+    "steps": {
+      "share": "共有",
+      "viewMore": "さらに表示",
+      "addToHomeScreen": "ホーム画面に追加",
+      "add": "追加",
+      "shareStart": "アドレスバーの",
+      "shareMiddle": "ボタンをタップするか、ブラウザメニューを開いて",
+      "shareEnd": "をタップします。",
+      "expandStart": "",
+      "expandEnd": "を展開します。",
+      "addStart": "",
+      "addEnd": "をタップします。",
+      "confirmStart": "",
+      "confirmEnd": "をタップします。"
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "検索",
+      "noResult": "一致する結果はありません"
+    },
+    "empty": {
+      "title": "このタブを読み込めませんでした",
+      "description": "下に引いて更新するか、下のボタンをタップしてもう一度お試しください。",
+      "retry": "再試行",
+      "noContentTitle": "現在、このタブに記事はありません"
+    },
+    "tabs": {
+      "local": "地域生活",
+      "immigration": "移民",
+      "education": "教育",
+      "health": "健康",
+      "entertainment": "エンタメ",
+      "headline": "主要ニュース"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "ログインが必要です",
+    "loginRequiredDescription": "お気に入りを利用するにはアカウントが必要です。先にログインしてください",
+    "loginAction": "ログイン",
+    "empty": "お気に入りはまだありません",
+    "searchPlaceholder": "お気に入りを検索",
+    "noSearchResult": "一致するお気に入りはありません",
+    "loadFailedTitle": "お気に入りを読み込めませんでした",
+    "loadFailedDescription": "下に引いて更新するか、下のボタンをタップしてもう一度お試しください。",
+    "loadFailedRetry": "再試行",
+    "remove": "お気に入りから削除"
+  },
+  "profile": {
+    "statusLoggedIn": "ログイン中 · {{provider}}",
+    "statusLoggedOut": "ログインしていません",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "logoutConfirmTitle": "ログアウト",
+    "logoutConfirmDescription": "ログアウトすると、お気に入りなどの機能が利用できなくなります。続行しますか？",
+    "sections": {
+      "setting": "設定",
+      "about": "情報"
+    },
+    "menu": {
+      "theme": "テーマ",
+      "language": "言語",
+      "region": "地域",
+      "voice": "音声",
+      "privacy": "プライバシーポリシー",
+      "terms": "利用規約",
+      "aboutApp": "私たちについて",
+      "feedback": "フィードバック"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "メール",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "ログイン",
+    "register": "新規登録",
+    "titleLogin": "ログイン",
+    "titleRegister": "アカウントを作成",
+    "subtitleLogin": "おかえりなさい。ニュースフィードの続きをどうぞ",
+    "subtitleRegister": "アカウントを作成して始めましょう",
+    "email": "メール",
+    "password": "パスワード",
+    "verifyCode": "認証コード",
+    "sendVerifyCode": "送信",
+    "emailError": "有効なメールアドレスを入力してください",
+    "passwordError": "パスワードは空白を含まない8～24文字で入力してください",
+    "verifyCodeError": "有効な認証コードを入力してください",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "emailLogin": "メールでログイン",
+    "emailRegister": "メールで登録",
+    "quickLogin": "またはクイックログインを利用",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "hasAccount": "すでにアカウントをお持ちですか？",
+    "goRegister": "新規登録",
+    "goLogin": "ログイン",
+    "requestRegisterSuccess": "認証コードを送信しました",
+    "success": "{{provider}}での{{action}}に成功しました",
+    "socialCancelled": "外部サービスでのログインがキャンセルされました",
+    "socialConfigMissing": "{{provider}}ログインはまだ設定されていません",
+    "socialTokenMissing": "有効な{{provider}}ログイントークンを取得できませんでした"
+  },
+  "resetPasswordPage": {
+    "title": "パスワードをリセット",
+    "subtitle": "メールを確認して新しいパスワードを設定してください",
+    "email": "メール",
+    "emailError": "有効なメールアドレスを入力してください",
+    "verifyCode": "認証コード",
+    "sendVerifyCode": "送信",
+    "verifyCodeError": "有効な認証コードを入力してください",
+    "newPassword": "新しいパスワード",
+    "passwordError": "パスワードは空白を含まない8～24文字で入力してください",
+    "submit": "パスワードをリセット",
+    "requestResetSuccess": "認証コードを送信しました",
+    "resetSuccess": "パスワードをリセットしました"
+  },
+  "setting": {
+    "language": {
+      "title": "言語"
+    },
+    "region": {
+      "title": "地域"
+    },
+    "theme": {
+      "title": "テーマ",
+      "followSystem": "システム設定に従う",
+      "lightMode": "ライトモード",
+      "darkMode": "ダークモード",
+      "moodThemeTitle": "ムードテーマ"
+    },
+    "voice": {
+      "title": "音声設定",
+      "voice": { "title": "音声" },
+      "rate": { "title": "速度" },
+      "pitch": { "title": "ピッチ" },
+      "volume": { "title": "音量" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "最新のメッセージのみ表示しています",
+    "title": "通知センター",
+    "empty": "まだメッセージを受信していません",
+    "delete": "メッセージを削除",
+    "clearAll": "メッセージを削除",
+    "markAllRead": "既読にする",
+    "clearAllDescription": "メッセージ一覧を削除しますか？",
+    "markAllReadDescription": "すべてのメッセージを既読にしますか？",
+    "subscribedSuccess": "購読しました",
+    "unsubscribed": "購読を解除しました",
+    "unsubscribeConfirmTitle": "購読を解除",
+    "unsubscribeConfirmDescription": "購読を解除すると、新しいメッセージを受信しなくなります。続行しますか？",
+    "unsupported": "プッシュ通知に対応していません",
+    "browserPermissionBlocked": "ブラウザでブロック中、先に許可してください",
+    "systemPermissionBlocked": "システムでブロック中、先に有効にしてください",
+    "failed": "設定を保存できませんでした"
+  },
+  "privacyPolicy": {
+    "title": "プライバシーポリシー",
+    "s1Title": "1. 収集する情報",
+    "s1Body": "サービスの提供と改善のため、アカウント情報、端末の基本情報、言語と地域の設定、アプリの利用ログを収集する場合があります。",
+    "s2Title": "2. 情報の利用方法",
+    "s2Body": "お客様のデータは、アカウント認証、コンテンツのパーソナライズ、機能品質の改善、セキュリティリスク管理に使用されます。",
+    "s3Title": "3. データの共有",
+    "s3Body": "個人データを販売することはありません。主要機能の運営に必要な場合に限り、基準を満たすサービス提供者とデータを共有します。",
+    "s4Title": "4. お客様の権利",
+    "s4Body": "個人データの閲覧、更新、削除を請求できます。ご希望の場合は、アプリ内のフィードバックページからお問い合わせください。"
+  },
+  "termsPage": {
+    "title": "利用規約",
+    "s1Title": "1. 規約への同意",
+    "s1Body": "FlashMapleにアクセスまたは利用することで、本規約および適用されるすべての法令に同意したものとみなされます。",
+    "s2Title": "2. アカウントとセキュリティ",
+    "s2Body": "アカウントの安全管理と、アカウント上で行われるすべての操作はお客様の責任です。認証情報を他人と共有しないでください。",
+    "s3Title": "3. 適切な利用",
+    "s3Body": "サービスの不正利用、正常な運営の妨害、違法または有害なコンテンツの公開を行わないことに同意するものとします。",
+    "s4Title": "4. 規約の変更",
+    "s4Body": "本規約は随時更新される場合があります。更新後も利用を継続することで、改定後の規約に同意したものとみなされます。"
+  },
+  "aboutAppPage": {
+    "title": "私たちについて",
+    "s1Title": "1. サービスの目的",
+    "s1Body": "FlashMapleは、カナダの移民の方々が地域生活や実用情報を把握し、実際の記事を読むことで自然に英語力を高められるよう支援します。",
+    "s2Title": "2. 主な機能",
+    "s2Body": "現在のバージョンでは、速報の閲覧、カテゴリー別の探索、プッシュ通知、お気に入りの管理、多言語インターフェースの切り替え、気分テーマの切り替えなどを利用できます。",
+    "s3Title": "3. お問い合わせとフィードバック",
+    "s3Body": "ご意見やご質問がある場合は、フィードバックページからメッセージをお送りください。すべての投稿を確認しています。",
+    "s4Title": "4. 免責事項",
+    "s4Body": "アプリに掲載されるニュースは、インターネット上で公開されているコンテンツを情報源とし、参考情報としてのみ提供しています。権利を侵害するコンテンツがある場合は、削除をご依頼ください。",
+    "s5Title": "5. 詳細情報",
+    "s5Body": "当社の製品、サービス、最新情報について詳しく知りたい場合は、公式ウェブサイトをご覧ください",
+    "s5MoreApps": "その他のWebアプリを見つけるには、こちらをご覧ください",
+    "s5SentenceEnd": "。"
+  },
+  "newsDetail": {
+    "viewOriginal": "原文を見る",
+    "previousArticle": "前へ",
+    "nextArticle": "次へ",
+    "shareMessage": "この記事を共有",
+    "sharePostTitle": "【FlashMaple】今日",
+    "shareNewsFallback": "ニュース",
+    "shareRednoteLabel": "RedNote",
+    "shareImageLabel": "画像を共有",
+    "shareImageLoading": "画像を準備中…",
+    "shareImageUnavailable": "画像を利用できません",
+    "playAudio": "音声を再生",
+    "audioFailed": "音声を再生できませんでした",
+    "loadFailedTitle": "この記事を読み込めませんでした",
+    "loadFailedDescription": "下のボタンをタップしてもう一度お試しください。",
+    "loadFailedRetry": "再試行",
+    "nextLoadFailed": "次の記事を読み込めませんでした。後ほどもう一度お試しください",
+    "noMoreContent": "最後の記事です"
+  },
+  "time": {
+    "justNow": "たった今更新",
+    "minuteAgo": "1分前",
+    "minutesAgo": "{{value}}分前",
+    "hourAgo": "1時間前",
+    "hoursAgo": "{{value}}時間前",
+    "dayAgo": "1日前",
+    "daysAgo": "{{value}}日前",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "フィードバック",
+    "emailOptional": "メール（任意）",
+    "content": "フィードバック内容",
+    "type": "フィードバックの種類",
+    "typeBug": "不具合",
+    "typeSuggestion": "提案",
+    "typeOther": "その他",
+    "submit": "送信",
+    "submitSuccess": "フィードバックを送信しました"
+  },
+  "network": {
+    "requestFailed": "リクエストに失敗しました",
+    "networkErrorUser": "ネットワークエラーです。接続を確認してください",
+    "networkErrorServer": "サービスを利用できません。後ほどもう一度お試しください"
+  },
+  "homePage": {
+    "title": "FlashMaple - カナダの新移住者向け主要ニュース",
+    "seoTitle": "FlashMaple - カナダの新移住者向け主要ニュース",
+    "seoDescription": "カナダの地域ニュース、移民情報、各地域の話題を新しく暮らし始めた方へ。多言語で読みながら、実際のニュースを通して英語力を高められます。",
+    "intro": "カナダの地域ニュースや移民情報、地域の話題を知りながら、実際のニュースを読むことで自然に英語力を高められます。",
+    "getStarted": "始める",
+    "pushLabel": "プッシュ通知",
+    "explore": "機能を見る",
+    "themeLabel": "テーマ",
+    "signalLabel": "あなたのローカル情報",
+    "liveLabel": "ライブブリーフィング",
+    "topStory": "トップニュース",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "言語"
+      },
+      {
+        "value": "7",
+        "label": "地域"
+      },
+      {
+        "value": "8+",
+        "label": "情報源"
+      },
+      {
+        "value": "24/7",
+        "label": "最新情報"
+      }
+    ],
+    "faqNav": "FAQ",
+    "changelogNav": "変更履歴",
+    "changelogEarlierReleases": "過去のリリース",
+    "discoverMoreNav": "もっと見る",
+    "privacyNav": "プライバシーポリシー",
+    "termsNav": "利用規約",
+    "featuresKicker": "製品概要",
+    "features": [
+      {
+        "eyebrow": "01 / フラッシュ",
+        "title": "今、最も大切な情報から始めよう",
+        "body": "主要ニュース、役立つ更新、地域のアラートをすばやくまとめ、朝から必要な情報を届けます。",
+        "tags": [
+          "ライブ速報",
+          "交通情報",
+          "主要ニュース"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / 探索",
+        "title": "1つのフィードに、信頼できる多くの情報源",
+        "body": "移民、教育、健康、エンターテインメント、主要ニュースなど、信頼できる情報源のカナダ地域ニュースを1つの場所で探せます。",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / 地域",
+        "title": "あなたの場所を知るニュース",
+        "body": "トロント、バンクーバー、モントリオールなど、カナダの地域を選んで、より地域に合った速報を受け取れます。",
+        "tags": [
+          "トロント",
+          "バンクーバー",
+          "モントリオール",
+          "カルガリー",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / 言語",
+        "title": "多言語で読む",
+        "body": "カナダのニュースを多言語で読み、実際のニュースを通して英語力を高められます。",
+        "tags": [
+          "日本語",
+          "EN",
+          "中文",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / 通知",
+        "title": "大切なニュースをあなたのもとへ",
+        "body": "速報の通知を有効にすれば、FlashMaple を開いていないときでも重要な情報を受け取れます。",
+        "tags": [
+          "リアルタイム通知",
+          "通知センター"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / パーソナル",
+        "title": "自分らしくカスタマイズ",
+        "body": "記事を保存し、キーワードで検索して、その日の自分に合うようアプリを調整できます。",
+        "tags": [
+          "お気に入り",
+          "テーマ"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "アプリを開く",
+    "faq": [
+      {
+        "question": "カナダの新しい住民はどこで地域ニュースを知ることができますか？",
+        "answer": "FlashMaple はカナダの地域ニュース、移民情報、実用情報、地域の話題を1つのフィードにまとめています。"
+      },
+      {
+        "question": "言語と地域は変更できますか？",
+        "answer": "はい。アプリは複数のインターフェース言語とカナダの地域に対応しており、設定からいつでも変更できます。"
+      },
+      {
+        "question": "速報を受け取ることはできますか？",
+        "answer": "はい。アプリでブラウザ通知を有効にすると、最新情報を受け取り、通知センターで管理できます。"
+      },
+      {
+        "question": "ニュースはどこから届きますか？",
+        "answer": "FlashMaple は地域の暮らし、移民、地域の最新情報を扱う信頼できるカナダのニュースソースをまとめています。各記事で出典を確認し、元の記事を開くこともできます。"
+      },
+      {
+        "question": "記事の保存や検索はできますか？",
+        "answer": "はい。後で読みたい記事を保存し、キーワード検索で関連ニュースを探せます。"
+      },
+      {
+        "question": "FlashMaple をホーム画面に追加するには？",
+        "answer": "ホーム画面に追加すると、FlashMaple を通常のアプリのようにすぐ開けます。アプリを開いて「ホーム画面に追加」を選びます。インストール画面が出ない場合は、ブラウザの共有またはメニューを開き、「さらに表示」、「ホーム画面に追加」、「追加」の順に選びます。"
+      }
+    ],
+    "footer": "新しく暮らし始めた人のための多言語カナダニュース。"
+  }
+}

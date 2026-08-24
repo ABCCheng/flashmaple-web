@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "Không",
+    "yes": "Có"
+  },
+  "tabs": {
+    "flash": "Tin nhanh",
+    "explore": "Khám phá",
+    "favorites": "Yêu thích",
+    "profile": "Hồ sơ"
+  },
+  "feed": {
+    "pullToRefresh": "Kéo để làm mới",
+    "releaseToRefresh": "Thả để làm mới",
+    "refreshing": "Đang làm mới...",
+    "loadingMore": "Đang tải thêm...",
+    "loadMoreIdle": "Cuộn để xem thêm",
+    "noMore": "Không còn tin nào",
+    "backToTop": "Về đầu trang"
+  },
+  "flash": {
+    "topStory": "Tin nổi bật",
+    "briefing": "Bản tin thời gian thực",
+    "focus": "Tiêu điểm",
+    "watch": "Theo dõi",
+    "expandDetails": "Mở rộng chi tiết",
+    "collapseDetails": "Thu gọn chi tiết",
+    "transitAlert": "Cảnh báo giao thông",
+    "severityFault": "Sự cố",
+    "severitySevere": "Nghiêm trọng",
+    "severityWarning": "Cảnh báo",
+    "severityNotice": "Thông báo",
+    "cause": "Nguyên nhân",
+    "direction": "Hướng",
+    "line": "Line",
+    "shuttle": "Xe trung chuyển",
+    "empty": {
+      "title": "Không thể tải tin nhanh",
+      "description": "Kéo xuống để làm mới hoặc nhấn bên dưới để thử lại.",
+      "retry": "Thử lại",
+      "noContentTitle": "Hiện chưa có tin nhanh",
+      "noContentDescription": "Hãy quay lại sau để xem tin mới nhất."
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "Thêm vào màn hình chính",
+    "title": "Thêm vào màn hình chính",
+    "description": "Thêm FlashMaple vào màn hình chính và sử dụng như một ứng dụng.",
+    "gotIt": "Đã hiểu",
+    "steps": {
+      "share": "Chia sẻ",
+      "viewMore": "Xem thêm",
+      "addToHomeScreen": "Thêm vào màn hình chính",
+      "add": "Thêm",
+      "shareStart": "Nhấn vào thanh địa chỉ",
+      "shareMiddle": " hoặc mở menu trình duyệt rồi nhấn ",
+      "shareEnd": ".",
+      "expandStart": "Mở rộng ",
+      "expandEnd": ".",
+      "addStart": "Nhấn ",
+      "addEnd": ".",
+      "confirmStart": "Nhấn ",
+      "confirmEnd": "."
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "Tìm kiếm",
+      "noResult": "Không có kết quả phù hợp"
+    },
+    "empty": {
+      "title": "Không thể tải thẻ này",
+      "description": "Kéo xuống để làm mới hoặc nhấn bên dưới để thử lại.",
+      "retry": "Thử lại",
+      "noContentTitle": "Hiện chưa có tin trong thẻ này"
+    },
+    "tabs": {
+      "local": "Đời sống địa phương",
+      "immigration": "Nhập cư",
+      "education": "Giáo dục",
+      "health": "Sức khỏe",
+      "entertainment": "Giải trí",
+      "headline": "Tin chính"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "Cần đăng nhập",
+    "loginRequiredDescription": "Bạn cần có tài khoản để sử dụng mục yêu thích. Vui lòng đăng nhập trước",
+    "loginAction": "Đăng nhập",
+    "empty": "Chưa có mục yêu thích",
+    "searchPlaceholder": "Tìm trong mục yêu thích",
+    "noSearchResult": "Không tìm thấy mục yêu thích phù hợp",
+    "loadFailedTitle": "Không thể tải mục yêu thích",
+    "loadFailedDescription": "Kéo xuống để làm mới hoặc nhấn bên dưới để thử lại.",
+    "loadFailedRetry": "Thử lại",
+    "remove": "Xóa khỏi mục yêu thích"
+  },
+  "profile": {
+    "statusLoggedIn": "Đã đăng nhập · {{provider}}",
+    "statusLoggedOut": "Chưa đăng nhập",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "logoutConfirmTitle": "Đăng xuất",
+    "logoutConfirmDescription": "Sau khi đăng xuất, bạn sẽ không thể dùng các tính năng như mục yêu thích. Tiếp tục?",
+    "sections": {
+      "setting": "Cài đặt",
+      "about": "Giới thiệu"
+    },
+    "menu": {
+      "theme": "Giao diện",
+      "language": "Ngôn ngữ",
+      "region": "Khu vực",
+      "voice": "Giọng nói",
+      "privacy": "Chính sách quyền riêng tư",
+      "terms": "Điều khoản sử dụng",
+      "aboutApp": "Về chúng tôi",
+      "feedback": "Phản hồi"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "Email",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "titleLogin": "Đăng nhập",
+    "titleRegister": "Tạo tài khoản",
+    "subtitleLogin": "Chào mừng bạn trở lại, hãy tiếp tục xem bảng tin",
+    "subtitleRegister": "Tạo tài khoản và bắt đầu hành trình của bạn",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "verifyCode": "Mã xác minh",
+    "sendVerifyCode": "Gửi",
+    "emailError": "Nhập địa chỉ email hợp lệ",
+    "passwordError": "Mật khẩu phải có 8–24 ký tự và không chứa khoảng trắng",
+    "verifyCodeError": "Nhập mã xác minh hợp lệ",
+    "forgotPassword": "Quên mật khẩu?",
+    "emailLogin": "Đăng nhập bằng email",
+    "emailRegister": "Đăng ký bằng email",
+    "quickLogin": "Hoặc sử dụng đăng nhập nhanh",
+    "noAccount": "Bạn chưa có tài khoản?",
+    "hasAccount": "Bạn đã có tài khoản?",
+    "goRegister": "Đăng ký",
+    "goLogin": "Đăng nhập",
+    "requestRegisterSuccess": "Đã gửi mã xác minh",
+    "success": "{{action}} bằng {{provider}} thành công",
+    "socialCancelled": "Đã hủy đăng nhập qua dịch vụ bên thứ ba",
+    "socialConfigMissing": "Đăng nhập bằng {{provider}} chưa được cấu hình",
+    "socialTokenMissing": "Không thể lấy mã đăng nhập {{provider}} hợp lệ"
+  },
+  "resetPasswordPage": {
+    "title": "Đặt lại mật khẩu",
+    "subtitle": "Xác minh email và đặt mật khẩu mới",
+    "email": "Email",
+    "emailError": "Nhập địa chỉ email hợp lệ",
+    "verifyCode": "Mã xác minh",
+    "sendVerifyCode": "Gửi",
+    "verifyCodeError": "Nhập mã xác minh hợp lệ",
+    "newPassword": "Mật khẩu mới",
+    "passwordError": "Mật khẩu phải có 8–24 ký tự và không chứa khoảng trắng",
+    "submit": "Đặt lại mật khẩu",
+    "requestResetSuccess": "Đã gửi mã xác minh",
+    "resetSuccess": "Đặt lại mật khẩu thành công"
+  },
+  "setting": {
+    "language": {
+      "title": "Ngôn ngữ"
+    },
+    "region": {
+      "title": "Khu vực"
+    },
+    "theme": {
+      "title": "Giao diện",
+      "followSystem": "Theo hệ thống",
+      "lightMode": "Chế độ sáng",
+      "darkMode": "Chế độ tối",
+      "moodThemeTitle": "Giao diện theo tâm trạng"
+    },
+    "voice": {
+      "title": "Cài đặt giọng nói",
+      "voice": { "title": "Giọng nói" },
+      "rate": { "title": "Tốc độ" },
+      "pitch": { "title": "Cao độ" },
+      "volume": { "title": "Âm lượng" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "Chỉ hiển thị tin nhắn mới nhất",
+    "title": "Trung tâm thông báo",
+    "empty": "Bạn chưa nhận được tin nhắn nào",
+    "delete": "Xóa tin nhắn",
+    "clearAll": "Xóa tin nhắn",
+    "markAllRead": "Đánh dấu đã đọc",
+    "clearAllDescription": "Bạn có muốn xóa danh sách tin nhắn không?",
+    "markAllReadDescription": "Bạn có muốn đánh dấu tất cả tin nhắn là đã đọc không?",
+    "subscribedSuccess": "Đăng ký thành công",
+    "unsubscribed": "Đã hủy đăng ký",
+    "unsubscribeConfirmTitle": "Hủy đăng ký",
+    "unsubscribeConfirmDescription": "Sau khi hủy đăng ký, bạn sẽ không còn nhận được tin nhắn mới. Tiếp tục?",
+    "unsupported": "Không hỗ trợ thông báo đẩy",
+    "browserPermissionBlocked": "Bị trình duyệt chặn, hãy cho phép trước",
+    "systemPermissionBlocked": "Bị hệ thống chặn, hãy bật trước",
+    "failed": "Không thể lưu cài đặt"
+  },
+  "privacyPolicy": {
+    "title": "Chính sách quyền riêng tư",
+    "s1Title": "1. Thông tin chúng tôi thu thập",
+    "s1Body": "Chúng tôi có thể thu thập thông tin tài khoản, thông tin cơ bản về thiết bị, tùy chọn ngôn ngữ và khu vực cùng nhật ký sử dụng ứng dụng để cung cấp và cải thiện dịch vụ.",
+    "s2Title": "2. Cách chúng tôi sử dụng thông tin",
+    "s2Body": "Dữ liệu của bạn được dùng để xác thực tài khoản, đề xuất nội dung phù hợp, cải thiện chất lượng tính năng và kiểm soát rủi ro bảo mật.",
+    "s3Title": "3. Chia sẻ dữ liệu",
+    "s3Body": "Chúng tôi không bán dữ liệu cá nhân của bạn. Dữ liệu chỉ được chia sẻ với các nhà cung cấp dịch vụ tuân thủ quy định khi cần thiết để vận hành các chức năng cốt lõi.",
+    "s4Title": "4. Quyền của bạn",
+    "s4Body": "Bạn có thể yêu cầu xem, cập nhật hoặc xóa dữ liệu cá nhân. Vui lòng liên hệ với chúng tôi qua trang phản hồi trong ứng dụng."
+  },
+  "termsPage": {
+    "title": "Điều khoản sử dụng",
+    "s1Title": "1. Chấp thuận",
+    "s1Body": "Khi truy cập hoặc sử dụng FlashMaple, bạn đồng ý với các điều khoản này và mọi luật lệ, quy định hiện hành.",
+    "s2Title": "2. Tài khoản và bảo mật",
+    "s2Body": "Bạn chịu trách nhiệm bảo mật tài khoản và mọi hoạt động trong tài khoản. Không chia sẻ thông tin đăng nhập của bạn.",
+    "s3Title": "3. Sử dụng hợp lệ",
+    "s3Body": "Bạn đồng ý không lạm dụng dịch vụ, cản trở hoạt động bình thường hoặc đăng nội dung bất hợp pháp hay gây hại.",
+    "s4Title": "4. Thay đổi điều khoản",
+    "s4Body": "Chúng tôi có thể cập nhật các điều khoản này theo thời gian. Việc tiếp tục sử dụng sau khi cập nhật đồng nghĩa với việc bạn chấp nhận các điều khoản đã sửa đổi."
+  },
+  "aboutAppPage": {
+    "title": "Về chúng tôi",
+    "s1Title": "1. Sứ mệnh sản phẩm",
+    "s1Body": "FlashMaple giúp người nhập cư tại Canada cập nhật đời sống địa phương và thông tin thiết thực, đồng thời cải thiện tiếng Anh một cách tự nhiên qua việc đọc nội dung thực tế.",
+    "s2Title": "2. Tính năng chính",
+    "s2Body": "Phiên bản hiện tại hỗ trợ xem tin nhanh, khám phá theo danh mục, thông báo đẩy, quản lý mục yêu thích, chuyển đổi ngôn ngữ giao diện, chuyển đổi chủ đề tâm trạng và nhiều tính năng khác.",
+    "s3Title": "3. Liên hệ và phản hồi",
+    "s3Body": "Nếu có đề xuất hoặc câu hỏi, vui lòng gửi tin nhắn qua trang phản hồi. Chúng tôi xem xét mọi ý kiến gửi đến.",
+    "s4Title": "4. Tuyên bố miễn trừ trách nhiệm",
+    "s4Body": "Mọi nội dung tin tức trong ứng dụng đều lấy từ các nguồn công khai trên mạng và chỉ được cung cấp để tham khảo. Nếu có nội dung xâm phạm quyền của bạn, vui lòng liên hệ để yêu cầu gỡ bỏ.",
+    "s5Title": "5. Tìm hiểu thêm",
+    "s5Body": "Nếu muốn tìm hiểu thêm về các sản phẩm, dịch vụ và những cập nhật mới nhất của chúng tôi, hãy truy cập trang web chính thức của chúng tôi",
+    "s5MoreApps": "Để khám phá thêm các ứng dụng web, hãy truy cập",
+    "s5SentenceEnd": "."
+  },
+  "newsDetail": {
+    "viewOriginal": "Xem bản gốc",
+    "previousArticle": "Trước",
+    "nextArticle": "Tiếp",
+    "shareMessage": "Chia sẻ bài viết này",
+    "sharePostTitle": "【FlashMaple】Tin",
+    "shareNewsFallback": "Tin tức",
+    "shareRednoteLabel": "RedNote",
+    "shareImageLabel": "Chia sẻ hình ảnh",
+    "shareImageLoading": "Đang chuẩn bị hình ảnh…",
+    "shareImageUnavailable": "Không có hình ảnh",
+    "playAudio": "Phát âm thanh",
+    "audioFailed": "Không thể phát âm thanh",
+    "loadFailedTitle": "Không thể tải bài viết",
+    "loadFailedDescription": "Nhấn bên dưới để thử lại.",
+    "loadFailedRetry": "Thử lại",
+    "nextLoadFailed": "Không thể tải bài tiếp theo. Vui lòng thử lại sau",
+    "noMoreContent": "Bạn đang ở bài viết cuối cùng"
+  },
+  "time": {
+    "justNow": "Vừa cập nhật",
+    "minuteAgo": "Một phút trước",
+    "minutesAgo": "{{value}} phút trước",
+    "hourAgo": "Một giờ trước",
+    "hoursAgo": "{{value}} giờ trước",
+    "dayAgo": "Một ngày trước",
+    "daysAgo": "{{value}} ngày trước",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "Phản hồi",
+    "emailOptional": "Email (không bắt buộc)",
+    "content": "Nội dung phản hồi",
+    "type": "Loại phản hồi",
+    "typeBug": "Lỗi",
+    "typeSuggestion": "Đề xuất",
+    "typeOther": "Khác",
+    "submit": "Gửi",
+    "submitSuccess": "Đã gửi phản hồi thành công"
+  },
+  "network": {
+    "requestFailed": "Yêu cầu thất bại",
+    "networkErrorUser": "Lỗi mạng, vui lòng kiểm tra kết nối",
+    "networkErrorServer": "Dịch vụ hiện không khả dụng, vui lòng thử lại sau"
+  },
+  "homePage": {
+    "title": "FlashMaple - Tin tức hàng đầu Canada dành cho người mới nhập cư",
+    "seoTitle": "FlashMaple - Tin tức hàng đầu Canada dành cho người mới nhập cư",
+    "seoDescription": "Tin địa phương Canada, cập nhật về nhập cư và thông tin khu vực dành cho người mới đến. Đọc bằng nhiều ngôn ngữ và cải thiện tiếng Anh qua tin tức thực tế.",
+    "intro": "Theo dõi tin địa phương Canada, cập nhật về nhập cư và thông tin khu vực, đồng thời cải thiện tiếng Anh một cách tự nhiên qua tin tức thực tế.",
+    "getStarted": "Bắt đầu",
+    "pushLabel": "Thông báo đẩy",
+    "explore": "Khám phá tính năng",
+    "themeLabel": "Chủ đề",
+    "signalLabel": "Tín hiệu địa phương của bạn",
+    "liveLabel": "Bản tin trực tiếp",
+    "topStory": "Tin nổi bật",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "Ngôn ngữ"
+      },
+      {
+        "value": "7",
+        "label": "Khu vực"
+      },
+      {
+        "value": "8+",
+        "label": "Nguồn tin"
+      },
+      {
+        "value": "24/7",
+        "label": "Cập nhật mới"
+      }
+    ],
+    "faqNav": "FAQ",
+    "changelogNav": "Nhật ký thay đổi",
+    "changelogEarlierReleases": "Các phiên bản trước",
+    "discoverMoreNav": "Khám phá thêm",
+    "privacyNav": "Chính sách quyền riêng tư",
+    "termsNav": "Điều khoản sử dụng",
+    "featuresKicker": "Tổng quan sản phẩm",
+    "features": [
+      {
+        "eyebrow": "01 / Bản tin nhanh",
+        "title": "Bắt đầu với những điều quan trọng nhất",
+        "body": "Bản tóm tắt nhanh về tin nổi bật, cập nhật hữu ích và cảnh báo địa phương, sẵn sàng khi ngày mới bắt đầu.",
+        "tags": [
+          "Bản tin trực tiếp",
+          "Cảnh báo giao thông",
+          "Tin nổi bật"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / Khám phá",
+        "title": "Một bảng tin, nhiều nguồn đáng tin cậy",
+        "body": "Khám phá tin địa phương Canada về nhập cư, giáo dục, sức khỏe, giải trí và tin chính từ các nguồn đáng tin cậy.",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / Khu vực",
+        "title": "Tin tức phù hợp với nơi bạn sống",
+        "body": "Chọn khu vực Canada—từ Toronto, Vancouver đến Montreal và nhiều nơi khác—để mỗi bản tin gần với địa phương hơn.",
+        "tags": [
+          "Toronto",
+          "Vancouver",
+          "Montreal",
+          "Calgary",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / Ngôn ngữ",
+        "title": "Đọc tin bằng nhiều ngôn ngữ",
+        "body": "Đọc tin Canada bằng nhiều ngôn ngữ và cải thiện tiếng Anh qua tin tức thực tế.",
+        "tags": [
+          "VI",
+          "EN",
+          "中文",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / Thông báo",
+        "title": "Để những tin quan trọng tự tìm đến bạn",
+        "body": "Bật thông báo tin nóng để luôn cập nhật, ngay cả khi FlashMaple không mở.",
+        "tags": [
+          "Thông báo tức thì",
+          "Trung tâm thông báo"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / Cá nhân hóa",
+        "title": "Cá nhân hóa theo cách của bạn",
+        "body": "Lưu tin, tìm kiếm bằng từ khóa và điều chỉnh ứng dụng theo ngày của bạn.",
+        "tags": [
+          "Yêu thích",
+          "Giao diện"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "Mở ứng dụng",
+    "faq": [
+      {
+        "question": "Người mới đến Canada có thể tìm tin địa phương ở đâu?",
+        "answer": "FlashMaple tập hợp tin địa phương Canada, cập nhật về nhập cư, thông tin thiết thực và câu chuyện khu vực trong một bảng tin."
+      },
+      {
+        "question": "Tôi có thể thay đổi ngôn ngữ và khu vực không?",
+        "answer": "Có. Ứng dụng hỗ trợ nhiều ngôn ngữ giao diện và khu vực tại Canada, bạn có thể thay đổi cả hai trong phần Cài đặt."
+      },
+      {
+        "question": "Tôi có thể nhận tin nóng không?",
+        "answer": "Có. Hãy bật thông báo trình duyệt trong ứng dụng để nhận cập nhật kịp thời và quản lý chúng trong Trung tâm thông báo."
+      },
+      {
+        "question": "Tin tức đến từ đâu?",
+        "answer": "FlashMaple tổng hợp các nguồn tin Canada đáng tin cậy về đời sống địa phương, nhập cư và cập nhật khu vực. Mỗi bài đều ghi rõ nguồn và cho phép bạn mở bài viết gốc."
+      },
+      {
+        "question": "Tôi có thể lưu và tìm kiếm tin tức không?",
+        "answer": "Có. Hãy lưu những bài bạn muốn đọc lại và dùng từ khóa để tìm thêm tin liên quan."
+      },
+      {
+        "question": "Làm cách nào để thêm FlashMaple vào màn hình chính?",
+        "answer": "Thêm FlashMaple vào màn hình chính để mở nhanh như một ứng dụng thông thường. Mở ứng dụng và chọn Thêm vào màn hình chính. Nếu không thấy lời nhắc cài đặt, hãy mở Chia sẻ hoặc menu trình duyệt, chọn Xem thêm, rồi Thêm vào màn hình chính và xác nhận Thêm."
+      }
+    ],
+    "footer": "Tin tức Canada đa ngôn ngữ cho người mới đến."
+  }
+}

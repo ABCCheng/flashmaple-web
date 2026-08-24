@@ -1,0 +1,506 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --background: #ffffff;
+  --foreground: #1c1c1e;
+  --card: rgba(255, 255, 255, 0.58);
+  --card-foreground: #1c1c1e;
+  --popover: rgba(255, 255, 255, 0.76);
+  --popover-foreground: #1c1c1e;
+  --primary: #d3001c;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(242, 242, 246, 0.58);
+  --secondary-foreground: #3a3a3c;
+  --muted: rgba(242, 242, 246, 0.52);
+  --muted-foreground: #687076;
+  --accent: #ffdad9;
+  --accent-foreground: #410003;
+  --destructive: #b00020;
+  --border: rgba(0, 0, 0, 0.2);
+  --input: #c7c7cc;
+  --ring: #ed4040;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1c1c1e;
+  --sidebar-primary: #d3001c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f2f2f6;
+  --sidebar-accent-foreground: #3a3a3c;
+  --sidebar-border: #c7c7cc;
+  --sidebar-ring: #ed4040;
+  --app-device-bg: var(--background);
+  --app-surface: var(--background);
+  --app-mood-1: #ffd54f;
+  --app-mood-2: #ff8a80;
+  --app-mood-3: #81d4fa;
+  --app-mood-4: #ffccbc;
+  --button-foreground: #ffffff;
+  --switch-thumb: #ffffff;
+  --app-safe-top-color: var(--app-device-bg);
+  --app-safe-top-overlay: linear-gradient(transparent, transparent);
+  --app-default-global-bg:
+    radial-gradient(circle at 15% 5%, color-mix(in srgb, var(--primary) 10%, transparent), transparent 30rem),
+    var(--app-device-bg);
+  --app-global-bg: var(--app-default-global-bg);
+  --app-safe-top: env(safe-area-inset-top, 0px);
+  --app-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --app-tab-height: 3.5rem;
+  --app-safe-footer-bottom: max(var(--app-safe-bottom), 0.5rem);
+  --app-safe-header-top: max(var(--app-safe-top), 0.5rem);
+  --app-safe-tab-bottom: calc(var(--app-safe-footer-bottom) + var(--app-tab-height) + 0.5rem);
+  --app-viewport-height: 100dvh;
+  --app-fill-height: calc(var(--app-safe-top) + var(--app-viewport-height) + var(--app-safe-bottom));
+  --app-desktop-header-height: 6.375rem;
+}
+
+.dark {
+  --background: #1b1b1f;
+  --foreground: #e5e5e5;
+  --card: rgba(36, 35, 40, 0.64);
+  --card-foreground: #e5e5e5;
+  --popover: rgba(38, 37, 43, 0.84);
+  --popover-foreground: #e5e5e5;
+  --primary: #ff6b76;
+  --primary-foreground: #260004;
+  --secondary: rgba(54, 54, 60, 0.62);
+  --secondary-foreground: #c7c7cc;
+  --muted: rgba(54, 54, 60, 0.56);
+  --muted-foreground: #9ba1a6;
+  --accent: #8f1327;
+  --accent-foreground: #ffdad9;
+  --destructive: #cf6679;
+  --border: rgba(255, 255, 255, 0.2);
+  --input: #6b6b6f;
+  --ring: #ff6461;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: #242328;
+  --sidebar-foreground: #e5e5e5;
+  --sidebar-primary: #ff6b76;
+  --sidebar-primary-foreground: #260004;
+  --sidebar-accent: #36363c;
+  --sidebar-accent-foreground: #c7c7cc;
+  --sidebar-border: #6b6b6f;
+  --sidebar-ring: #ff6461;
+  --app-device-bg: var(--background);
+  --app-surface: var(--background);
+  --app-mood-1: #ffb300;
+  --app-mood-2: #ff5c70;
+  --app-mood-3: #00bcd4;
+  --app-mood-4: #ff7a45;
+  --app-default-global-bg:
+    radial-gradient(circle at 15% 5%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 30rem),
+    var(--app-device-bg);
+  --app-global-bg: var(--app-default-global-bg);
+  --button-foreground: #ffffff;
+  --switch-thumb: #e5e5e5;
+}
+
+:root:not(.home-surface)[data-mood-theme="on"] {
+  --app-global-bg:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--app-mood-1) 42%, transparent), transparent 18rem),
+    radial-gradient(circle at 100% 10%, color-mix(in srgb, var(--app-mood-2) 32%, transparent), transparent 20rem),
+    radial-gradient(circle at 25% 65%, color-mix(in srgb, var(--app-mood-3) 30%, transparent), transparent 24rem),
+    radial-gradient(circle at 80% 100%, color-mix(in srgb, var(--app-mood-4) 28%, transparent), transparent 26rem),
+    var(--app-device-bg);
+}
+
+.dark:not(.home-surface)[data-mood-theme="on"] {
+  --app-global-bg:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--app-mood-1) 56%, transparent), transparent 19rem),
+    radial-gradient(circle at 100% 10%, color-mix(in srgb, var(--app-mood-2) 48%, transparent), transparent 22rem),
+    radial-gradient(circle at 25% 65%, color-mix(in srgb, var(--app-mood-3) 42%, transparent), transparent 25rem),
+    radial-gradient(circle at 80% 100%, color-mix(in srgb, var(--app-mood-4) 40%, transparent), transparent 28rem),
+    var(--app-device-bg);
+}
+
+:root[data-mood="neutral"] {
+  --app-mood-1: #cfd8dc;
+  --app-mood-2: #b0bec5;
+  --app-mood-3: #90a4ae;
+  --app-mood-4: #eceff1;
+}
+
+:root[data-mood="negative"] {
+  --app-mood-1: #ef9a9a;
+  --app-mood-2: #ce93d8;
+  --app-mood-3: #9fa8da;
+  --app-mood-4: #c5cae9;
+}
+
+.dark[data-mood="neutral"] {
+  --app-mood-1: #90a4ae;
+  --app-mood-2: #607d8b;
+  --app-mood-3: #4db6ac;
+  --app-mood-4: #78909c;
+}
+
+.dark[data-mood="negative"] {
+  --app-mood-1: #ff5252;
+  --app-mood-2: #b388ff;
+  --app-mood-3: #536dfe;
+  --app-mood-4: #c2185b;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* App viewport and chrome */
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  overscroll-behavior-y: none;
+  scrollbar-width: none;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--app-global-bg);
+}
+
+html {
+  min-height: -webkit-fill-available;
+}
+
+html.app-pwa-top-route,
+html.app-pwa-top-route body {
+  overscroll-behavior-x: none;
+}
+
+/* 更像 App 的滚动体验 */
+body {
+  min-height: var(--app-viewport-height);
+  overflow-x: hidden;
+  isolation: isolate;
+  background: var(--app-global-bg);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: calc(-1 * var(--app-safe-bottom));
+  min-height: var(--app-fill-height);
+  z-index: -1;
+  pointer-events: none;
+  background: var(--app-safe-top-overlay), var(--app-global-bg);
+}
+
+.app-root {
+  position: relative;
+  min-height: var(--app-viewport-height);
+  background: transparent;
+}
+
+/* Render the branded handoff only when the initial app script enables it. */
+.app-splash-screen {
+  display: none;
+  background: var(--app-default-global-bg) !important;
+}
+
+.dark .app-splash-screen {
+  background: var(--app-default-global-bg) !important;
+}
+
+.app-splash-logo {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.app-splash-logo::after {
+  position: absolute;
+  top: -35%;
+  bottom: -35%;
+  left: -65%;
+  width: 34%;
+  content: "";
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.08) 30%,
+    rgb(255 255 255 / 0.9) 50%,
+    rgb(255 255 255 / 0.08) 70%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  animation: app-splash-logo-shine 2.4s ease-in-out 0.25s infinite;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  html[data-show-app-splash="true"] .app-splash-screen {
+    display: flex;
+  }
+}
+
+.app-splash-screen-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  justify-content: center;
+  transition: transform 260ms ease, opacity 260ms ease;
+}
+
+html.app-standalone .app-splash-screen[data-exiting="true"] {
+  pointer-events: none;
+}
+
+html.app-standalone .app-splash-screen[data-exiting="true"] .app-splash-screen-content {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+html[data-skip-app-splash="true"] .app-splash-screen {
+  display: none !important;
+}
+
+@keyframes app-splash-logo-shine {
+  0%,
+  18% {
+    transform: translateX(0) skewX(-18deg);
+  }
+
+  62%,
+  100% {
+    transform: translateX(470%) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-splash-logo::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  html.app-shell-active,
+  html.app-shell-active body {
+    overflow: hidden;
+  }
+
+  html.app-shell-active .app-root {
+    height: var(--app-viewport-height);
+  }
+}
+
+/* Let regular mobile browsers scroll the document so their browser chrome can
+   collapse while scrolling. Installed PWAs keep the app-owned scroller. */
+@media (max-width: 767px) {
+  html.app-shell-active:not(.app-standalone),
+  html.app-shell-active:not(.app-standalone) body {
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+  }
+
+  html.app-shell-active:not(.app-standalone) .app-root {
+    height: auto;
+    min-height: var(--app-viewport-height);
+  }
+
+  html.app-shell-active:not(.app-standalone) .app-content {
+    overflow-y: visible;
+    overscroll-behavior-y: none;
+  }
+}
+
+/* iOS 风格滚动 */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 隐藏滚动条（App感） */
+::-webkit-scrollbar {
+  display: none;
+}
+
+.app-mobile-chrome,
+.app-bottom-chrome {
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent;
+}
+
+.app-top-chrome {
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+}
+
+.app-top-chrome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--app-global-bg);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 100vw var(--app-fill-height);
+}
+
+.app-route-layer {
+  background: var(--app-global-bg);
+}
+
+@media (min-width: 768px) {
+  .app-route-layer {
+    background-position: 0 calc(-1 * var(--app-desktop-header-height));
+    background-repeat: no-repeat;
+    background-size: 100vw var(--app-fill-height);
+  }
+}
+
+@media (max-width: 767px) {
+  :root:not(.app-standalone) {
+    --app-safe-top-overlay: linear-gradient(
+      to bottom,
+      var(--app-safe-top-color) 0,
+      var(--app-safe-top-color) var(--app-safe-top),
+      transparent calc(var(--app-safe-top) + 4rem)
+    );
+  }
+
+  :root.dark[data-mood-theme="on"]:not(.home-surface):not(.app-standalone) {
+    --app-safe-top-overlay: linear-gradient(
+      to bottom,
+      var(--app-safe-top-color) 0,
+      var(--app-safe-top-color) var(--app-safe-top),
+      color-mix(in srgb, var(--app-safe-top-color) 78%, transparent) calc(var(--app-safe-top) + 1rem),
+      color-mix(in srgb, var(--app-safe-top-color) 52%, transparent) calc(var(--app-safe-top) + 2.5rem),
+      color-mix(in srgb, var(--app-safe-top-color) 28%, transparent) calc(var(--app-safe-top) + 4rem),
+      color-mix(in srgb, var(--app-safe-top-color) 12%, transparent) calc(var(--app-safe-top) + 5.5rem),
+      transparent calc(var(--app-safe-top) + 7rem)
+    );
+  }
+
+  .app-mobile-chrome::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: calc(-1 * var(--app-safe-bottom));
+    z-index: -1;
+    width: 100vw;
+    height: var(--app-fill-height);
+    pointer-events: none;
+    background: var(--app-global-bg);
+  }
+
+  :root:not(.app-standalone) .app-mobile-chrome::before,
+  :root:not(.app-standalone) .app-top-chrome::before {
+    background: var(--app-safe-top-overlay), var(--app-global-bg);
+  }
+
+  :root:not(.app-standalone) .app-route-layer {
+    background: var(--app-safe-top-overlay), var(--app-global-bg);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100vw var(--app-fill-height);
+  }
+
+  body::before,
+  .app-mobile-chrome::before,
+  .app-top-chrome::before {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100vw var(--app-fill-height);
+  }
+}
+
+@media (max-width: 767px) and (display-mode: standalone) {
+  :root {
+    --app-safe-top-overlay: linear-gradient(transparent, transparent);
+  }
+
+  html,
+  body,
+  .app-root {
+    min-height: calc(var(--app-viewport-height) + var(--app-safe-bottom));
+  }
+
+  html.app-shell-active .app-root {
+    height: calc(var(--app-viewport-height) + var(--app-safe-bottom));
+  }
+}

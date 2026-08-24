@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "아니요",
+    "yes": "예"
+  },
+  "tabs": {
+    "flash": "속보",
+    "explore": "둘러보기",
+    "favorites": "즐겨찾기",
+    "profile": "프로필"
+  },
+  "feed": {
+    "pullToRefresh": "당겨서 새로고침",
+    "releaseToRefresh": "놓아서 새로고침",
+    "refreshing": "새로고침 중...",
+    "loadingMore": "더 불러오는 중...",
+    "loadMoreIdle": "스크롤하여 더 보기",
+    "noMore": "더 이상 기사가 없습니다",
+    "backToTop": "맨 위로"
+  },
+  "flash": {
+    "topStory": "주요 뉴스",
+    "briefing": "실시간 브리핑",
+    "focus": "초점",
+    "watch": "관심",
+    "expandDetails": "세부 정보 펼치기",
+    "collapseDetails": "세부 정보 접기",
+    "transitAlert": "교통 알림",
+    "severityFault": "장애",
+    "severitySevere": "심각",
+    "severityWarning": "경고",
+    "severityNotice": "알림",
+    "cause": "원인",
+    "direction": "방향",
+    "line": "Line",
+    "shuttle": "셔틀",
+    "empty": {
+      "title": "속보를 불러올 수 없습니다",
+      "description": "아래로 당겨 새로고침하거나 아래 버튼을 눌러 다시 시도하세요.",
+      "retry": "다시 시도",
+      "noContentTitle": "현재 속보가 없습니다",
+      "noContentDescription": "최신 소식은 나중에 다시 확인해 주세요."
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "홈 화면에 추가",
+    "title": "홈 화면에 추가",
+    "description": "FlashMaple을 홈 화면에 추가하고 앱처럼 사용하세요.",
+    "gotIt": "확인",
+    "steps": {
+      "share": "공유",
+      "viewMore": "더 보기",
+      "addToHomeScreen": "홈 화면에 추가",
+      "add": "추가",
+      "shareStart": "주소 표시줄의",
+      "shareMiddle": "버튼을 누르거나 브라우저 메뉴를 열고",
+      "shareEnd": "을 누르세요.",
+      "expandStart": "",
+      "expandEnd": "을 펼치세요.",
+      "addStart": "",
+      "addEnd": "을 누르세요.",
+      "confirmStart": "",
+      "confirmEnd": "을 누르세요."
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "검색",
+      "noResult": "일치하는 결과가 없습니다"
+    },
+    "empty": {
+      "title": "이 탭을 불러올 수 없습니다",
+      "description": "아래로 당겨 새로고침하거나 아래 버튼을 눌러 다시 시도하세요.",
+      "retry": "다시 시도",
+      "noContentTitle": "현재 이 탭에 기사가 없습니다"
+    },
+    "tabs": {
+      "local": "지역 생활",
+      "immigration": "이민",
+      "education": "교육",
+      "health": "건강",
+      "entertainment": "엔터테인먼트",
+      "headline": "헤드라인"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "로그인이 필요합니다",
+    "loginRequiredDescription": "즐겨찾기를 사용하려면 계정이 필요합니다. 먼저 로그인해 주세요",
+    "loginAction": "로그인",
+    "empty": "즐겨찾기가 없습니다",
+    "searchPlaceholder": "즐겨찾기 검색",
+    "noSearchResult": "일치하는 즐겨찾기가 없습니다",
+    "loadFailedTitle": "즐겨찾기를 불러올 수 없습니다",
+    "loadFailedDescription": "아래로 당겨 새로고침하거나 아래 버튼을 눌러 다시 시도하세요.",
+    "loadFailedRetry": "다시 시도",
+    "remove": "즐겨찾기에서 삭제"
+  },
+  "profile": {
+    "statusLoggedIn": "로그인됨 · {{provider}}",
+    "statusLoggedOut": "로그인하지 않음",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "logoutConfirmTitle": "로그아웃",
+    "logoutConfirmDescription": "로그아웃하면 즐겨찾기 등의 기능을 사용할 수 없습니다. 계속하시겠습니까?",
+    "sections": {
+      "setting": "설정",
+      "about": "정보"
+    },
+    "menu": {
+      "theme": "테마",
+      "language": "언어",
+      "region": "지역",
+      "voice": "음성",
+      "privacy": "개인정보 처리방침",
+      "terms": "이용약관",
+      "aboutApp": "회사 소개",
+      "feedback": "피드백"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "이메일",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "로그인",
+    "register": "가입",
+    "titleLogin": "로그인",
+    "titleRegister": "계정 만들기",
+    "subtitleLogin": "다시 오신 것을 환영합니다. 피드를 계속 확인하세요",
+    "subtitleRegister": "계정을 만들고 여정을 시작하세요",
+    "email": "이메일",
+    "password": "비밀번호",
+    "verifyCode": "인증 코드",
+    "sendVerifyCode": "전송",
+    "emailError": "올바른 이메일 주소를 입력하세요",
+    "passwordError": "비밀번호는 공백 없이 8~24자로 입력하세요",
+    "verifyCodeError": "올바른 인증 코드를 입력하세요",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "emailLogin": "이메일로 로그인",
+    "emailRegister": "이메일로 가입",
+    "quickLogin": "또는 간편 로그인 사용",
+    "noAccount": "계정이 없으신가요?",
+    "hasAccount": "이미 계정이 있으신가요?",
+    "goRegister": "가입",
+    "goLogin": "로그인",
+    "requestRegisterSuccess": "인증 코드를 전송했습니다",
+    "success": "{{provider}} {{action}} 성공",
+    "socialCancelled": "외부 서비스 로그인이 취소되었습니다",
+    "socialConfigMissing": "{{provider}} 로그인이 아직 설정되지 않았습니다",
+    "socialTokenMissing": "유효한 {{provider}} 로그인 토큰을 가져올 수 없습니다"
+  },
+  "resetPasswordPage": {
+    "title": "비밀번호 재설정",
+    "subtitle": "이메일을 인증하고 새 비밀번호를 설정하세요",
+    "email": "이메일",
+    "emailError": "올바른 이메일 주소를 입력하세요",
+    "verifyCode": "인증 코드",
+    "sendVerifyCode": "전송",
+    "verifyCodeError": "올바른 인증 코드를 입력하세요",
+    "newPassword": "새 비밀번호",
+    "passwordError": "비밀번호는 공백 없이 8~24자로 입력하세요",
+    "submit": "비밀번호 재설정",
+    "requestResetSuccess": "인증 코드를 전송했습니다",
+    "resetSuccess": "비밀번호를 재설정했습니다"
+  },
+  "setting": {
+    "language": {
+      "title": "언어"
+    },
+    "region": {
+      "title": "지역"
+    },
+    "theme": {
+      "title": "테마",
+      "followSystem": "시스템 설정 따르기",
+      "lightMode": "라이트 모드",
+      "darkMode": "다크 모드",
+      "moodThemeTitle": "분위기 테마"
+    },
+    "voice": {
+      "title": "음성 설정",
+      "voice": { "title": "음성" },
+      "rate": { "title": "속도" },
+      "pitch": { "title": "음높이" },
+      "volume": { "title": "볼륨" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "최신 메시지만 표시합니다",
+    "title": "알림 센터",
+    "empty": "아직 받은 메시지가 없습니다",
+    "delete": "메시지 삭제",
+    "clearAll": "메시지 삭제",
+    "markAllRead": "읽음으로 표시",
+    "clearAllDescription": "메시지 목록을 삭제하시겠습니까?",
+    "markAllReadDescription": "모든 메시지를 읽음으로 표시하시겠습니까?",
+    "subscribedSuccess": "구독했습니다",
+    "unsubscribed": "구독을 취소했습니다",
+    "unsubscribeConfirmTitle": "구독 취소",
+    "unsubscribeConfirmDescription": "구독을 취소하면 새 메시지를 더 이상 받지 않습니다. 계속하시겠습니까?",
+    "unsupported": "푸시 알림을 지원하지 않습니다",
+    "browserPermissionBlocked": "브라우저에서 차단됨. 먼저 허용하세요",
+    "systemPermissionBlocked": "시스템에서 차단됨. 먼저 켜세요",
+    "failed": "설정을 저장하지 못했습니다"
+  },
+  "privacyPolicy": {
+    "title": "개인정보 처리방침",
+    "s1Title": "1. 수집하는 정보",
+    "s1Body": "서비스 제공과 개선을 위해 계정 정보, 기본 기기 정보, 언어 및 지역 설정, 앱 사용 기록을 수집할 수 있습니다.",
+    "s2Title": "2. 정보 이용 방법",
+    "s2Body": "데이터는 계정 인증, 맞춤형 콘텐츠 추천, 기능 품질 개선 및 보안 위험 관리에 사용됩니다.",
+    "s3Title": "3. 데이터 공유",
+    "s3Body": "개인 데이터를 판매하지 않습니다. 핵심 기능 운영에 필요한 경우에만 규정을 준수하는 서비스 제공업체와 데이터를 공유합니다.",
+    "s4Title": "4. 사용자의 권리",
+    "s4Body": "개인 데이터의 열람, 수정 또는 삭제를 요청할 수 있습니다. 요청 사항은 앱 내 피드백 페이지를 통해 문의해 주세요."
+  },
+  "termsPage": {
+    "title": "이용약관",
+    "s1Title": "1. 동의",
+    "s1Body": "FlashMaple에 접속하거나 사용하면 본 약관과 관련 법률 및 규정에 동의하는 것으로 간주됩니다.",
+    "s2Title": "2. 계정 및 보안",
+    "s2Body": "계정 보안 유지와 계정에서 이루어지는 모든 활동에 대한 책임은 사용자에게 있습니다. 로그인 정보를 공유하지 마세요.",
+    "s3Title": "3. 올바른 사용",
+    "s3Body": "서비스를 악용하거나 정상 운영을 방해하거나 불법 또는 유해한 콘텐츠를 게시하지 않는 데 동의합니다.",
+    "s4Title": "4. 약관 변경",
+    "s4Body": "본 약관은 수시로 변경될 수 있습니다. 변경 후에도 계속 사용하면 개정된 약관에 동의하는 것으로 간주됩니다."
+  },
+  "aboutAppPage": {
+    "title": "회사 소개",
+    "s1Title": "1. 서비스 목표",
+    "s1Body": "FlashMaple은 캐나다 이민자들이 지역 생활과 실용 정보를 파악하고 실제 기사를 읽으며 자연스럽게 영어 실력을 높일 수 있도록 돕습니다.",
+    "s2Title": "2. 주요 기능",
+    "s2Body": "현재 버전은 속보 보기, 카테고리 탐색, 푸시 알림, 즐겨찾기 관리, 다국어 인터페이스 전환, 기분 테마 전환 등의 기능을 지원합니다.",
+    "s3Title": "3. 문의 및 피드백",
+    "s3Body": "의견이나 질문이 있다면 피드백 페이지에서 메시지를 보내 주세요. 모든 의견을 확인합니다.",
+    "s4Title": "4. 면책 조항",
+    "s4Body": "앱에 표시되는 모든 뉴스는 온라인에 공개된 콘텐츠를 출처로 하며 참고용으로만 제공됩니다. 권리를 침해하는 콘텐츠가 있다면 삭제를 요청해 주세요.",
+    "s5Title": "5. 더 알아보기",
+    "s5Body": "당사의 제품, 서비스 및 최신 소식에 대해 더 자세히 알고 싶다면 공식 웹사이트를 방문해 주세요",
+    "s5MoreApps": "더 많은 웹 앱을 찾아보려면 다음을 방문하세요",
+    "s5SentenceEnd": "."
+  },
+  "newsDetail": {
+    "viewOriginal": "원문 보기",
+    "previousArticle": "이전",
+    "nextArticle": "다음",
+    "shareMessage": "이 뉴스 기사 공유",
+    "sharePostTitle": "【FlashMaple】오늘뉴스",
+    "shareNewsFallback": "뉴스",
+    "shareRednoteLabel": "RedNote",
+    "shareImageLabel": "이미지 공유",
+    "shareImageLoading": "이미지 준비 중…",
+    "shareImageUnavailable": "이미지를 사용할 수 없습니다",
+    "playAudio": "오디오 재생",
+    "audioFailed": "오디오를 재생할 수 없습니다",
+    "loadFailedTitle": "이 기사를 불러올 수 없습니다",
+    "loadFailedDescription": "아래 버튼을 눌러 다시 시도하세요.",
+    "loadFailedRetry": "다시 시도",
+    "nextLoadFailed": "다음 기사를 불러올 수 없습니다. 나중에 다시 시도해 주세요",
+    "noMoreContent": "마지막 기사입니다"
+  },
+  "time": {
+    "justNow": "방금 업데이트",
+    "minuteAgo": "1분 전",
+    "minutesAgo": "{{value}}분 전",
+    "hourAgo": "1시간 전",
+    "hoursAgo": "{{value}}시간 전",
+    "dayAgo": "1일 전",
+    "daysAgo": "{{value}}일 전",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "피드백",
+    "emailOptional": "이메일(선택 사항)",
+    "content": "피드백 내용",
+    "type": "피드백 유형",
+    "typeBug": "오류",
+    "typeSuggestion": "제안",
+    "typeOther": "기타",
+    "submit": "제출",
+    "submitSuccess": "피드백을 제출했습니다"
+  },
+  "network": {
+    "requestFailed": "요청 실패",
+    "networkErrorUser": "네트워크 오류입니다. 연결 상태를 확인하세요",
+    "networkErrorServer": "서비스를 이용할 수 없습니다. 나중에 다시 시도하세요"
+  },
+  "homePage": {
+    "title": "FlashMaple - 캐나다 신규 이민자를 위한 주요 뉴스",
+    "seoTitle": "FlashMaple - 캐나다 신규 이민자를 위한 주요 뉴스",
+    "seoDescription": "캐나다 지역 뉴스와 이민 소식, 지역별 주요 정보를 신규 이민자에게 제공합니다. 여러 언어로 읽고 실제 뉴스를 통해 영어 실력도 키워보세요.",
+    "intro": "캐나다 지역 뉴스와 이민 소식, 지역별 정보를 확인하면서 실제 뉴스를 통해 자연스럽게 영어 실력도 키워보세요.",
+    "getStarted": "시작하기",
+    "pushLabel": "푸시 알림",
+    "explore": "기능 살펴보기",
+    "themeLabel": "테마",
+    "signalLabel": "나의 지역 신호",
+    "liveLabel": "실시간 브리핑",
+    "topStory": "주요 뉴스",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "언어"
+      },
+      {
+        "value": "7",
+        "label": "지역"
+      },
+      {
+        "value": "8+",
+        "label": "뉴스 소스"
+      },
+      {
+        "value": "24/7",
+        "label": "최신 소식"
+      }
+    ],
+    "faqNav": "FAQ",
+    "changelogNav": "변경 내역",
+    "changelogEarlierReleases": "이전 릴리스",
+    "discoverMoreNav": "더 알아보기",
+    "privacyNav": "개인정보 처리방침",
+    "termsNav": "이용약관",
+    "featuresKicker": "제품 개요",
+    "features": [
+      {
+        "eyebrow": "01 / 플래시",
+        "title": "지금 가장 중요한 소식부터 시작하세요",
+        "body": "주요 뉴스와 실용적인 업데이트, 지역 알림을 빠르게 정리해 하루를 시작할 때 바로 확인할 수 있습니다.",
+        "tags": [
+          "실시간 브리핑",
+          "교통 알림",
+          "주요 속보"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / 탐색",
+        "title": "하나의 피드, 다양한 신뢰할 수 있는 출처",
+        "body": "이민, 교육, 건강, 엔터테인먼트와 주요 뉴스를 포함한 캐나다 지역 뉴스를 신뢰할 수 있는 출처에서 한곳에서 살펴보세요.",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / 지역",
+        "title": "내가 있는 곳을 아는 뉴스",
+        "body": "토론토, 밴쿠버, 몬트리올 등 캐나다 지역을 선택하면 브리핑이 더욱 지역에 맞게 제공됩니다.",
+        "tags": [
+          "토론토",
+          "밴쿠버",
+          "몬트리올",
+          "캘거리",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / 언어",
+        "title": "여러 언어로 읽어보세요",
+        "body": "여러 언어로 캐나다 뉴스를 읽고 실제 뉴스를 통해 영어 실력을 키워보세요.",
+        "tags": [
+          "한국어",
+          "EN",
+          "中文",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / 알림",
+        "title": "중요한 소식이 나를 찾아오게 하세요",
+        "body": "속보 알림을 켜면 FlashMaple을 열지 않아도 중요한 소식을 빠르게 받아볼 수 있습니다.",
+        "tags": [
+          "실시간 푸시",
+          "알림 센터"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / 개인화",
+        "title": "나에게 맞게 만들어보세요",
+        "body": "뉴스를 저장하고 키워드로 검색하며 하루에 맞게 앱을 조정하세요.",
+        "tags": [
+          "즐겨찾기",
+          "테마"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "앱 시작하기",
+    "faq": [
+      {
+        "question": "캐나다 신규 이민자는 어디에서 지역 뉴스를 찾을 수 있나요?",
+        "answer": "FlashMaple은 캐나다 지역 뉴스, 이민 소식, 실용 정보와 지역별 이야기를 하나의 피드에 모아 제공합니다."
+      },
+      {
+        "question": "언어와 지역을 변경할 수 있나요?",
+        "answer": "네. 여러 인터페이스 언어와 캐나다 지역을 지원하며, 설정에서 언제든지 변경할 수 있습니다."
+      },
+      {
+        "question": "속보를 받을 수 있나요?",
+        "answer": "네. 앱에서 브라우저 알림을 켜면 최신 업데이트를 받고 알림 센터에서 관리할 수 있습니다."
+      },
+      {
+        "question": "뉴스는 어디에서 제공되나요?",
+        "answer": "FlashMaple은 지역 생활, 이민과 지역 업데이트를 다루는 신뢰할 수 있는 캐나다 뉴스 출처를 모읍니다. 각 기사에서 출처를 확인하고 원문으로 이동할 수 있습니다."
+      },
+      {
+        "question": "뉴스를 저장하고 검색할 수 있나요?",
+        "answer": "네. 다시 읽고 싶은 뉴스를 저장하고 키워드 검색으로 관련 뉴스를 찾을 수 있습니다."
+      },
+      {
+        "question": "FlashMaple을 홈 화면에 추가하려면 어떻게 하나요?",
+        "answer": "홈 화면에 추가하면 FlashMaple을 일반 앱처럼 빠르게 열 수 있습니다. 앱을 열고 홈 화면에 추가를 선택하세요. 설치 안내가 나타나지 않으면 브라우저의 공유 또는 메뉴를 열고 더 보기, 홈 화면에 추가, 추가 순서로 선택하세요."
+      }
+    ],
+    "footer": "새롭게 정착하는 사람을 위한 다국어 캐나다 뉴스."
+  }
+}

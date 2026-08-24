@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "否",
+    "yes": "是"
+  },
+  "tabs": {
+    "flash": "快閃",
+    "explore": "發現",
+    "favorites": "收藏",
+    "profile": "我的"
+  },
+  "feed": {
+    "pullToRefresh": "下拉重新整理",
+    "releaseToRefresh": "鬆開重新整理",
+    "refreshing": "正在重新整理...",
+    "loadingMore": "正在載入更多...",
+    "loadMoreIdle": "上拉載入更多",
+    "noMore": "沒有更多內容了",
+    "backToTop": "回到頂部"
+  },
+  "flash": {
+    "topStory": "頭條快訊",
+    "briefing": "即時簡報",
+    "focus": "焦點",
+    "watch": "關注",
+    "expandDetails": "展開詳情",
+    "collapseDetails": "收起詳情",
+    "transitAlert": "交通提醒",
+    "severityFault": "故障",
+    "severitySevere": "嚴重",
+    "severityWarning": "警告",
+    "severityNotice": "提醒",
+    "cause": "原因",
+    "direction": "方向",
+    "line": "Line",
+    "shuttle": "接駁車",
+    "empty": {
+      "title": "快訊載入失敗",
+      "description": "可下拉重新整理，或點擊下方按鈕重試。",
+      "retry": "重新載入",
+      "noContentTitle": "目前沒有快訊",
+      "noContentDescription": "稍後再回來查看最新內容。"
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "加入主畫面",
+    "title": "加入主畫面",
+    "description": "將 FlashMaple 加入手機主畫面，像 App 一樣快速開啟。",
+    "gotIt": "知道了",
+    "steps": {
+      "share": "分享",
+      "viewMore": "顯示更多",
+      "addToHomeScreen": "加入主畫面",
+      "add": "新增",
+      "shareStart": "點一下網址列的",
+      "shareMiddle": "按鈕，或開啟瀏覽器選單並點一下",
+      "shareEnd": "。",
+      "expandStart": "展開",
+      "expandEnd": "。",
+      "addStart": "點一下",
+      "addEnd": "。",
+      "confirmStart": "點一下",
+      "confirmEnd": "。"
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "搜尋新聞",
+      "noResult": "找不到符合內容"
+    },
+    "empty": {
+      "title": "目前分頁載入失敗",
+      "description": "可下拉重新整理，或點擊下方按鈕重試。",
+      "retry": "重新載入",
+      "noContentTitle": "目前分頁沒有內容"
+    },
+    "tabs": {
+      "local": "本地生活",
+      "immigration": "移民",
+      "education": "教育",
+      "health": "健康",
+      "entertainment": "娛樂",
+      "headline": "時訊"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "需要先登入",
+    "loginRequiredDescription": "收藏功能需要使用者登入，請先登入",
+    "loginAction": "去登入",
+    "empty": "你還沒有收藏的內容",
+    "searchPlaceholder": "搜尋收藏",
+    "noSearchResult": "找不到符合的收藏內容",
+    "loadFailedTitle": "收藏載入失敗",
+    "loadFailedDescription": "可下拉重新整理，或點擊下方按鈕重試。",
+    "loadFailedRetry": "重新載入",
+    "remove": "取消收藏"
+  },
+  "profile": {
+    "statusLoggedIn": "已登入 · {{provider}}",
+    "statusLoggedOut": "未登入",
+    "login": "登入",
+    "logout": "登出",
+    "logoutConfirmTitle": "退出登入",
+    "logoutConfirmDescription": "退出登入後將無法使用收藏等功能，是否繼續？",
+    "sections": {
+      "setting": "設定",
+      "about": "關於"
+    },
+    "menu": {
+      "theme": "主題設定",
+      "language": "語言設定",
+      "region": "區域設定",
+      "voice": "語音設定",
+      "privacy": "隱私政策",
+      "terms": "使用條款",
+      "aboutApp": "關於我們",
+      "feedback": "留言回饋"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "電子郵件",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "登入",
+    "register": "註冊",
+    "titleLogin": "登入帳號",
+    "titleRegister": "建立帳號",
+    "subtitleLogin": "歡迎回來，繼續你的內容流",
+    "subtitleRegister": "一鍵註冊，開始你的個人化訂閱",
+    "email": "電子郵件",
+    "password": "密碼",
+    "verifyCode": "驗證碼",
+    "sendVerifyCode": "發送",
+    "emailError": "請輸入正確的電子郵件格式",
+    "passwordError": "密碼必須為 8-24 位非空白可見字元",
+    "verifyCodeError": "請輸入正確的驗證碼",
+    "forgotPassword": "忘記密碼？",
+    "emailLogin": "電子郵件登入",
+    "emailRegister": "電子郵件註冊",
+    "quickLogin": "或使用快速登入",
+    "noAccount": "還沒有帳號？",
+    "hasAccount": "已有帳號？",
+    "goRegister": "去註冊",
+    "goLogin": "去登入",
+    "requestRegisterSuccess": "驗證碼已發送",
+    "success": "{{provider}}{{action}}成功",
+    "socialCancelled": "已取消第三方登入",
+    "socialConfigMissing": "{{provider}}登入尚未完成設定",
+    "socialTokenMissing": "未能取得有效的{{provider}}登入憑證"
+  },
+  "resetPasswordPage": {
+    "title": "重設密碼",
+    "subtitle": "請驗證電子郵件並設定新密碼",
+    "email": "電子郵件",
+    "emailError": "請輸入正確的電子郵件格式",
+    "verifyCode": "驗證碼",
+    "sendVerifyCode": "發送",
+    "verifyCodeError": "請輸入正確的驗證碼",
+    "newPassword": "新密碼",
+    "passwordError": "密碼必須為 8-24 位非空白可見字元",
+    "submit": "重設密碼",
+    "requestResetSuccess": "驗證碼已發送",
+    "resetSuccess": "密碼重設成功"
+  },
+  "setting": {
+    "language": {
+      "title": "語言設定"
+    },
+    "region": {
+      "title": "區域設定"
+    },
+    "theme": {
+      "title": "主題設定",
+      "followSystem": "跟隨系統",
+      "lightMode": "淺色模式",
+      "darkMode": "深色模式",
+      "moodThemeTitle": "心情主題"
+    },
+    "voice": {
+      "title": "語音設定",
+      "voice": { "title": "聲音" },
+      "rate": { "title": "語速" },
+      "pitch": { "title": "音高" },
+      "volume": { "title": "音量" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "僅顯示最新訊息",
+    "title": "訊息中心",
+    "empty": "你還沒有收到訊息",
+    "delete": "刪除訊息",
+    "clearAll": "清空訊息",
+    "markAllRead": "標記已讀",
+    "clearAllDescription": "是否要清空訊息列表？",
+    "markAllReadDescription": "是否要將所有訊息標記為已讀？",
+    "subscribedSuccess": "訂閱成功",
+    "unsubscribed": "已取消訂閱",
+    "unsubscribeConfirmTitle": "取消訂閱",
+    "unsubscribeConfirmDescription": "取消訂閱後將不再接收新訊息，是否繼續？",
+    "unsupported": "目前裝置不支援推送",
+    "browserPermissionBlocked": "已被瀏覽器阻止，請先允許",
+    "systemPermissionBlocked": "已被系統阻止，請先開啟",
+    "failed": "設定儲存失敗"
+  },
+  "privacyPolicy": {
+    "title": "隱私政策",
+    "s1Title": "1. 我們收集的資訊",
+    "s1Body": "我們可能會收集帳號資訊、裝置基礎資訊、語言與地區偏好，以及必要的使用紀錄，用於提供與優化服務。",
+    "s2Title": "2. 資訊使用方式",
+    "s2Body": "你的資料將用於帳號驗證、內容個人化推薦、功能品質改善以及安全風控。",
+    "s3Title": "3. 資訊共享說明",
+    "s3Body": "我們不會出售你的個人資料。僅在提供核心功能所必需時，才會與合規服務提供商共享必要資料。",
+    "s4Title": "4. 你的權利",
+    "s4Body": "你可以申請查看、更新或刪除個人資料。如需處理，請透過 App 內回饋頁面聯繫我們。"
+  },
+  "termsPage": {
+    "title": "使用條款",
+    "s1Title": "1. 條款接受",
+    "s1Body": "當你存取或使用 FlashMaple，即表示你同意遵守本條款及相關法律規範。",
+    "s2Title": "2. 帳號與安全",
+    "s2Body": "你需妥善保管帳號與密碼，並對帳號下發生的行為負責。請勿與他人分享登入憑證。",
+    "s3Title": "3. 合規使用",
+    "s3Body": "你不得濫用服務、干擾平台正常運作，或發布違法、侵權、惡意內容。",
+    "s4Title": "4. 條款更新",
+    "s4Body": "我們可能會不定期更新條款。更新後繼續使用服務，即視為你接受新條款內容。"
+  },
+  "aboutAppPage": {
+    "title": "關於我們",
+    "s1Title": "1. 產品使命",
+    "s1Body": "FlashMaple 協助加拿大移民使用者更快了解本地生活與實用資訊，在閱讀真實內容的過程中自然提升英語能力。",
+    "s2Title": "2. 核心功能",
+    "s2Body": "目前版本支援快訊瀏覽、分類探索、推送通知、收藏管理，以及多語言介面切換、心情主題切換等功能。",
+    "s3Title": "3. 聯絡與回饋",
+    "s3Body": "如果你有建議或問題，歡迎透過回饋頁面聯繫我們。我們會認真查看每一則回饋。",
+    "s4Title": "4. 免責聲明",
+    "s4Body": "應用內展示的新聞內容均來自公開網路，僅供資訊參考。如相關內容涉及侵權，請聯繫我們處理刪除。",
+    "s5Title": "5. 了解更多",
+    "s5Body": "如果你想了解更多關於我們的產品、服務以及最新動態，歡迎訪問我們的官網",
+    "s5MoreApps": "如果想探索更多 Web App，請造訪",
+    "s5SentenceEnd": "。"
+  },
+  "newsDetail": {
+    "viewOriginal": "查看原文",
+    "previousArticle": "上一則",
+    "nextArticle": "下一則",
+    "shareMessage": "分享這則新聞",
+    "sharePostTitle": "【FlashMaple】今日頭條",
+    "shareNewsFallback": "新聞",
+    "shareRednoteLabel": "小紅書",
+    "shareImageLabel": "分享圖片",
+    "shareImageLoading": "正在準備圖片…",
+    "shareImageUnavailable": "圖片暫不可用",
+    "playAudio": "播放語音",
+    "audioFailed": "語音播放失敗",
+    "loadFailedTitle": "新聞載入失敗",
+    "loadFailedDescription": "可點擊下方按鈕重試。",
+    "loadFailedRetry": "重新載入",
+    "nextLoadFailed": "下一則新聞載入失敗，請稍後再試",
+    "noMoreContent": "已經是最後一則新聞"
+  },
+  "time": {
+    "justNow": "剛剛更新",
+    "minuteAgo": "1 分鐘前",
+    "minutesAgo": "{{value}} 分鐘前",
+    "hourAgo": "1 小時前",
+    "hoursAgo": "{{value}} 小時前",
+    "dayAgo": "1 天前",
+    "daysAgo": "{{value}} 天前",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "留言回饋",
+    "emailOptional": "電子郵件（可選）",
+    "content": "回饋內容",
+    "type": "回饋類型",
+    "typeBug": "Bug",
+    "typeSuggestion": "建議",
+    "typeOther": "其他",
+    "submit": "提交",
+    "submitSuccess": "回饋提交成功"
+  },
+  "network": {
+    "requestFailed": "請求失敗",
+    "networkErrorUser": "網路異常，請檢查網路",
+    "networkErrorServer": "服務異常，請稍後再試"
+  },
+  "homePage": {
+    "title": "FlashMaple - 加拿大新移民頭條資訊",
+    "seoTitle": "FlashMaple - 加拿大新移民頭條資訊",
+    "seoDescription": "為加拿大新移民提供本地新聞、移民資訊與地區動態，支援多語言閱讀，並透過真實新聞自然提升英語能力。",
+    "intro": "了解加拿大本地新聞、移民資訊與地區動態，在閱讀真實新聞的過程中自然提升英語能力。",
+    "getStarted": "開始使用",
+    "pushLabel": "推送提醒",
+    "explore": "了解產品功能",
+    "themeLabel": "主題",
+    "signalLabel": "你的本地資訊",
+    "liveLabel": "即時簡報",
+    "topStory": "頭條快訊",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "語言"
+      },
+      {
+        "value": "7",
+        "label": "地區"
+      },
+      {
+        "value": "8+",
+        "label": "新聞源"
+      },
+      {
+        "value": "24/7",
+        "label": "即時更新"
+      }
+    ],
+    "faqNav": "常見問題",
+    "changelogNav": "更新日誌",
+    "changelogEarlierReleases": "較早版本",
+    "discoverMoreNav": "發現更多",
+    "privacyNav": "隱私政策",
+    "termsNav": "使用條款",
+    "featuresKicker": "產品功能",
+    "features": [
+      {
+        "eyebrow": "01 / 快訊",
+        "title": "從當下最重要的資訊開始",
+        "body": "快速整理頭條、實用更新與本地提醒，讓你在一天開始時就掌握所需資訊。",
+        "tags": [
+          "即時簡報",
+          "交通提醒",
+          "頭條快訊"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / 探索",
+        "title": "一個資訊流，匯集多個可信來源",
+        "body": "從本地生活、移民、教育、健康、娛樂到頭條資訊，在一個專注的空間裡探索加拿大新聞。",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / 地區",
+        "title": "了解你所在地方的新聞",
+        "body": "選擇加拿大地區，從多倫多、溫哥華到蒙特利爾及其他城市，讓每次簡報都更貼近本地。",
+        "tags": [
+          "多倫多",
+          "溫哥華",
+          "蒙特利爾",
+          "卡加利",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / 語言",
+        "title": "跨語言閱讀",
+        "body": "用多種語言閱讀加拿大新聞，並透過真實新聞自然提升英語能力。",
+        "tags": [
+          "中文",
+          "EN",
+          "FR",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / 推送",
+        "title": "讓重要新聞主動找到你",
+        "body": "開啟突發新聞通知，即使沒有開啟 FlashMaple，也能掌握重要資訊。",
+        "tags": [
+          "即時推送",
+          "通知中心"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / 個人化",
+        "title": "打造專屬於你的體驗",
+        "body": "收藏新聞、透過關鍵字搜尋感興趣的內容，並按照每天的狀態調整應用程式。",
+        "tags": [
+          "收藏",
+          "主題"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "進入應用",
+    "faq": [
+      {
+        "question": "加拿大新移民可以在哪裡了解本地新聞？",
+        "answer": "FlashMaple 彙整加拿大本地新聞、移民資訊、實用資訊與地區動態，集中呈現在一個資訊流中。"
+      },
+      {
+        "question": "可以切換語言和地區嗎？",
+        "answer": "可以。應用支援多種介面語言和加拿大地區，可以在設定中隨時調整。"
+      },
+      {
+        "question": "可以接收突發新聞嗎？",
+        "answer": "可以。在應用中開啟瀏覽器通知，就能收到及時更新，並在消息中心管理通知。"
+      },
+      {
+        "question": "新聞內容來自哪裡？",
+        "answer": "FlashMaple 彙整涵蓋本地生活、移民資訊與地區動態的可信加拿大新聞來源，並在每篇新聞中標明來源，方便你繼續查看原始報導。"
+      },
+      {
+        "question": "可以收藏和搜尋新聞嗎？",
+        "answer": "可以。你可以收藏想再次閱讀的新聞，也可以透過關鍵字搜尋更多相關內容。"
+      },
+      {
+        "question": "如何把 FlashMaple 加到桌面？",
+        "answer": "加入後可以從桌面快速開啟 FlashMaple，像一般 App 一樣使用。進入應用並點擊「加到桌面」；如果沒有直接出現安裝提示，請開啟瀏覽器的分享或選單，選擇「查看更多」和「加到桌面」，最後點擊「加入」。"
+      }
+    ],
+    "footer": "為新移民提供多語言加拿大新聞。"
+  }
+}

@@ -1,0 +1,425 @@
+{
+  "confirm": {
+    "no": "No",
+    "yes": "Yes"
+  },
+  "tabs": {
+    "flash": "Flash",
+    "explore": "Explore",
+    "favorites": "Favorites",
+    "profile": "Profile"
+  },
+  "feed": {
+    "pullToRefresh": "Pull to refresh",
+    "releaseToRefresh": "Release to refresh",
+    "refreshing": "Refreshing...",
+    "loadingMore": "Loading more...",
+    "loadMoreIdle": "Scroll for more",
+    "noMore": "No more stories",
+    "backToTop": "Back to top"
+  },
+  "flash": {
+    "topStory": "Top Stories",
+    "briefing": "Live briefing",
+    "focus": "Focus",
+    "watch": "Watch",
+    "expandDetails": "Expand details",
+    "collapseDetails": "Collapse details",
+    "transitAlert": "Transit alerts",
+    "severityFault": "Fault",
+    "severitySevere": "Severe",
+    "severityWarning": "Warning",
+    "severityNotice": "Notice",
+    "cause": "Cause",
+    "direction": "Direction",
+    "line": "Line",
+    "shuttle": "Shuttle",
+    "empty": {
+      "title": "Couldn't load Flash",
+      "description": "Pull down to refresh, or tap below to try again.",
+      "retry": "Try again",
+      "noContentTitle": "No flash updates right now",
+      "noContentDescription": "Check back later for the latest highlights."
+    }
+  },
+  "addToHomeScreen": {
+    "actionLabel": "Add to Home Screen",
+    "title": "Add to Home Screen",
+    "description": "Add FlashMaple to your home screen and use it like an app.",
+    "gotIt": "Got it",
+    "steps": {
+      "share": "Share",
+      "viewMore": "View More",
+      "addToHomeScreen": "Add to Home Screen",
+      "add": "Add",
+      "shareStart": "Tap the address bar",
+      "shareMiddle": " button, or open the browser menu and tap ",
+      "shareEnd": ".",
+      "expandStart": "Expand ",
+      "expandEnd": ".",
+      "addStart": "Tap ",
+      "addEnd": ".",
+      "confirmStart": "Tap ",
+      "confirmEnd": "."
+    }
+  },
+  "explore": {
+    "search": {
+      "placeholder": "Search",
+      "noResult": "No matching results"
+    },
+    "empty": {
+      "title": "Couldn't load this tab",
+      "description": "Pull down to refresh, or tap below to try again.",
+      "retry": "Try again",
+      "noContentTitle": "No stories in this tab right now"
+    },
+    "tabs": {
+      "local": "Local Life",
+      "immigration": "Immigration",
+      "education": "Education",
+      "health": "Health",
+      "entertainment": "Entertainment",
+      "headline": "Headlines"
+    }
+  },
+  "favorites": {
+    "loginRequiredTitle": "Login required",
+    "loginRequiredDescription": "Favorites require an account. Please log in first",
+    "loginAction": "Log in",
+    "empty": "No favorites yet",
+    "searchPlaceholder": "Search favorites",
+    "noSearchResult": "No matching favorite items found",
+    "loadFailedTitle": "Couldn't load favorites",
+    "loadFailedDescription": "Pull down to refresh, or tap below to try again.",
+    "loadFailedRetry": "Try again",
+    "remove": "Remove favorite"
+  },
+  "profile": {
+    "statusLoggedIn": "Logged in · {{provider}}",
+    "statusLoggedOut": "Not logged in",
+    "login": "Log in",
+    "logout": "Log out",
+    "logoutConfirmTitle": "Log out",
+    "logoutConfirmDescription": "After logging out, features such as favorites will be unavailable. Continue?",
+    "sections": {
+      "setting": "Settings",
+      "about": "About"
+    },
+    "menu": {
+      "theme": "Theme",
+      "language": "Language",
+      "region": "Region",
+      "voice": "Voice",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "aboutApp": "About us",
+      "feedback": "Feedback"
+    },
+    "providers": {
+      "google": "Google",
+      "email": "Email",
+      "unknown": "-"
+    }
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Register",
+    "titleLogin": "Log in",
+    "titleRegister": "Create account",
+    "subtitleLogin": "Welcome back, continue your feed",
+    "subtitleRegister": "Create your account and start your journey",
+    "email": "Email",
+    "password": "Password",
+    "verifyCode": "Verification Code",
+    "sendVerifyCode": "Send",
+    "emailError": "Enter a valid email address",
+    "passwordError": "Password must be 8-24 non-space characters",
+    "verifyCodeError": "Enter a valid verification code",
+    "forgotPassword": "Forgot password?",
+    "emailLogin": "Log in with email",
+    "emailRegister": "Register with email",
+    "quickLogin": "Or use quick login",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "goRegister": "Register",
+    "goLogin": "Log in",
+    "requestRegisterSuccess": "Verification code sent",
+    "success": "{{provider}} {{action}} successful",
+    "socialCancelled": "Third-party sign-in was cancelled",
+    "socialConfigMissing": "{{provider}} sign-in is not configured yet",
+    "socialTokenMissing": "Couldn't get a valid {{provider}} sign-in token"
+  },
+  "resetPasswordPage": {
+    "title": "Reset password",
+    "subtitle": "Verify your email and set a new password",
+    "email": "Email",
+    "emailError": "Enter a valid email address",
+    "verifyCode": "Verification Code",
+    "sendVerifyCode": "Send",
+    "verifyCodeError": "Enter a valid verification code",
+    "newPassword": "New password",
+    "passwordError": "Password must be 8-24 non-space characters",
+    "submit": "Reset password",
+    "requestResetSuccess": "Verification code sent",
+    "resetSuccess": "Password reset successful"
+  },
+  "setting": {
+    "language": {
+      "title": "Language"
+    },
+    "region": {
+      "title": "Region"
+    },
+    "theme": {
+      "title": "Theme",
+      "followSystem": "Follow System",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode",
+      "moodThemeTitle": "Mood Theme"
+    },
+    "voice": {
+      "title": "Voice",
+      "voice": { "title": "Voice" },
+      "rate": { "title": "Speed" },
+      "pitch": { "title": "Pitch" },
+      "volume": { "title": "Volume" }
+    }
+  },
+  "webPushPage": {
+    "latestMessagesOnly": "Only the latest messages are shown",
+    "title": "Notification Center",
+    "empty": "You haven't received any messages yet",
+    "delete": "Delete message",
+    "clearAll": "Clear messages",
+    "markAllRead": "Mark as read",
+    "clearAllDescription": "Clear the message list?",
+    "markAllReadDescription": "Mark all messages as read?",
+    "subscribedSuccess": "Subscription successful",
+    "unsubscribed": "Subscription cancelled",
+    "unsubscribeConfirmTitle": "Cancel subscription",
+    "unsubscribeConfirmDescription": "After cancelling your subscription, you will no longer receive new messages. Continue?",
+    "unsupported": "Push notifications not supported",
+    "browserPermissionBlocked": "Blocked by browser, please allow first",
+    "systemPermissionBlocked": "Blocked by system, please enable first",
+    "failed": "Failed to save settings"
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "s1Title": "1. Information We Collect",
+    "s1Body": "We may collect account information, basic device information, language and region preferences, and app usage logs to provide and improve our service.",
+    "s2Title": "2. How We Use Information",
+    "s2Body": "Your data is used for account authentication, personalized content recommendation, feature quality improvements, and security risk control.",
+    "s3Title": "3. Data Sharing",
+    "s3Body": "We do not sell your personal data. Data is only shared with compliant service providers when necessary to operate core functionality.",
+    "s4Title": "4. Your Rights",
+    "s4Body": "You can request to view, update, or delete your personal data. For any request, contact us through the in-app feedback page."
+  },
+  "termsPage": {
+    "title": "Terms of Use",
+    "s1Title": "1. Acceptance",
+    "s1Body": "By accessing or using FlashMaple, you agree to these terms and all applicable laws and regulations.",
+    "s2Title": "2. Account and Security",
+    "s2Body": "You are responsible for maintaining account security and all activities under your account. Do not share your credentials.",
+    "s3Title": "3. Acceptable Use",
+    "s3Body": "You agree not to abuse the service, interfere with normal operation, or publish illegal or harmful content.",
+    "s4Title": "4. Changes to Terms",
+    "s4Body": "We may update these terms from time to time. Continued use after updates means you accept the revised terms."
+  },
+  "aboutAppPage": {
+    "title": "About us",
+    "s1Title": "1. Product Mission",
+    "s1Body": "FlashMaple helps Canadian immigrants stay informed about local life and practical information, while naturally improving their English through real-world reading.",
+    "s2Title": "2. Core Features",
+    "s2Body": "The current version supports flash news browsing, category exploration, push notifications, favorites management, multilingual interface switching, mood theme switching, and more.",
+    "s3Title": "3. Contact and Feedback",
+    "s3Body": "If you have suggestions or questions, please send us a message on the feedback page. We review every submission.",
+    "s4Title": "4. Disclaimer",
+    "s4Body": "All news content shown in the app is sourced from publicly available online content and is provided for reference only. If any content infringes your rights, please contact us for removal.",
+    "s5Title": "5. Learn More",
+    "s5Body": "If you would like to learn more about our products, services, and latest updates, please visit our official website",
+    "s5MoreApps": "To discover more web apps, visit",
+    "s5SentenceEnd": "."
+  },
+  "newsDetail": {
+    "viewOriginal": "View Original",
+    "previousArticle": "Previous",
+    "nextArticle": "Next",
+    "shareMessage": "Share this news article",
+    "sharePostTitle": "【FlashMaple】News",
+    "shareNewsFallback": "News",
+    "shareRednoteLabel": "RedNote",
+    "shareImageLabel": "Share image",
+    "shareImageLoading": "Preparing image…",
+    "shareImageUnavailable": "Image unavailable",
+    "playAudio": "Play audio",
+    "audioFailed": "Couldn't play audio",
+    "loadFailedTitle": "Couldn't load this article",
+    "loadFailedDescription": "Tap below to try again.",
+    "loadFailedRetry": "Try again",
+    "nextLoadFailed": "Couldn't load the next article. Please try again later",
+    "noMoreContent": "You're at the last article"
+  },
+  "time": {
+    "justNow": "Just updated",
+    "minuteAgo": "A minute ago",
+    "minutesAgo": "{{value}} minutes ago",
+    "hourAgo": "An hour ago",
+    "hoursAgo": "{{value}} hours ago",
+    "dayAgo": "A day ago",
+    "daysAgo": "{{value}} days ago",
+    "absolute": "{{value}}"
+  },
+  "feedbackPage": {
+    "title": "Feedback",
+    "emailOptional": "Email (optional)",
+    "content": "Feedback Content",
+    "type": "Feedback Type",
+    "typeBug": "Bug",
+    "typeSuggestion": "Suggestion",
+    "typeOther": "Other",
+    "submit": "Submit",
+    "submitSuccess": "Feedback submitted successfully"
+  },
+  "network": {
+    "requestFailed": "Request failed",
+    "networkErrorUser": "Network error, please check your connection",
+    "networkErrorServer": "Service is unavailable, please try again later"
+  },
+  "homePage": {
+    "title": "FlashMaple - Canadian Top News for Newcomers",
+    "seoTitle": "FlashMaple - Canadian Top News for Newcomers",
+    "seoDescription": "Local Canadian news, immigration updates, and regional stories for newcomers. Read in multiple languages and build English through real news from Toronto, Vancouver, Montreal, and beyond.",
+    "intro": "Follow local news in Canada, immigration updates, and practical regional information while naturally improving your English through real-world reading.",
+    "getStarted": "Get started",
+    "pushLabel": "Push alert",
+    "explore": "See what you can do",
+    "themeLabel": "Theme",
+    "signalLabel": "Local briefing",
+    "liveLabel": "Daily briefing",
+    "topStory": "Top story",
+    "metrics": [
+      {
+        "value": "10",
+        "label": "Languages"
+      },
+      {
+        "value": "7",
+        "label": "Regions"
+      },
+      {
+        "value": "8+",
+        "label": "Resources"
+      },
+      {
+        "value": "24/7",
+        "label": "Fresh Signals"
+      }
+    ],
+    "faqNav": "FAQ",
+    "changelogNav": "Change Log",
+    "changelogEarlierReleases": "Earlier releases",
+    "discoverMoreNav": "Discover More",
+    "privacyNav": "Privacy Policy",
+    "termsNav": "Terms of Use",
+    "featuresKicker": "Product Overview",
+    "features": [
+      {
+        "eyebrow": "01 / Flash",
+        "title": "Start with what matters now",
+        "body": "A fast briefing for top stories, practical updates, and local alerts — ready when your day starts.",
+        "tags": [
+          "Live briefings",
+          "Transit alerts",
+          "Breaking news"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "02 / Explore",
+        "title": "One feed, many trusted sources",
+        "body": "Explore local news in Canada across immigration, education, health, entertainment, and headlines from trusted sources.",
+        "tags": [
+          "CBC News",
+          "Global News",
+          "Toronto Sun",
+          "…"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "03 / Region",
+        "title": "News that knows where you are",
+        "body": "Choose a Canadian region — from Toronto and Vancouver to Montreal and beyond — to make every briefing more local.",
+        "tags": [
+          "Toronto",
+          "Vancouver",
+          "Montreal",
+          "Calgary",
+          "…"
+        ],
+        "accent": "lime"
+      },
+      {
+        "eyebrow": "04 / Language",
+        "title": "Read across languages",
+        "body": "Read Canadian news in multiple languages and use real-world stories to strengthen your English.",
+        "tags": [
+          "EN",
+          "中文",
+          "FR",
+          "…"
+        ],
+        "accent": "red"
+      },
+      {
+        "eyebrow": "05 / Push",
+        "title": "Let important stories find you",
+        "body": "Turn on notifications for breaking news and keep the signal close, even when FlashMaple is not open.",
+        "tags": [
+          "Real-time push",
+          "Notification center"
+        ],
+        "accent": "blue"
+      },
+      {
+        "eyebrow": "06 / Personal",
+        "title": "Make it yours",
+        "body": "Save stories, search by keyword, and tune the app to fit your day.",
+        "tags": [
+          "Favorites",
+          "Themes"
+        ],
+        "accent": "lime"
+      }
+    ],
+    "launchApp": "Launch the app",
+    "faq": [
+      {
+        "question": "Where can newcomers find local news in Canada?",
+        "answer": "FlashMaple brings together Canadian local news, immigration updates, practical information, and regional stories in one focused feed."
+      },
+      {
+        "question": "Can I change my language and region?",
+        "answer": "Yes. The app supports multiple interface languages and Canadian regions, and you can change both from Settings."
+      },
+      {
+        "question": "Can I receive breaking news?",
+        "answer": "Yes. Enable browser notifications from the app to receive timely updates and manage them in Notification Center."
+      },
+      {
+        "question": "Where does the news come from?",
+        "answer": "FlashMaple brings together trusted Canadian news sources covering local life, immigration, and regional updates. Each story identifies its source and lets you continue to the original report."
+      },
+      {
+        "question": "Can I save and search for stories?",
+        "answer": "Yes. Save stories you want to revisit and use search to find more news by keyword."
+      },
+      {
+        "question": "How do I add FlashMaple to my home screen?",
+        "answer": "Add FlashMaple to your home screen for one-tap access and an app-like experience. Open the app and select Add to Home Screen. If no install prompt appears, open your browser’s Share or menu, choose View More, then Add to Home Screen, and confirm Add."
+      }
+    ],
+    "footer": "Multilingual Canadian news for newcomers."
+  }
+}
