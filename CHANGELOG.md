@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
-## [Unreleased]
+## [6.0.0] - 2026-08-24
 
 ### Added
 
@@ -17,9 +17,8 @@ This changelog is maintained in English.
 
 - Renamed the project, package, application identifiers, runtime events, cache keys, deployment assets, and user-facing brand from Flash Maple to FlashMaple.
 - Moved production configuration out of source code and into repository-level GitHub Actions variables and secrets.
-- Changed the local development port to `3900` and the production application port to `8085`, with corresponding Docker and deployment updates.
 
-## [5.2.0] - 2026-08-23
+## [5.0.0] - 2026-08-20
 
 ### Changed
 
