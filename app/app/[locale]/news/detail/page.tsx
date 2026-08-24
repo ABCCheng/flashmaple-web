@@ -5,7 +5,7 @@ import { NewsDetailPage } from "@/features/news/NewsDetailPage";
 import { fetchNewsDetailForSeo } from "@/lib/api/news-server";
 import { defaultLocale, dictionaries, isLocale } from "@/lib/i18n";
 import { buildNoIndexMetadata, buildShareTitle, buildSiteTitle } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { PUBLIC_SITE_URL, SITE_NAME } from "@/lib/site";
 
 type NewsDetailRouteProps = {
   params: Promise<{ locale: string }>;
@@ -13,11 +13,11 @@ type NewsDetailRouteProps = {
 };
 
 function absoluteMediaUrl(url: string) {
-  const fallback = new URL("/logo-512.png", SITE_URL).toString();
+  const fallback = new URL("/logo-512.png", PUBLIC_SITE_URL).toString();
   if (!url) return fallback;
 
   try {
-    const mediaUrl = new URL(url, SITE_URL);
+    const mediaUrl = new URL(url, PUBLIC_SITE_URL);
     return mediaUrl.protocol === "http:" || mediaUrl.protocol === "https:"
       ? mediaUrl.toString()
       : fallback;
@@ -28,7 +28,7 @@ function absoluteMediaUrl(url: string) {
 
 function buildDetailFallbackMetadata(title: string): Metadata {
   const metadata = buildNoIndexMetadata(title);
-  const fallbackImage = new URL("/og.png", SITE_URL).toString();
+  const fallbackImage = new URL("/og.png", PUBLIC_SITE_URL).toString();
 
   return {
     ...metadata,
@@ -66,10 +66,10 @@ export async function generateMetadata({
   const description = item.langDescription || item.description || articleTitle;
   const canonical = new URL(
     `/app/${normalizedLocale}/news/detail?id=${encodeURIComponent(String(newsId))}`,
-    SITE_URL
+    PUBLIC_SITE_URL
   ).toString();
   const image = absoluteMediaUrl(item.imageUrl);
-  const twitterImageUrl = new URL("/share/x", SITE_URL);
+  const twitterImageUrl = new URL("/share/x", PUBLIC_SITE_URL);
   twitterImageUrl.searchParams.set("id", String(newsId));
   twitterImageUrl.searchParams.set("locale", normalizedLocale);
   const twitterImage = twitterImageUrl.toString();

@@ -6,7 +6,7 @@ function normalizeSiteUrl(value: string | undefined) {
   const trimmed = value?.trim().replace(/\/+$/, "");
   if (!trimmed) {
     if (process.env.NEXT_PUBLIC_ENV === "production") {
-      throw new Error("SITE_URL must be configured for a production build.");
+      throw new Error("NEXT_PUBLIC_SITE_URL must be configured for a production build.");
     }
     return localSiteUrl;
   }
@@ -14,6 +14,4 @@ function normalizeSiteUrl(value: string | undefined) {
   return `https://${trimmed}`;
 }
 
-export const SITE_URL = normalizeSiteUrl(
-  process.env.SITE_URL
-);
+export const PUBLIC_SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);

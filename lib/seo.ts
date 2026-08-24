@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { defaultLocale, dictionaries, locales, type Locale } from "@/lib/i18n";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { PUBLIC_SITE_URL, SITE_NAME } from "@/lib/site";
 
 export function buildSiteTitle(label: string) {
   const normalizedLabel = label.trim();
@@ -15,7 +15,7 @@ export function buildShareTitle(label: string) {
 
 export function buildHomeMetadata(locale: Locale): Metadata {
   const copy = dictionaries[locale].homePage;
-  const homeUrl = (nextLocale: Locale) => `${SITE_URL}${nextLocale === defaultLocale ? "" : `/${nextLocale}`}`;
+  const homeUrl = (nextLocale: Locale) => `${PUBLIC_SITE_URL}${nextLocale === defaultLocale ? "" : `/${nextLocale}`}`;
   const canonical = homeUrl(locale);
 
   return {

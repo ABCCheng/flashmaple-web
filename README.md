@@ -62,7 +62,7 @@ Production values are injected at build time through GitHub Actions configuratio
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_API_ORIGIN` | Public origin of the backend API |
-| `SITE_URL` | Canonical public URL used for metadata, sitemap, and sharing |
+| `NEXT_PUBLIC_SITE_URL` | Canonical public URL used for metadata, sitemap, sharing, and browser-visible site helpers |
 | `NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID` | Google OAuth public client ID |
 | `NEXT_PUBLIC_FUSIONAUTH_AUTHORIZATION_ENDPOINT` | FusionAuth authorization endpoint |
 | `NEXT_PUBLIC_FUSIONAUTH_CLIENT_ID` | FusionAuth public client ID |

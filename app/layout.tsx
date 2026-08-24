@@ -7,7 +7,7 @@ import { ViewportHeightSync } from "@/components/shell/ViewportHeightSync";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SnackbarProvider } from "@/components/providers/snackbar-provider";
 import { defaultLocale, dictionaries, locales } from "@/lib/i18n";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { PUBLIC_SITE_URL, SITE_NAME } from "@/lib/site";
 import { APP_SPLASH_SESSION_KEY } from "@/lib/stores/app-session";
 import { APP_THEME_COLORS, THEME_STORAGE_KEY } from "@/lib/stores/theme";
 import { MOOD_STORAGE_KEY, MOOD_THEME_STORAGE_KEY } from "@/lib/stores/mood";
@@ -102,7 +102,7 @@ const defaultTitle = defaultHomeContent.seoTitle;
 const defaultDescription = defaultHomeContent.seoDescription;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(PUBLIC_SITE_URL),
   applicationName: SITE_NAME,
   title: {
     default: defaultTitle,

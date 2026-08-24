@@ -25,7 +25,7 @@ import { HomeThemeChrome } from "./components/HomeThemeChrome";
 import { HomeThemeToggle } from "./components/HomeThemeToggle";
 import { Button } from "@/components/ui/button";
 import { dictionaries, homePath, localizePath, type Dictionary, type Locale } from "@/lib/i18n";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { PUBLIC_SITE_URL, SITE_NAME } from "@/lib/site";
 
 type HomeContent = Dictionary["homePage"];
 
@@ -46,7 +46,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
     "@type": "WebSite",
     name: SITE_NAME,
     description: copy.intro,
-    url: `${SITE_URL}${canonicalPath === "/" ? "" : canonicalPath}`,
+    url: `${PUBLIC_SITE_URL}${canonicalPath === "/" ? "" : canonicalPath}`,
     inLanguage: locale,
   };
   const appJsonLd = {
@@ -56,7 +56,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
     applicationCategory: "NewsApplication",
     operatingSystem: "Web Browser",
     description: copy.intro,
-    url: `${SITE_URL}${appHref}`,
+    url: `${PUBLIC_SITE_URL}${appHref}`,
   };
 
   return (

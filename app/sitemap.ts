@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 
 import { homePath, locales, type Locale } from "@/lib/i18n";
-import { SITE_URL } from "@/lib/site";
+import { PUBLIC_SITE_URL } from "@/lib/site";
 
 function absoluteUrl(path: string) {
-  return `${SITE_URL}${path === "/" ? "" : path}`;
+  return `${PUBLIC_SITE_URL}${path === "/" ? "" : path}`;
 }
 
 function languageAlternates() {

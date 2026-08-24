@@ -2,7 +2,7 @@ import "server-only";
 
 import { fetchNewsDetailForSeo } from "@/lib/api/news-server";
 import { defaultLocale, isLocale, localizePath, type Locale } from "@/lib/i18n";
-import { SITE_URL } from "@/lib/site";
+import { PUBLIC_SITE_URL } from "@/lib/site";
 
 export async function getShareImageData(request: Request) {
   const requestUrl = new URL(request.url);
@@ -15,10 +15,10 @@ export async function getShareImageData(request: Request) {
   const item = await fetchNewsDetailForSeo(id, locale);
   if (!item) return null;
 
-  let imageUrl = new URL("/og.png", SITE_URL).toString();
+  let imageUrl = new URL("/og.png", PUBLIC_SITE_URL).toString();
   if (item.imageUrl) {
     try {
-      const candidate = new URL(item.imageUrl, SITE_URL);
+      const candidate = new URL(item.imageUrl, PUBLIC_SITE_URL);
       if (candidate.protocol === "http:" || candidate.protocol === "https:") {
         imageUrl = candidate.toString();
       }
@@ -36,7 +36,7 @@ export async function getShareImageData(request: Request) {
     originalDescription: item.langDescription?.trim() ? item.description?.trim() || "" : "",
     source: item.source?.trim() || "FlashMaple",
     locale,
-    logoUrl: new URL("/logo-512.png", SITE_URL).toString(),
-    detailUrl: new URL(localizePath(`/news/detail?id=${encodeURIComponent(String(id))}`, locale), SITE_URL).toString(),
+    logoUrl: new URL("/logo-512.png", PUBLIC_SITE_URL).toString(),
+    detailUrl: new URL(localizePath(`/news/detail?id=${encodeURIComponent(String(id))}`, locale), PUBLIC_SITE_URL).toString(),
   };
 }
