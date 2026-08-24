@@ -11,7 +11,7 @@ type RequestOptions = RequestInit & {
   silent?: boolean;
 };
 
-// 定义一个自定义错误类，用于传递 HTTP 状态码或业务状态码
+// Carries HTTP or application status codes.
 class ApiError extends Error {
   status?: number;
   constructor(message: string, status?: number) {
@@ -154,7 +154,7 @@ async function rawRequest<T>(path: string, options: RequestOptions = {}, retry =
   try {
     response = await fetch(requestUrl, { ...options, headers, credentials: "include" });
   } catch {
-    // 捕获断网、跨域等网络层面的物理错误，并抛出自定义错误以供上层处理
+    // Normalize network failures for callers.
     throw new ApiError("", 400); 
   }
 
@@ -210,35 +210,25 @@ export async function post<T>(path: string, data?: unknown, config?: RequestOpti
   }
 }
 
-/**
- * 优化后的错误提示函数
- */
+/** Displays a localized API error message. */
 function showRequestError(error: unknown) {
-  // 1. 优先：如果后端返回了具体的错误文本，直接弹窗提示
   if (error instanceof ApiError && error.message && error.message.trim() !== "") {
     showGlobalSnackbar(error.message);
     return;
   }
 
-  // 2. 获取当前语言
   const locale = currentLocale();
   
-  // 3. 直接从 i18n 导出的 dictionaries 里获取当前语言的字典
-  // 并定位到你的 network 节点
   const networkDict = dictionaries[locale].network;
 
-  // 4. 次选：根据状态码判断是服务端错误还是客户端错误
   if (error instanceof ApiError && error.status) {
-    // 服务端错误 (5xx)
     if (error.status >= 500) {
       showGlobalSnackbar(networkDict.networkErrorServer || "Server Error");
       return;
     }
-    // 客户端错误 (4xx)
     showGlobalSnackbar(networkDict.networkErrorUser || "Client Error");
     return;
   }
 
-  // 5. 兜底：无法判断的错误
   showGlobalSnackbar(networkDict.requestFailed || "Request Failed");
 }

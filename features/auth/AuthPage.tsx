@@ -535,7 +535,6 @@ export function AuthPage() {
           />
         ) : null}
 
-        {/* 忘记密码 */}
         <div className="text-right">
           {isLoginMode ? (
             <button

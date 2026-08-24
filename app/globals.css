@@ -229,7 +229,7 @@ html.app-pwa-top-route body {
   overscroll-behavior-x: none;
 }
 
-/* 更像 App 的滚动体验 */
+/* App-like scrolling. */
 body {
   min-height: var(--app-viewport-height);
   overflow-x: hidden;
@@ -384,12 +384,12 @@ html[data-skip-app-splash="true"] .app-splash-screen {
   }
 }
 
-/* iOS 风格滚动 */
+/* iOS-style scrolling. */
 * {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 隐藏滚动条（App感） */
+/* Hide scrollbars for an app-like feel. */
 ::-webkit-scrollbar {
   display: none;
 }

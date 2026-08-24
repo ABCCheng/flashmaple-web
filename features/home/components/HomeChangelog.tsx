@@ -13,6 +13,19 @@ type ChangelogRelease = {
   blocks: ChangelogContentBlock[];
 };
 
+const CATEGORY_STYLES: Record<string, { icon: string; className: string }> = {
+  added: { icon: "✨", className: "text-red-600 dark:text-red-400" },
+  changed: { icon: "🔄", className: "text-blue-600 dark:text-blue-400" },
+  deprecated: { icon: "⚠️", className: "text-orange-600 dark:text-orange-400" },
+  removed: { icon: "🗑️", className: "text-gray-500 dark:text-gray-400" },
+  fixed: { icon: "🐛", className: "text-amber-600 dark:text-amber-400" },
+  security: { icon: "🔒", className: "text-green-600 dark:text-green-400" },
+};
+
+function formatReleaseTitle(title: string) {
+  return title.replace(/^\[([^\]]+)\](?:\([^)]+\))?/, "$1");
+}
+
 function parseChangelog(markdown: string): ChangelogRelease[] {
   const lines = markdown.replaceAll("\r\n", "\n").split("\n");
   const releases: ChangelogRelease[] = [];
@@ -84,7 +97,8 @@ function renderInlineMarkdown(value: string): ReactNode[] {
 
 function renderBlock(block: ChangelogContentBlock, index: number) {
   if (block.type === "category") {
-    return <h4 className="mb-3 mt-7 text-sm font-extrabold uppercase tracking-[0.12em] text-primary first:mt-0" key={`${block.type}-${index}`}>{renderInlineMarkdown(block.text)}</h4>;
+    const style = CATEGORY_STYLES[block.text.trim().toLowerCase()] ?? { icon: "📌", className: "text-primary" };
+    return <h4 className={`mb-3 mt-7 flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] first:mt-0 ${style.className}`} key={`${block.type}-${index}`}><span aria-hidden="true">{style.icon}</span><span>{renderInlineMarkdown(block.text)}</span></h4>;
   }
   if (block.type === "list") {
     return <ul className="grid list-disc gap-2 pl-5 text-sm leading-6 text-muted-foreground sm:text-base" key={`${block.type}-${index}`}>{block.items.map((item, itemIndex) => <li key={itemIndex}>{renderInlineMarkdown(item)}</li>)}</ul>;
@@ -96,7 +110,7 @@ function ReleaseDetails({ release, initiallyOpen = false }: { release: Changelog
   return (
     <details className="group/release border-b border-border last:border-b-0" name="home-changelog-release" open={initiallyOpen}>
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-lg font-bold tracking-[-0.02em] transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:px-7 sm:py-5 sm:text-xl [&::-webkit-details-marker]:hidden">
-        <span>{renderInlineMarkdown(release.title)}</span>
+        <span className="inline-flex items-center gap-2.5"><span aria-hidden="true">🚀</span><span>{renderInlineMarkdown(formatReleaseTitle(release.title))}</span></span>
         <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open/release:rotate-180" />
       </summary>
       <div className="max-h-[28rem] overflow-y-auto border-t border-border/70 px-5 pb-6 pt-5 sm:px-7">

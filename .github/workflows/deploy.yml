@@ -3,24 +3,23 @@ name: FlashMaple Web CI/CD
 on:
   push:
     branches:
-      - main  # 监听 main 分支提交
+      - main
 
 jobs:
   build-and-deploy:
-    environment: production
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 检出代码
+      - name: 🔄 Check out repository
         uses: actions/checkout@v4
 
-      - name: ☕️ 设置 Node.js 环境
+      - name: ☕️ Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24.14.1'
           cache: 'yarn'
 
-      - name: 📦 安装依赖并构建项目
+      - name: 📦 Install dependencies and build
         env:
           NEXT_PUBLIC_API_ORIGIN: ${{ vars.NEXT_PUBLIC_API_ORIGIN }}
           SITE_URL: ${{ vars.SITE_URL }}
@@ -31,7 +30,7 @@ jobs:
           NEXT_PUBLIC_COOKIE_DOMAIN: ${{ vars.NEXT_PUBLIC_COOKIE_DOMAIN }}
         run: yarn install --frozen-lockfile && yarn build:prod 
 
-      - name: 🐳 安装 Docker
+      - name: 🐳 Install Docker
         run: |
           sudo apt-get update
           sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
@@ -40,10 +39,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-      - name: 📦 构建 Docker 镜像
+      - name: 📦 Build Docker image
         run: docker build -t flashmaple-web:latest -f Dockerfile .
 
-      - name: 📤 传输镜像并重启 Docker
+      - name: 📤 Transfer image and restart Docker
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
           SSH_SERVER_IP: ${{ secrets.SSH_SERVER_IP }}
@@ -53,31 +52,31 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H ${SSH_SERVER_IP} >> ~/.ssh/known_hosts
           
-          # 生成新镜像文件
+          # Save the Docker image.
           echo "Saving new flashmaple-web.tar..."
           docker save flashmaple-web:latest -o flashmaple-web.tar
           
-          # 上传新镜像文件
+          # Upload the image to the server.
           echo "Uploading compressed flashmaple-web.tar to server..."
           scp -i private_key flashmaple-web.tar ${SSH_USERNAME}@${SSH_SERVER_IP}:/www/wwwroot/flashmaple
           echo "File upload completed successfully."
           
-          # 远程执行 Docker 运行新版本
+          # Restart the remote container.
           echo "Restart docker server..."
           ssh -i private_key ${SSH_USERNAME}@${SSH_SERVER_IP} << EOF
             cd /www/wwwroot/flashmaple
           
-            # 停止并删除旧容器
+            # Remove the existing container.
             docker stop flashmaple-web || true
             docker rm flashmaple-web || true
 
-            # 加载 Docker 镜像
+            # Load the new image.
             docker load -i flashmaple-web.tar
           
-            # 构建并运行新容器，指定 8085 端口，加入 baota_net 网络
+            # Run on port 8085 in the baota_net network.
             docker run -d --name flashmaple-web --restart unless-stopped --network baota_net -p 8085:8085 -v /www/wwwroot/flashmaple/logs:/app/logs flashmaple-web:latest
             
-            # 清理无用镜像
+            # Remove unused images.
             docker image prune -f
           EOF
           echo "Restart docker completed successfully."
