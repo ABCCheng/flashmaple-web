@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [Unreleased]
+
+### Changed
+
+- Allowed multiple home-page changelog releases to remain expanded at the same time.
+
+### Fixed
+
+- Cleared consumed Google OAuth callback parameters after a successful sign-in so reopening the sign-in page after logging out no longer retries stale credentials.
+
 ## [6.0.0] - 2026-08-24
 
 ### Added

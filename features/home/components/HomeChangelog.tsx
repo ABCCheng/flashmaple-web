@@ -108,7 +108,7 @@ function renderBlock(block: ChangelogContentBlock, index: number) {
 
 function ReleaseDetails({ release, initiallyOpen = false }: { release: ChangelogRelease; initiallyOpen?: boolean }) {
   return (
-    <details className="group/release border-b border-border last:border-b-0" name="home-changelog-release" open={initiallyOpen}>
+    <details className="group/release border-b border-border last:border-b-0" open={initiallyOpen}>
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-lg font-bold tracking-[-0.02em] transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:px-7 sm:py-5 sm:text-xl [&::-webkit-details-marker]:hidden">
         <span className="inline-flex items-center gap-2.5"><span aria-hidden="true">🚀</span><span>{renderInlineMarkdown(formatReleaseTitle(release.title))}</span></span>
         <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open/release:rotate-180" />

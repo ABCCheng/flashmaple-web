@@ -204,6 +204,7 @@ export function AuthPage() {
 
       persistLogin(res.data.userInfo);
       loginCompleted = true;
+      clearSocialAuthSearchParams();
       showGlobalSnackbar(callbackDictionary.auth.success.replace("{{provider}}", providerLabel(statePayload.provider, callbackDictionary)).replace("{{action}}", callbackDictionary.auth.login));
       router.replace(localizePath("/profile", callbackLocale));
     } finally {
