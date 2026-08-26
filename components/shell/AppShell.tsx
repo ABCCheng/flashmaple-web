@@ -341,7 +341,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       />
       <main
         className={cn(
-          "app-content w-full min-h-0 flex-1 overflow-y-auto overscroll-y-auto bg-transparent",
+          "app-content w-full min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-transparent",
           keepMobileTabSpacing ? "pb-(--app-safe-tab-bottom)" : "pb-(--app-safe-footer-bottom)"
         )}
       >

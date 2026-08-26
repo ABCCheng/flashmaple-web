@@ -35,9 +35,9 @@ import {
   deleteWebPushMessage,
   getCachedWebPushMessages,
   getWebPushMessages,
-  hasCachedWebPushMessages,
   markAllWebPushMessagesRead,
   markWebPushMessageRead,
+  subscribeWebPushMessageChanges,
   type WebPushMessage,
 } from "@/lib/stores/web-push-messages";
 
@@ -100,26 +100,20 @@ export function WebPushPage() {
   useEffect(() => {
     let cancelled = false;
 
-    const loadMessages = async () => {
-      const nextMessages = await getWebPushMessages();
-      if (!cancelled) setMessages(nextMessages);
+    const syncMessagesFromStore = () => {
+      if (!cancelled) setMessages(getCachedWebPushMessages());
     };
 
-    if (!hasCachedWebPushMessages()) {
-      void loadMessages();
-    }
-
-    const handleServiceWorkerMessage = (event: MessageEvent) => {
-      if (event.data?.type !== "flashmaple:push-message") return;
-      void loadMessages();
+    const loadMessages = () => {
+      void getWebPushMessages();
     };
 
-    const serviceWorker = getServiceWorkerContainer();
-    serviceWorker?.addEventListener("message", handleServiceWorkerMessage);
+    const unsubscribeMessages = subscribeWebPushMessageChanges(syncMessagesFromStore);
+    loadMessages();
 
     return () => {
       cancelled = true;
-      serviceWorker?.removeEventListener("message", handleServiceWorkerMessage);
+      unsubscribeMessages();
     };
   }, []);
 

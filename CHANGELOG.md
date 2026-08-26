@@ -11,10 +11,15 @@ This changelog is maintained in English.
 ### Changed
 
 - Allowed multiple home-page changelog releases to remain expanded at the same time.
+- Aligned native pull-to-refresh elasticity across mobile Web and PWA by using the app scroll container on both surfaces.
 
 ### Fixed
 
 - Cleared consumed Google OAuth callback parameters after a successful sign-in so reopening the sign-in page after logging out no longer retries stale credentials.
+- Fixed nested scrolling in Earlier releases so mouse-wheel scrolling remains responsive and continues onto the page at the list boundaries.
+- Fixed mobile browser status and safe-area colors not updating immediately when changing the theme from Settings.
+- Fixed the notification center and unread badge not synchronizing newly received push messages until the PWA was restarted.
+- Restored native scroll-container elasticity on short notification center, news detail, settings, and about pages.
 
 ## [6.0.0] - 2026-08-24
 

@@ -364,26 +364,6 @@ html[data-skip-app-splash="true"] .app-splash-screen {
   }
 }
 
-/* Let regular mobile browsers scroll the document so their browser chrome can
-   collapse while scrolling. Installed PWAs keep the app-owned scroller. */
-@media (max-width: 767px) {
-  html.app-shell-active:not(.app-standalone),
-  html.app-shell-active:not(.app-standalone) body {
-    overflow-y: auto;
-    overscroll-behavior-y: none;
-  }
-
-  html.app-shell-active:not(.app-standalone) .app-root {
-    height: auto;
-    min-height: var(--app-viewport-height);
-  }
-
-  html.app-shell-active:not(.app-standalone) .app-content {
-    overflow-y: visible;
-    overscroll-behavior-y: none;
-  }
-}
-
 /* iOS-style scrolling. */
 * {
   -webkit-overflow-scrolling: touch;

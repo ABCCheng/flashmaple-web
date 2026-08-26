@@ -48,7 +48,7 @@ function localizeAppPath(path: string, locale: Locale) {
 
 export function SettingsPage() {
   const { dictionary, locale } = useLocaleContext();
-  const { setThemeMode } = useThemeContext();
+  const { isDark, setThemeMode } = useThemeContext();
   const { moodThemeEnabled, setMoodThemeEnabled } = useFlashMoodContext();
   const { region, setRegion } = useRegionContext();
   const [ttsSettings, setTtsSettings] = useState<TTSSettings>(DEFAULT_TTS_SETTINGS);
@@ -163,7 +163,7 @@ export function SettingsPage() {
 
   return (
     <>
-      <AppMobileBackHeader title={headerTitle} />
+      <AppMobileBackHeader key={isDark ? "dark" : "light"} title={headerTitle} />
 
       <div className="p-4 w-[min(100%,40rem)] mx-auto">
         <header className="hidden py-4 md:flex items-center gap-2.5 [&_svg]:size-2xl [&_svg]:text-primary">

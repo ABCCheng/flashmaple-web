@@ -7,6 +7,7 @@ export const MAX_WEB_PUSH_MESSAGES = 20;
 const messageChangeListeners = new Set<() => void>();
 let cachedMessages: WebPushMessage[] = [];
 let hasLoadedMessages = false;
+let removeMessageSyncListeners: (() => void) | null = null;
 
 export type WebPushMessage = {
   id: string;
@@ -122,18 +123,36 @@ export function getUnreadWebPushMessageCount() {
 
 export function subscribeWebPushMessageChanges(listener: () => void) {
   messageChangeListeners.add(listener);
-  const serviceWorker = getServiceWorkerContainer();
 
-  const handleServiceWorkerMessage = (event: MessageEvent) => {
-    if (event.data?.type !== "flashmaple:push-message") return;
-    void getWebPushMessages();
-  };
+  if (!removeMessageSyncListeners) {
+    const serviceWorker = getServiceWorkerContainer();
+    const loadMessages = () => {
+      void getWebPushMessages();
+    };
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      if (event.data?.type === "flashmaple:push-message") loadMessages();
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") loadMessages();
+    };
 
-  serviceWorker?.addEventListener("message", handleServiceWorkerMessage);
+    serviceWorker?.addEventListener("message", handleServiceWorkerMessage);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("focus", loadMessages);
+
+    removeMessageSyncListeners = () => {
+      serviceWorker?.removeEventListener("message", handleServiceWorkerMessage);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", loadMessages);
+    };
+  }
 
   return () => {
     messageChangeListeners.delete(listener);
-    serviceWorker?.removeEventListener("message", handleServiceWorkerMessage);
+    if (!messageChangeListeners.size) {
+      removeMessageSyncListeners?.();
+      removeMessageSyncListeners = null;
+    }
   };
 }
 
