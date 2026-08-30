@@ -5,16 +5,6 @@ let removeRestoreCancellationListeners: (() => void) | null = null;
 
 export function getAppScrollRoot() {
   if (typeof document === "undefined") return null;
-
-  const isMobileWeb =
-    window.matchMedia("(max-width: 767px)").matches &&
-    !document.documentElement.classList.contains("app-standalone") &&
-    (navigator as Navigator & { standalone?: boolean }).standalone !== true;
-
-  if (isMobileWeb) {
-    return document.scrollingElement as HTMLElement | null;
-  }
-
   return document.querySelector<HTMLElement>(".app-content");
 }
 

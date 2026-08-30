@@ -89,20 +89,40 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    return scheduleNonCriticalStartup(() => {
-      void activateDevice()
-        .catch((error) => {
-          console.warn("Device initialization failed", error);
+    const serviceWorker = getRegistrableServiceWorker();
+    if (serviceWorker) {
+      void serviceWorker
+        .register("/sw.js", { scope: "/", updateViaCache: "none" })
+        .then(async () => {
+          const registration = await serviceWorker.ready;
+          registration.active?.postMessage({
+            type: "flashmaple:cache-navigation",
+            url: window.location.href,
+          });
+          const assetUrls = Array.from(
+            document.querySelectorAll<HTMLScriptElement | HTMLLinkElement>(
+              "script[src], link[rel='stylesheet'][href], link[rel='preload'][href]"
+            )
+          )
+            .map((element) => element.getAttribute("src") || element.getAttribute("href"))
+            .filter((url): url is string => Boolean(url));
+          registration.active?.postMessage({
+            type: "flashmaple:cache-assets",
+            urls: assetUrls,
+          });
         })
-        .finally(() => {
-          const serviceWorker = getRegistrableServiceWorker();
-          if (serviceWorker) {
-            void serviceWorker.register("/sw.js", { scope: "/app/", updateViaCache: "none" }).catch((error) => {
-              console.warn("Service worker registration failed", error);
-            });
-          }
+        .catch((error) => {
+          console.warn("Service worker registration failed", error);
         });
+    }
+
+    const cancelStartup = scheduleNonCriticalStartup(() => {
+      void activateDevice().catch((error) => {
+        console.warn("Device initialization failed", error);
+      });
     });
+
+    return cancelStartup;
   }, []);
 
   useEffect(() => {
@@ -341,7 +361,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       />
       <main
         className={cn(
-          "app-content w-full min-h-0 flex-1 overflow-y-auto overscroll-y-auto bg-transparent",
+          "app-content w-full min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-transparent",
           keepMobileTabSpacing ? "pb-(--app-safe-tab-bottom)" : "pb-(--app-safe-footer-bottom)"
         )}
       >

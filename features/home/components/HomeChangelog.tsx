@@ -106,14 +106,22 @@ function renderBlock(block: ChangelogContentBlock, index: number) {
   return <p className="mt-3 text-sm leading-6 text-muted-foreground sm:text-base" key={`${block.type}-${index}`}>{renderInlineMarkdown(block.text)}</p>;
 }
 
-function ReleaseDetails({ release, initiallyOpen = false }: { release: ChangelogRelease; initiallyOpen?: boolean }) {
+function ReleaseDetails({
+  release,
+  initiallyOpen = false,
+  constrainContent = true,
+}: {
+  release: ChangelogRelease;
+  initiallyOpen?: boolean;
+  constrainContent?: boolean;
+}) {
   return (
-    <details className="group/release border-b border-border last:border-b-0" name="home-changelog-release" open={initiallyOpen}>
+    <details className="group/release border-b border-border last:border-b-0" open={initiallyOpen}>
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-lg font-bold tracking-[-0.02em] transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary sm:px-7 sm:py-5 sm:text-xl [&::-webkit-details-marker]:hidden">
         <span className="inline-flex items-center gap-2.5"><span aria-hidden="true">🚀</span><span>{renderInlineMarkdown(formatReleaseTitle(release.title))}</span></span>
         <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open/release:rotate-180" />
       </summary>
-      <div className="max-h-[28rem] overflow-y-auto border-t border-border/70 px-5 pb-6 pt-5 sm:px-7">
+      <div className={`${constrainContent ? "max-h-112 overflow-y-auto " : ""}border-t border-border/70 px-5 pb-6 pt-5 sm:px-7`}>
         {release.blocks.map(renderBlock)}
       </div>
     </details>
@@ -139,8 +147,8 @@ export async function HomeChangelog({ earlierReleasesLabel }: { earlierReleasesL
             <span>{earlierReleasesLabel} <span className="ml-1 rounded-full bg-muted px-2 py-0.5 text-xs tabular-nums">{earlierReleases.length}</span></span>
             <ChevronDown aria-hidden="true" className="size-4 shrink-0 transition-transform duration-200 group-open/earlier:rotate-180" />
           </summary>
-          <div className="max-h-[36rem] overflow-y-auto overscroll-contain border-t border-border">
-            {earlierReleases.map((release) => <ReleaseDetails key={release.title} release={release} />)}
+          <div className="max-h-144 overflow-y-auto border-t border-border">
+            {earlierReleases.map((release) => <ReleaseDetails constrainContent={false} key={release.title} release={release} />)}
           </div>
         </details>
       ) : null}

@@ -64,7 +64,7 @@ export function AppRouteLayer({
     >
       <div
         className={cn(
-          "min-h-full w-full md:mx-auto md:w-[min(100%,840px)]",
+          "min-h-[calc(100%+1px)] w-full md:min-h-full md:mx-auto md:w-[min(100%,840px)]",
           contentClassName
         )}
       >

@@ -237,6 +237,15 @@ body {
   background: var(--app-global-bg);
 }
 
+/* Keep Next.js' built-in 404 UI aligned with the app theme. */
+body:has(.next-error-h1) {
+  color: var(--foreground) !important;
+}
+
+body:has(.next-error-h1) .next-error-h1 {
+  border-right-color: color-mix(in srgb, var(--foreground) 30%, transparent) !important;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -361,26 +370,6 @@ html[data-skip-app-splash="true"] .app-splash-screen {
 
   html.app-shell-active .app-root {
     height: var(--app-viewport-height);
-  }
-}
-
-/* Let regular mobile browsers scroll the document so their browser chrome can
-   collapse while scrolling. Installed PWAs keep the app-owned scroller. */
-@media (max-width: 767px) {
-  html.app-shell-active:not(.app-standalone),
-  html.app-shell-active:not(.app-standalone) body {
-    overflow-y: auto;
-    overscroll-behavior-y: none;
-  }
-
-  html.app-shell-active:not(.app-standalone) .app-root {
-    height: auto;
-    min-height: var(--app-viewport-height);
-  }
-
-  html.app-shell-active:not(.app-standalone) .app-content {
-    overflow-y: visible;
-    overscroll-behavior-y: none;
   }
 }
 
