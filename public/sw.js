@@ -1,5 +1,6 @@
 const CACHE_PREFIX = "flashmaple-pwa-";
-const CACHE_NAME = `${CACHE_PREFIX}v3`;
+const CACHE_NAME = `${CACHE_PREFIX}v4`;
+const OFFLINE_URL = "/offline.html";
 const PUSH_PREFERENCES_CACHE_NAME = `${CACHE_PREFIX}push-preferences-v1`;
 const PUSH_PREFERENCES_URL = "/__flashmaple-push-preferences__";
 const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
@@ -22,7 +23,12 @@ const BREAKING_NEWS_TITLES = {
 };
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.addAll([OFFLINE_URL, "/logo-192.png"]).catch(() => undefined))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", (event) => {
@@ -42,11 +48,119 @@ self.addEventListener("activate", (event) => {
             .map((key) => caches.delete(key))
         )
       )
-      .then(() => self.clients.claim())
+    .then(() => self.clients.claim())
   );
 });
 
+function isAppPath(pathname) {
+  return pathname === "/app" || pathname.startsWith("/app/");
+}
+
+async function cacheNavigation(request, response) {
+  if (!response.ok || response.type === "opaque") return;
+
+  const cache = await caches.open(CACHE_NAME);
+  await cache.put(request, response.clone());
+
+  if (response.url && response.url !== request.url) {
+    await cache.put(response.url, response.clone());
+  }
+}
+
+async function cacheCurrentNavigation(url) {
+  try {
+    const requestUrl = new URL(url, self.location.origin);
+    if (requestUrl.origin !== self.location.origin || !isAppPath(requestUrl.pathname)) return;
+
+    const request = new Request(requestUrl, {
+      cache: "no-store",
+      credentials: "include",
+    });
+    const response = await fetch(request);
+    await cacheNavigation(request, response);
+  } catch {
+    // Caching the current document is best-effort.
+  }
+}
+
+async function cacheAssetUrls(urls) {
+  if (!Array.isArray(urls)) return;
+
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.all(
+    urls.slice(0, 100).map(async (url) => {
+      try {
+        const requestUrl = new URL(url, self.location.origin);
+        if (requestUrl.origin !== self.location.origin) return;
+
+        const response = await fetch(new Request(requestUrl, { cache: "no-store" }));
+        if (response.ok && response.type !== "opaque") {
+          await cache.put(requestUrl, response.clone());
+        }
+      } catch {
+        // Asset warming is best-effort.
+      }
+    })
+  );
+}
+
+async function getOfflineNavigation(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cachedPage = await cache.match(request);
+  if (cachedPage) return cachedPage;
+
+  const cachedAppEntry = await cache.match(new URL("/app/en", self.location.origin));
+  if (cachedAppEntry) return cachedAppEntry;
+
+  const offlinePage = await cache.match(OFFLINE_URL);
+  return offlinePage || new Response("FlashMaple is offline.", {
+    status: 503,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+async function handleNavigationRequest(request) {
+  try {
+    const response = await fetch(request);
+    if (response.ok) {
+      await cacheNavigation(request, response);
+      return response;
+    }
+
+    const cachedPage = await caches.match(request);
+    return cachedPage || response;
+  } catch {
+    return getOfflineNavigation(request);
+  }
+}
+
+async function handleStaticRequest(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  try {
+    const response = await fetch(request);
+    if (response.ok && response.type !== "opaque") {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    return cached || Response.error();
+  }
+}
+
 self.addEventListener("message", (event) => {
+  if (event.data?.type === "flashmaple:cache-navigation") {
+    event.waitUntil(cacheCurrentNavigation(event.data.url));
+    return;
+  }
+
+  if (event.data?.type === "flashmaple:cache-assets") {
+    event.waitUntil(cacheAssetUrls(event.data.urls));
+    return;
+  }
+
   if (event.data?.type === "flashmaple:clear-push-notifications") {
     event.waitUntil(clearPushNotifications());
     return;
@@ -350,26 +464,19 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/_next/")) return;
+
+  if (request.mode === "navigate") {
+    if (!isAppPath(url.pathname)) return;
+    event.respondWith(handleNavigationRequest(request));
+    return;
+  }
+
+  if (url.pathname.startsWith("/api/")) return;
   if (url.searchParams.has("_rsc") || request.headers.has("RSC") || request.headers.has("Next-Router-State-Tree")) return;
 
-  // Never cache or fall back to a page document. A cached Next.js document can
-  // reference build assets that no longer exist after a deployment.
-  if (request.mode === "navigate") return;
+  const isNextStaticAsset = url.pathname.startsWith("/_next/static/");
+  const isStaticAsset = ["image", "font", "manifest", "style", "script"].includes(request.destination);
+  if (!isNextStaticAsset && !isStaticAsset) return;
 
-  if (!["image", "font", "manifest"].includes(request.destination)) return;
-
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request).then((response) => {
-        if (response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      });
-    })
-  );
+  event.respondWith(handleStaticRequest(request));
 });

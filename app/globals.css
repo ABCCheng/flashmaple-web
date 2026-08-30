@@ -237,6 +237,15 @@ body {
   background: var(--app-global-bg);
 }
 
+/* Keep Next.js' built-in 404 UI aligned with the app theme. */
+body:has(.next-error-h1) {
+  color: var(--foreground) !important;
+}
+
+body:has(.next-error-h1) .next-error-h1 {
+  border-right-color: color-mix(in srgb, var(--foreground) 30%, transparent) !important;
+}
+
 body::before {
   content: "";
   position: fixed;
