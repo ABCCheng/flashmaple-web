@@ -1,9 +1,9 @@
 import type { UserInfo } from "@/lib/api/user";
 import { APP_ENV, COOKIE_DOMAIN } from "@/lib/env";
-import { notifyAuthStateChanged } from "./auth-events";
 import { readJsonStorage, removeStorage, writeJsonStorage } from "./storage";
 
-const userInfoKey = "FLASH_MAPLE_USER_INFO";
+const USER_INFO_STORAGE_KEY = "FLASH_MAPLE_USER_INFO";
+const AUTH_STATE_CHANGE_EVENT = "flashmaple:auth-state-change";
 const authHintCookieName = "X-Cookie-Auth-Hint";
 type StoredUserInfo = Pick<UserInfo, "userName" | "avatarType" | "avatar">
   & Partial<Pick<UserInfo, "userId" | "identityType">>;
@@ -33,7 +33,7 @@ function isIdentityType(value: string): value is UserInfo["identityType"] {
 }
 
 export function getUserInfo(): LocalUserInfo | null {
-  const stored = readJsonStorage<StoredUserInfo>(userInfoKey);
+  const stored = readJsonStorage<StoredUserInfo>(USER_INFO_STORAGE_KEY);
   if (!stored) return null;
 
   const { userId, identityType, userName, avatarType, avatar } = stored;
@@ -55,14 +55,34 @@ export function saveUserInfo(userInfo: UserInfo) {
     avatarType: userInfo.avatarType,
     avatar: userInfo.avatar,
   };
-  writeJsonStorage(userInfoKey, storedUserInfo);
+  writeJsonStorage(USER_INFO_STORAGE_KEY, storedUserInfo);
   notifyAuthStateChanged();
 }
 
 export function clearUserInfo() {
-  removeStorage(userInfoKey);
+  removeStorage(USER_INFO_STORAGE_KEY);
   clearAuthHintCookie();
   notifyAuthStateChanged();
+}
+
+function notifyAuthStateChanged() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(AUTH_STATE_CHANGE_EVENT));
+}
+
+export function subscribeAuthStateChanged(listener: () => void) {
+  if (typeof window === "undefined") return () => {};
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === USER_INFO_STORAGE_KEY) listener();
+  };
+
+  window.addEventListener(AUTH_STATE_CHANGE_EVENT, listener);
+  window.addEventListener("storage", handleStorage);
+  return () => {
+    window.removeEventListener(AUTH_STATE_CHANGE_EVENT, listener);
+    window.removeEventListener("storage", handleStorage);
+  };
 }
 
 function clearAuthHintCookie() {

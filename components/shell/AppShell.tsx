@@ -18,9 +18,9 @@ import {
   hasLocalePrefix,
   stripLocaleFromPathname,
 } from "@/lib/i18n";
-import { subscribeAuthStateChanged } from "@/lib/stores/auth-events";
+import { subscribeAuthStateChanged } from "@/lib/stores/auth-user";
 import { getUserInfo, hasAuthHint, isAuthenticated, saveUserInfo } from "@/lib/stores/auth-user";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import {
   getServiceWorkerContainer,
   syncCurrentWebPushSubscription,

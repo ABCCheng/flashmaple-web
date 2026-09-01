@@ -15,13 +15,13 @@ interface StoredSocialAuthState extends SocialAuthStatePayload {
   createdAt: number;
 }
 
-const SOCIAL_AUTH_STATE_STORAGE_PREFIX = "FLASH_MAPLE_SOCIAL_AUTH_STATE:";
+const SOCIAL_AUTH_STATE_SESSION_KEY = "FLASH_MAPLE_SOCIAL_AUTH_STATE:";
 const SOCIAL_AUTH_STATE_TTL_MS = 10 * 60 * 1000;
 const SOCIAL_AUTH_NONCE_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const PKCE_VERIFIER_PATTERN = /^[A-Za-z0-9_-]{43,128}$/;
 
-function socialAuthStateStorageKey(nonce: string) {
-  return `${SOCIAL_AUTH_STATE_STORAGE_PREFIX}${nonce}`;
+function getSocialAuthStateSessionKey(nonce: string) {
+  return `${SOCIAL_AUTH_STATE_SESSION_KEY}${nonce}`;
 }
 
 function isValidStoredSocialAuthState(
@@ -51,11 +51,11 @@ function pruneExpiredSocialAuthStates(storage: Storage, now: number) {
   const keys: string[] = [];
   for (let index = 0; index < storage.length; index += 1) {
     const key = storage.key(index);
-    if (key?.startsWith(SOCIAL_AUTH_STATE_STORAGE_PREFIX)) keys.push(key);
+    if (key?.startsWith(SOCIAL_AUTH_STATE_SESSION_KEY)) keys.push(key);
   }
 
   for (const key of keys) {
-    const nonce = key.slice(SOCIAL_AUTH_STATE_STORAGE_PREFIX.length);
+    const nonce = key.slice(SOCIAL_AUTH_STATE_SESSION_KEY.length);
     const raw = storage.getItem(key);
     let value: unknown;
 
@@ -76,11 +76,11 @@ export function storeSocialAuthState(payload: StoredSocialAuthState) {
   if (!storage) throw new Error("Social sign-in requires session storage.");
 
   pruneExpiredSocialAuthStates(storage, payload.createdAt);
-  storage.setItem(socialAuthStateStorageKey(payload.nonce), JSON.stringify(payload));
+  storage.setItem(getSocialAuthStateSessionKey(payload.nonce), JSON.stringify(payload));
 }
 
 function readSocialAuthState(storage: Storage, state: string) {
-  const raw = storage.getItem(socialAuthStateStorageKey(state));
+  const raw = storage.getItem(getSocialAuthStateSessionKey(state));
   if (!raw) return null;
 
   try {
@@ -99,7 +99,7 @@ export function consumeSocialAuthState(state: string | null) {
   const storage = getSessionStorage();
   if (!storage) return null;
 
-  const key = socialAuthStateStorageKey(state);
+  const key = getSocialAuthStateSessionKey(state);
   try {
     const payload = readSocialAuthState(storage, state);
     storage.removeItem(key);

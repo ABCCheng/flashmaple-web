@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { dismissAppSplash, subscribeAppSplashDismiss } from "@/lib/app-splash";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 
 export function AppSplashScreen() {

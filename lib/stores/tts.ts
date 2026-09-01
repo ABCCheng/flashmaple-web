@@ -1,6 +1,6 @@
 import { readJsonStorage, writeJsonStorage } from "./storage";
 
-export const TTS_STORAGE_KEY = "flashmaple-tts-settings";
+export const TTS_STORAGE_KEY = "FLASH_MAPLE_TTS";
 
 
 export const TTS_VOICE_OPTIONS = [

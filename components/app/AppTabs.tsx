@@ -3,7 +3,7 @@
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 
 export type AppTabItem<T extends string> = {

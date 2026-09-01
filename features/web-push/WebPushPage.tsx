@@ -9,7 +9,7 @@ import { useLocaleContext } from "@/components/providers/locale-provider";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 import { hasLocalePrefix, localizePath } from "@/lib/i18n";
 import { formatRelativeTime } from "@/lib/time";

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { LoadMoreSentinel } from "@/components/list/LoadMoreSentinel";
 import { getAppScrollRoot } from "@/lib/app-scroll";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 
 const estimatedItemHeight = 260;
 const itemGap = 12;

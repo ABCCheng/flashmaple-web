@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { getAppScrollRoot, getAppScrollTop, scrollAppToTop } from "@/lib/app-scroll";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 
 const DEFAULT_VISIBLE_OFFSET = 360;
