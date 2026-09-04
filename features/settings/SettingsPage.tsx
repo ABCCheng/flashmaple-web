@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown, Volume2 } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Check, ChevronDown, Languages, MapPin, MapPinCheckInside, Monitor, Moon, Palette, HeartPulse, Sun, Volume2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Languages, MapPin, Palette } from "lucide-react";
 import { useFlashMoodContext } from "@/components/providers/flash-mood-provider";
 import { useLocaleContext } from "@/components/providers/locale-provider";
 import { regions, useRegionContext } from "@/components/providers/region-provider";
@@ -28,10 +27,13 @@ const headerMenuItemClass =
 const mobileSettingsMediaQuery = "(max-width: 767px), (pointer: coarse)";
 const mobileBackDelayMs = 220;
 const TTS_PREVIEW_TEXT = "This is a preview of the selected voice. Welcome to FlashMaple.";
+const optionButtonClass =
+  "grid min-h-16 w-full cursor-pointer grid-cols-[42px_1fr_auto] items-center gap-3 rounded-[14px] border border-[var(--border)] bg-[var(--card)] px-3.5 py-[9px] text-left max-md:px-4 max-md:py-3 [&>span:first-child]:grid [&>span:first-child]:size-10 [&>span:first-child]:place-items-center [&>span:first-child]:rounded-[11px] [&>span:first-child]:bg-[var(--secondary)] [&>span:first-child]:text-primary [&>svg]:text-primary";
+const settingsControlCardClass = "rounded-2xl border border-border bg-card p-[19px]";
 const themeOptionStateClass = {
-  system: "[[data-theme-mode=system]_&]:text-primary",
-  light: "[[data-theme-mode=light]_&]:text-primary",
-  dark: "[[data-theme-mode=dark]_&]:text-primary",
+  system: "[[data-theme-mode=system]_&]:border-[color-mix(in_srgb,var(--primary)_40%,transparent)] [[data-theme-mode=system]_&]:text-primary",
+  light: "[[data-theme-mode=light]_&]:border-[color-mix(in_srgb,var(--primary)_40%,transparent)] [[data-theme-mode=light]_&]:text-primary",
+  dark: "[[data-theme-mode=dark]_&]:border-[color-mix(in_srgb,var(--primary)_40%,transparent)] [[data-theme-mode=dark]_&]:text-primary",
 } as const;
 const themeCheckStateClass = {
   system: "[[data-theme-mode=system]_&]:block",
@@ -48,7 +50,7 @@ function localizeAppPath(path: string, locale: Locale) {
 
 export function SettingsPage() {
   const { dictionary, locale } = useLocaleContext();
-  const { isDark, setThemeMode } = useThemeContext();
+  const { themeMode, isDark, setThemeMode } = useThemeContext();
   const { moodThemeEnabled, setMoodThemeEnabled } = useFlashMoodContext();
   const { region, setRegion } = useRegionContext();
   const [ttsSettings, setTtsSettings] = useState<TTSSettings>(DEFAULT_TTS_SETTINGS);
@@ -193,16 +195,18 @@ export function SettingsPage() {
                   key={value}
                   label={label}
                   mode={value as ThemeMode}
+                  active={themeMode === value}
                   onClick={() => changeThemeMode(value as ThemeMode)}
                 />
               ))}
             </div>
 
             <div className="grid gap-5 md:gap-2">
-              <div className="flex min-h-11 w-full items-center justify-between px-0.5">
-                <span className={cn("text-lg font-medium", moodThemeEnabled ? "text-primary" : "text-foreground")}>
+              <div className={cn(optionButtonClass, "cursor-default", moodThemeEnabled && "border-[color-mix(in_srgb,var(--primary)_40%,transparent)] text-primary")}>
+                <span><HeartPulse aria-hidden="true" /></span>
+                <strong>
                   {dictionary.setting.theme.moodThemeTitle}
-                </span>
+                </strong>
                 <Switch
                   className="h-6 w-10 **:data-[slot=switch-thumb]:size-4 **:data-[slot=switch-thumb]:data-[state=checked]:translate-x-5"
                   checked={moodThemeEnabled}
@@ -220,6 +224,7 @@ export function SettingsPage() {
               <Option
                 key={item.code}
                 label={item.label}
+                leading={<MapPinCheckInside aria-hidden="true" />}
                 active={region === item.code}
                 onClick={() => changeRegion(item.code)}
               />
@@ -233,6 +238,7 @@ export function SettingsPage() {
               <Option
                 key={item}
                 label={localeNames[item]}
+                leading={<span className="text-xs font-extrabold">{item.startsWith("zh") ? "中" : item.slice(0, 2).toUpperCase()}</span>}
                 active={selectedLocale === item}
                 onClick={() => changeLocale(item)}
               />
@@ -241,9 +247,11 @@ export function SettingsPage() {
         ) : null}
 
         {showVoice ? (
-          <section className="grid gap-5 md:gap-3">
-            <div className="grid gap-1">
-              <span className="text-lg font-medium text-foreground">{voiceDictionary.voice.title}</span>
+          <section className="grid gap-5 md:gap-2">
+            <div className={settingsControlCardClass}>
+              <div className="mb-3.5 grid gap-1">
+                <strong>{voiceDictionary.voice.title}</strong>
+              </div>
               <div className="flex items-center gap-2">
                 <div className="min-w-0 flex-1">
                   <VoiceSelector value={ttsSettings.voice} onChange={(value) => changeTTSSetting("voice", value)} ariaLabel={voiceDictionary.voice.title} />
@@ -268,7 +276,7 @@ export function SettingsPage() {
 
 function SpeechSetting({ label, value, onChange }: { label: string; value: number; onChange: (value: number) => void }) {
   return (
-    <div className="grid gap-2">
+    <div className={cn(settingsControlCardClass, "grid gap-3")}>
       <div className="flex items-center justify-between gap-3">
         <label className="text-lg font-medium text-foreground">{label}</label>
         <span className="min-w-16 text-right text-muted-foreground" aria-label={`${label} value`}>
@@ -337,33 +345,33 @@ function VoiceSelector({ value, onChange, ariaLabel }: { value: TTSVoice; onChan
   );
 }
 
-function Option({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+function Option({ label, leading, active, onClick }: { label: string; leading: ReactNode; active: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
-      className={cn(
-        "flex min-h-11 w-full items-center justify-between border-border/60 px-0.5 text-left text-lg font-medium text-foreground",
-        active && "text-primary"
-      )}
+      aria-pressed={active}
+      className={cn(optionButtonClass, active && "border-[color-mix(in_srgb,var(--primary)_40%,transparent)] text-primary")}
       onClick={onClick}
     >
-      <span>{label}</span>
+      <span>{leading}</span>
+      <strong>{label}</strong>
       {active ? <Check className="size-5 text-primary" /> : null}
     </button>
   );
 }
 
-function ThemeOption({ label, mode, onClick }: { label: string; mode: ThemeMode; onClick: () => void }) {
+function ThemeOption({ label, mode, active, onClick }: { label: string; mode: ThemeMode; active: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
-      className={cn(
-        "flex min-h-11 w-full items-center justify-between border-border/60 px-0.5 text-left text-lg font-medium text-foreground",
-        themeOptionStateClass[mode]
-      )}
+      aria-pressed={active}
+      className={cn(optionButtonClass, themeOptionStateClass[mode])}
       onClick={onClick}
     >
-      <span>{label}</span>
+      <span>
+        {mode === "system" ? <Monitor aria-hidden="true" /> : mode === "dark" ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
+      </span>
+      <strong>{label}</strong>
       <Check className={cn("hidden size-5 text-primary", themeCheckStateClass[mode])} />
     </button>
   );
