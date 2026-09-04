@@ -6,6 +6,7 @@ const PUSH_PREFERENCES_URL = "/__flashmaple-push-preferences__";
 const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
 const PUSH_MESSAGES_URL = "/__flashmaple-push-messages__";
 const MAX_PUSH_MESSAGES = 20;
+const NOTIFICATION_LAUNCH_TARGET_PARAM = "notificationTarget";
 const DEFAULT_PUSH_PREFERENCES = { languageCode: "en", region: "Toronto" };
 const SUPPORTED_LANGUAGES = ["en", "fr", "zh-Hans", "zh-Hant", "pa", "es", "ja", "ko", "ru", "vi"];
 const SUPPORTED_REGIONS = ["Toronto", "Vancouver", "Montreal", "Calgary", "Winnipeg", "Saskatoon", "Halifax"];
@@ -371,6 +372,26 @@ async function clearPushNotifications() {
   notifications.forEach((notification) => notification.close());
 }
 
+function buildNotificationLaunchUrl(targetUrl) {
+  const target = new URL(targetUrl, self.location.origin);
+  const segments = target.pathname.split("/").filter(Boolean);
+  const isNewsDetail =
+    segments.length === 4 &&
+    segments[0] === "app" &&
+    SUPPORTED_LANGUAGES.includes(segments[1]) &&
+    segments[2] === "news" &&
+    segments[3] === "detail";
+
+  if (target.origin !== self.location.origin || !isNewsDetail) return target.href;
+
+  const launchUrl = new URL(`/app/${segments[1]}`, self.location.origin);
+  launchUrl.searchParams.set(
+    NOTIFICATION_LAUNCH_TARGET_PARAM,
+    `${target.pathname}${target.search}${target.hash}`,
+  );
+  return launchUrl.href;
+}
+
 async function showNewsItemNotification(payload) {
   const data = payload?.data;
   if (!data || data.type !== "news-item" || data.newsId === undefined || data.newsId === null) return;
@@ -454,7 +475,7 @@ self.addEventListener("notificationclick", (event) => {
       }
     }
 
-    return self.clients.openWindow(targetUrl);
+    return self.clients.openWindow(buildNotificationLaunchUrl(targetUrl));
   })());
 });
 

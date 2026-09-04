@@ -13,10 +13,10 @@ import { Button } from "@/components/ui/button";
 import { getProfile, logout } from "@/lib/api/user";
 import { localizePath } from "@/lib/i18n";
 import { providerLabel } from "@/lib/oauth";
-import { subscribeAuthStateChanged } from "@/lib/stores/auth-events";
+import { subscribeAuthStateChanged } from "@/lib/stores/auth-user";
 import { clearUserInfo, getUserInfo, hasAuthHint, isAuthenticated, saveUserInfo, type LocalUserInfo } from "@/lib/stores/auth-user";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
-import { cn } from "@/lib/utils";
 
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 

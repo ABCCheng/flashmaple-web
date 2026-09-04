@@ -17,7 +17,7 @@ import {
 } from "@/lib/api/news";
 import { scrollAppToTop } from "@/lib/app-scroll";
 import { localizePath, stripLocaleFromPathname } from "@/lib/i18n";
-import { subscribeAuthStateChanged } from "@/lib/stores/auth-events";
+import { subscribeAuthStateChanged } from "@/lib/stores/auth-user";
 import { getAuthIdentity, getUserInfo, isAuthenticated } from "@/lib/stores/auth-user";
 import { formatMonthDayTime } from "@/lib/time";
 import { useDebouncedValue } from "@/lib/use-debounced-value";

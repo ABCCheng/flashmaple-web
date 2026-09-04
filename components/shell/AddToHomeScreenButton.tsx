@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useLocaleContext } from "@/components/providers/locale-provider";
 import { AppModal } from "@/components/app";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;

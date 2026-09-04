@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 
 type AppPageProps = ComponentPropsWithoutRef<"div"> & {

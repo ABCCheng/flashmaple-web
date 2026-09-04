@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { getTTSSettings } from "@/lib/stores/tts";
 import { synthesizeEdgeTTS } from "@/lib/tts/edge/synthesize";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 
 type ActivePlayback = { audio: HTMLAudioElement; url: string; stop: () => void } | null;
 let activePlayback: ActivePlayback = null;

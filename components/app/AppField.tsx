@@ -5,7 +5,7 @@ import { Eye, EyeOff, Search, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 
 type AppFieldProps = Omit<ComponentPropsWithoutRef<typeof Input>, "prefix"> & {

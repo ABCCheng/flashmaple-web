@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type TouchEvent } from "react
 
 import { useLocaleContext } from "@/components/providers/locale-provider";
 import { getAppScrollRoot } from "@/lib/app-scroll";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 
 const PULL_HINT_DISTANCE = 20;
 const PULL_REFRESH_DISTANCE = 80;

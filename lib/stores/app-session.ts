@@ -1,11 +1,11 @@
 import { readSessionStorage, writeSessionStorage } from "./storage";
 
-const appNavigationStackKey = "FLASH_MAPLE_APP_NAVIGATION_STACK";
+const APP_NAVIGATION_STACK_SESSION_KEY = "FLASH_MAPLE_APP_NAVIGATION_STACK";
 export const APP_SPLASH_SESSION_KEY = "FLASH_MAPLE_PWA_SPLASH_SHOWN";
 let appNavigationStackInitialized = false;
 
 function readAppNavigationStack() {
-  const value = readSessionStorage(appNavigationStackKey);
+  const value = readSessionStorage(APP_NAVIGATION_STACK_SESSION_KEY);
   if (!value) return [];
 
   try {
@@ -17,7 +17,7 @@ function readAppNavigationStack() {
 }
 
 function writeAppNavigationStack(stack: string[]) {
-  writeSessionStorage(appNavigationStackKey, JSON.stringify(stack.slice(-50)));
+  writeSessionStorage(APP_NAVIGATION_STACK_SESSION_KEY, JSON.stringify(stack.slice(-50)));
 }
 
 export function initializeAppNavigationStack(path: string) {

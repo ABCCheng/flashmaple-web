@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import { homePath, localeNames, locales, type Locale } from "@/lib/i18n";
 import { savePreferredLocale } from "@/lib/stores/locale";
 import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 
 const headerMenuSurfaceClass =

@@ -62,13 +62,13 @@ function persistLogin(userInfo: UserInfo) {
   saveUserInfo(userInfo);
 }
 
-function clearSocialAuthSearchParams() {
+function getSocialAuthSearchFreePath() {
   const url = new URL(window.location.href);
   url.searchParams.delete("code");
   url.searchParams.delete("state");
   url.searchParams.delete("error");
   url.searchParams.delete("error_description");
-  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 function GoogleIcon() {
@@ -113,6 +113,12 @@ export function AuthPage() {
   const redirectUri = typeof window !== "undefined"
     ? getSocialAuthRedirectUri()
     : "";
+
+  const clearSocialAuthSearchParams = useCallback(() => {
+    const cleanPath = getSocialAuthSearchFreePath();
+    window.history.replaceState(null, "", cleanPath);
+    router.replace(cleanPath, { scroll: false });
+  }, [router]);
 
   const clearSocialAuthPopup = useCallback((closePopup = false) => {
     if (socialAuthPopupTimerRef.current !== null) {
@@ -188,8 +194,6 @@ export function AuthPage() {
   const handleSocialAuthCallback = useCallback(async (code: string, statePayload: SocialAuthStatePayload, state?: string) => {
     const callbackLocale = statePayload.locale ?? locale;
     const callbackDictionary = dictionaries[callbackLocale];
-    let loginCompleted = false;
-
     try {
       const res = await oauthLogin(getSocialAuthLoginProvider(statePayload.mode, statePayload.provider), {
         code,
@@ -203,14 +207,9 @@ export function AuthPage() {
       }
 
       persistLogin(res.data.userInfo);
-      loginCompleted = true;
-      clearSocialAuthSearchParams();
       showGlobalSnackbar(callbackDictionary.auth.success.replace("{{provider}}", providerLabel(statePayload.provider, callbackDictionary)).replace("{{action}}", callbackDictionary.auth.login));
       router.replace(localizePath("/profile", callbackLocale));
     } finally {
-      if (!loginCompleted && new URL(window.location.href).searchParams.has("code")) {
-        clearSocialAuthSearchParams();
-      }
       clearSocialAuthPopup(true);
       socialAuthCallbackInFlightRef.current = false;
       socialAuthInFlightRef.current = false;
@@ -239,12 +238,14 @@ export function AuthPage() {
       const statePayload = consumeSocialAuthState(state);
       socialAuthInFlightRef.current = false;
       queueMicrotask(() => setSubmitting(false));
-      showGlobalSnackbar(
-        statePayload && error === "access_denied"
-          ? dictionary.auth.socialCancelled
-          : dictionary.auth.socialTokenMissing.replace("{{provider}}", providerLabel(statePayload?.provider, dictionary))
-      );
       clearSocialAuthSearchParams();
+      if (statePayload) {
+        showGlobalSnackbar(
+          error === "access_denied"
+            ? dictionary.auth.socialCancelled
+            : dictionary.auth.socialTokenMissing.replace("{{provider}}", providerLabel(statePayload.provider, dictionary))
+        );
+      }
       return;
     }
 
@@ -252,18 +253,23 @@ export function AuthPage() {
 
     const statePayload = consumeSocialAuthState(state);
     if (!statePayload) {
-      showGlobalSnackbar(dictionary.auth.socialTokenMissing.replace("{{provider}}", providerLabel(undefined, dictionary)));
+      // A restored PWA page can contain a callback code whose state was already
+      // consumed by an earlier render. It is a stale/duplicate callback, not a
+      // new login attempt, so discard it without showing the "-" provider error.
       clearSocialAuthSearchParams();
       return;
     }
 
+    // Remove one-shot callback parameters before the async exchange. This
+    // prevents mobile/PWA history restoration from replaying the old code.
+    clearSocialAuthSearchParams();
     socialAuthCallbackInFlightRef.current = true;
     socialAuthInFlightRef.current = true;
     void Promise.resolve().then(() => {
       setSubmitting(true);
       void handleSocialAuthCallback(code, statePayload, state ?? undefined);
     });
-  }, [dictionary, dictionary.auth.socialCancelled, dictionary.auth.socialTokenMissing, handleSocialAuthCallback, searchParams]);
+  }, [clearSocialAuthSearchParams, dictionary, dictionary.auth.socialCancelled, dictionary.auth.socialTokenMissing, handleSocialAuthCallback, searchParams]);
 
   useEffect(() => {
     function handlePageShow() {
@@ -292,11 +298,13 @@ export function AuthPage() {
         const statePayload = consumeSocialAuthState(state ?? null);
         socialAuthInFlightRef.current = false;
         setSubmitting(false);
-        showGlobalSnackbar(
-          statePayload && error === "access_denied"
-            ? dictionary.auth.socialCancelled
-            : dictionary.auth.socialTokenMissing.replace("{{provider}}", providerLabel(statePayload?.provider, dictionary))
-        );
+        if (statePayload) {
+          showGlobalSnackbar(
+            error === "access_denied"
+              ? dictionary.auth.socialCancelled
+              : dictionary.auth.socialTokenMissing.replace("{{provider}}", providerLabel(statePayload.provider, dictionary))
+          );
+        }
         return;
       }
 
@@ -304,7 +312,6 @@ export function AuthPage() {
       if (!code || !statePayload) {
         socialAuthInFlightRef.current = false;
         setSubmitting(false);
-        showGlobalSnackbar(dictionary.auth.socialTokenMissing.replace("{{provider}}", providerLabel(undefined, dictionary)));
         return;
       }
 

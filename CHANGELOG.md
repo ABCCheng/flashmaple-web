@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [Unreleased]
+
+### Fixed
+
+- Prevented mobile/PWA Google OAuth callback replays by clearing one-shot callback parameters before token exchange and synchronizing the Next.js route state.
+- Fixed PWA back navigation after opening multiple news notifications.
+
 ## [6.1.0] - 2026-08-30
 
 ### Changed

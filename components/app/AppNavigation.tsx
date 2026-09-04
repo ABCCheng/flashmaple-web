@@ -7,7 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
+import { appZIndex } from "@/lib/z-index";
 import {
   dictionaries,
   getLocaleFromPathname,
@@ -18,7 +19,6 @@ import {
 import { canGoBackInApp } from "@/lib/stores/app-session";
 import { notifyAppScrollSnapshot } from "@/lib/app-scroll";
 import { AppMobileStickyHeaderSpacer } from "./AppChrome";
-import { appZIndex } from "@/lib/z-index";
 
 
 export function useRouterBack(fallbackHref = "/") {

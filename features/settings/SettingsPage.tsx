@@ -11,13 +11,13 @@ import { useThemeContext } from "@/components/providers/theme-provider";
 import { localeNames, locales, localizePath, stripLocaleFromPathname, type Locale } from "@/lib/i18n";
 import { savePreferredLocale } from "@/lib/stores/locale";
 import type { ThemeMode } from "@/lib/stores/theme";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
+import { appZIndex } from "@/lib/z-index";
 import { AppMobileBackHeader, useRouterBack } from "@/components/app";
 import { getPreviousAppNavigationPath, replaceCurrentAppNavigationPath } from "@/lib/stores/app-session";
 import { Switch } from "@/components/ui/switch";
 import { DEFAULT_TTS_SETTINGS, getTTSSettings, saveTTSSettings, TTS_VOICE_OPTIONS, type TTSSettings, type TTSVoice } from "@/lib/stores/tts";
 import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
-import { appZIndex } from "@/lib/z-index";
 import { AudioPlayButton } from "@/components/audio/AudioPlayButton";
 
 const headerMenuSurfaceClass =

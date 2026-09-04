@@ -27,9 +27,9 @@ import { useRegionContext } from "@/components/providers/region-provider";
 import { homePath, type Dictionary, type Locale, localizePath } from "@/lib/i18n";
 import { notifyAppScrollSnapshot } from "@/lib/app-scroll";
 import { notifyExploreTabSelection } from "@/lib/explore-tab-events";
-import { cn } from "@/lib/utils";
-import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
+import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
+import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
 
 const headerMenuSurfaceClass =
   "absolute right-0 top-[calc(100%+0.5rem)] grid gap-0.5 overflow-hidden rounded-2xl border border-border bg-popover p-1.5 text-popover-foreground shadow-[0_18px_46px_rgba(28,28,30,0.16)] backdrop-blur-xl";

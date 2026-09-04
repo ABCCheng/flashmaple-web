@@ -1,22 +1,26 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { DesktopAppHeader } from "@/components/shell/DesktopAppHeader";
 import { useRegionContext } from "@/components/providers/region-provider";
 import { activateDevice, getProfile } from "@/lib/api/user";
-import { initializeAppNavigationStack, rememberAppNavigationPath } from "@/lib/stores/app-session";
+import {
+  initializeAppNavigationStack,
+  rememberAppNavigationPath,
+  updateCurrentAppNavigationPath,
+} from "@/lib/stores/app-session";
 import {
   dictionaries,
   getLocaleFromPathname,
   hasLocalePrefix,
   stripLocaleFromPathname,
 } from "@/lib/i18n";
-import { subscribeAuthStateChanged } from "@/lib/stores/auth-events";
+import { subscribeAuthStateChanged } from "@/lib/stores/auth-user";
 import { getUserInfo, hasAuthHint, isAuthenticated, saveUserInfo } from "@/lib/stores/auth-user";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/class-names";
 import {
   getServiceWorkerContainer,
   syncCurrentWebPushSubscription,
@@ -61,6 +65,20 @@ function scheduleNonCriticalStartup(callback: () => void) {
 
 const pwaEdgeGestureClass = "app-pwa-top-route";
 const pwaEdgeGestureWidth = 24;
+const notificationLaunchTargetParam = "notificationTarget";
+
+function getNotificationTargetPath(value: string) {
+  try {
+    const targetUrl = new URL(value, window.location.origin);
+    if (targetUrl.origin !== window.location.origin) return null;
+    if (stripLocaleFromPathname(targetUrl.pathname) !== "/news/detail") return null;
+    if (targetUrl.searchParams.get("source") !== "notification") return null;
+
+    return `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+  } catch {
+    return null;
+  }
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -74,6 +92,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   const activeExploreTab = searchParams.get("tab") || "local";
   const isSearchResult = Boolean(searchParams.get("q")?.trim());
   const navigationPath = searchParams.size ? `${pathname}?${searchParams.toString()}` : pathname;
+  const notificationNavigationActiveRef = useRef(
+    currentPath === "/news/detail" && searchParams.get("source") === "notification"
+  );
+  const notificationNavigationInFlightRef = useRef(false);
+  const notificationNavigationTargetRef = useRef<string | null>(null);
+  const pendingNotificationTargetRef = useRef<string | null>(null);
+  const coldLaunchNotificationTargetRef = useRef<string | null>(null);
   const [displayName, setDisplayName] = useState("");
   const [avatar, setAvatar] = useState<string | null>(null);
   const isLoggedIn = useSyncExternalStore(
@@ -87,6 +112,38 @@ export function AppShell({ children }: { children: ReactNode }) {
     setDisplayName(user?.userName?.trim() || "");
     setAvatar(user?.avatarType === "IMAGE_URL" ? user.avatar : null);
   }, []);
+
+  const beginNotificationNavigation = useCallback((targetPath: string, replace: boolean) => {
+    notificationNavigationActiveRef.current = true;
+    notificationNavigationInFlightRef.current = true;
+    notificationNavigationTargetRef.current = targetPath;
+
+    if (replace) {
+      // Keep the app's lightweight navigation stack aligned with the browser
+      // entry that Next.js is about to replace.
+      updateCurrentAppNavigationPath(targetPath);
+      router.replace(targetPath, { scroll: false });
+      return;
+    }
+
+    router.push(targetPath, { scroll: false });
+  }, [router]);
+
+  const queueNotificationNavigation = useCallback((targetPath: string) => {
+    if (notificationNavigationInFlightRef.current) {
+      // Notification taps can arrive together when a suspended PWA resumes.
+      // Only the newest article should replace the navigation in progress.
+      pendingNotificationTargetRef.current = targetPath;
+      return;
+    }
+
+    const isAlreadyOnNewsDetail =
+      stripLocaleFromPathname(window.location.pathname) === "/news/detail";
+    beginNotificationNavigation(
+      targetPath,
+      notificationNavigationActiveRef.current || isAlreadyOnNewsDetail,
+    );
+  }, [beginNotificationNavigation]);
 
   useEffect(() => {
     const serviceWorker = getRegistrableServiceWorker();
@@ -124,6 +181,56 @@ export function AppShell({ children }: { children: ReactNode }) {
 
     return cancelStartup;
   }, []);
+
+  useEffect(() => {
+    const launchTarget = searchParams.get(notificationLaunchTargetParam);
+    if (!launchTarget) return;
+
+    const targetPath = getNotificationTargetPath(launchTarget);
+    const cleanSearchParams = new URLSearchParams(searchParams.toString());
+    cleanSearchParams.delete(notificationLaunchTargetParam);
+    const cleanQuery = cleanSearchParams.toString();
+    const cleanHomePath = `${pathname}${cleanQuery ? `?${cleanQuery}` : ""}`;
+
+    if (targetPath) {
+      coldLaunchNotificationTargetRef.current = targetPath;
+    }
+
+    // openWindow() created the first browser entry on the localized home
+    // route. Remove the private launch parameter before adding the detail
+    // entry so native back gestures have a real home page to return to.
+    updateCurrentAppNavigationPath(cleanHomePath);
+    router.replace(cleanHomePath, { scroll: false });
+  }, [pathname, router, searchParams]);
+
+  useEffect(() => {
+    if (searchParams.has(notificationLaunchTargetParam) || currentPath !== "/") return;
+
+    const targetPath = coldLaunchNotificationTargetRef.current;
+    if (!targetPath) return;
+
+    coldLaunchNotificationTargetRef.current = null;
+    beginNotificationNavigation(targetPath, false);
+  }, [beginNotificationNavigation, currentPath, searchParams]);
+
+  useEffect(() => {
+    const requestedTarget = notificationNavigationTargetRef.current;
+    if (!notificationNavigationInFlightRef.current || requestedTarget !== navigationPath) {
+      if (currentPath !== "/news/detail") {
+        notificationNavigationActiveRef.current = false;
+      }
+      return;
+    }
+
+    notificationNavigationInFlightRef.current = false;
+    notificationNavigationTargetRef.current = null;
+
+    const pendingTarget = pendingNotificationTargetRef.current;
+    pendingNotificationTargetRef.current = null;
+    if (!pendingTarget || pendingTarget === navigationPath) return;
+
+    beginNotificationNavigation(pendingTarget, true);
+  }, [beginNotificationNavigation, currentPath, navigationPath]);
 
   useEffect(() => {
     const serviceWorker = getRegistrableServiceWorker();
@@ -228,7 +335,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       try {
         const targetUrl = new URL(event.data.url, window.location.origin);
         if (targetUrl.origin !== window.location.origin) return;
-        router.push(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`);
+        const targetPath = getNotificationTargetPath(targetUrl.toString());
+        if (!targetPath) return;
+        queueNotificationNavigation(targetPath);
       } catch {
         // Ignore malformed notification URLs.
       }
@@ -238,7 +347,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     return () => {
       serviceWorker.removeEventListener("message", handleServiceWorkerMessage);
     };
-  }, [router]);
+  }, [queueNotificationNavigation]);
 
   useEffect(() => {
     return subscribeAuthStateChanged(syncAuthState);
