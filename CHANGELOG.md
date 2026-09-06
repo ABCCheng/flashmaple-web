@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [Unreleased]
+
+### Changed
+
+- Optimized the UI on the Settings pages.
+
+### Fixed
+
+- Fixed incorrect page redirect upon opening the first news notification.
+
 ## [6.1.1] - 2026-09-04
 
 ### Fixed

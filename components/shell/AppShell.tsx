@@ -98,7 +98,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const notificationNavigationInFlightRef = useRef(false);
   const notificationNavigationTargetRef = useRef<string | null>(null);
   const pendingNotificationTargetRef = useRef<string | null>(null);
-  const coldLaunchNotificationTargetRef = useRef<string | null>(null);
   const [displayName, setDisplayName] = useState("");
   const [avatar, setAvatar] = useState<string | null>(null);
   const isLoggedIn = useSyncExternalStore(
@@ -192,26 +191,18 @@ export function AppShell({ children }: { children: ReactNode }) {
     const cleanQuery = cleanSearchParams.toString();
     const cleanHomePath = `${pathname}${cleanQuery ? `?${cleanQuery}` : ""}`;
 
-    if (targetPath) {
-      coldLaunchNotificationTargetRef.current = targetPath;
-    }
-
     // openWindow() created the first browser entry on the localized home
-    // route. Remove the private launch parameter before adding the detail
-    // entry so native back gestures have a real home page to return to.
+    // route. Clean that entry synchronously, then add the detail entry in the
+    // same effect so the cold-launch target cannot be lost between renders.
     updateCurrentAppNavigationPath(cleanHomePath);
-    router.replace(cleanHomePath, { scroll: false });
-  }, [pathname, router, searchParams]);
+    // This effect can run before Next.js patches replaceState during initial
+    // hydration. Preserve its internal state so popstate can restore home.
+    window.history.replaceState(window.history.state, "", cleanHomePath);
 
-  useEffect(() => {
-    if (searchParams.has(notificationLaunchTargetParam) || currentPath !== "/") return;
-
-    const targetPath = coldLaunchNotificationTargetRef.current;
-    if (!targetPath) return;
-
-    coldLaunchNotificationTargetRef.current = null;
-    beginNotificationNavigation(targetPath, false);
-  }, [beginNotificationNavigation, currentPath, searchParams]);
+    if (targetPath) {
+      queueNotificationNavigation(targetPath);
+    }
+  }, [pathname, queueNotificationNavigation, searchParams]);
 
   useEffect(() => {
     const requestedTarget = notificationNavigationTargetRef.current;
