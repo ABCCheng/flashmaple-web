@@ -224,8 +224,8 @@ html {
   min-height: -webkit-fill-available;
 }
 
-html.app-pwa-top-route,
-html.app-pwa-top-route body {
+html.app-pwa-edge-guard,
+html.app-pwa-edge-guard body {
   overscroll-behavior-x: none;
 }
 

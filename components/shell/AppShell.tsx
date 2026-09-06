@@ -28,7 +28,7 @@ import {
 import { markWebPushMessageRead } from "@/lib/stores/web-push-messages";
 import { buildSiteTitle } from "@/lib/seo";
 import { markAppSplashReady } from "@/lib/app-splash";
-import { AppMobileBottomTab } from "../app";
+import { AppMobileBottomTab, useRouterBack } from "../app";
 
 function getRegistrableServiceWorker() {
   const serviceWorker = getServiceWorkerContainer();
@@ -63,7 +63,7 @@ function scheduleNonCriticalStartup(callback: () => void) {
   return () => window.clearTimeout(handle);
 }
 
-const pwaEdgeGestureClass = "app-pwa-top-route";
+const pwaEdgeGestureClass = "app-pwa-edge-guard";
 const pwaEdgeGestureWidth = 24;
 const notificationLaunchTargetParam = "notificationTarget";
 
@@ -83,6 +83,7 @@ function getNotificationTargetPath(value: string) {
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const routerBack = useRouterBack();
   const searchParams = useSearchParams();
   const locale = getLocaleFromPathname(pathname);
   const keepLocalePrefix = hasLocalePrefix(pathname);
@@ -372,30 +373,71 @@ export function AppShell({ children }: { children: ReactNode }) {
     return () => document.documentElement.classList.remove("app-shell-active");
   }, []);
 
-  useEffect(() => {
-    if (!showMobileTab || !isStandaloneApp()) return;
+  useLayoutEffect(() => {
+    if (!isStandaloneApp()) return;
 
     document.documentElement.classList.add(pwaEdgeGestureClass);
+    let backTouch: Touch | null = null;
 
-    const preventPwaEdgeNavigation = (event: TouchEvent) => {
-      if (event.touches.length !== 1) return;
+    const reset = () => { backTouch = null; };
+    const handleStart = (event: TouchEvent) => {
+      reset();
+      if (event.touches.length !== 1 || !event.cancelable) return;
 
-      const touchX = event.touches[0]?.clientX;
-      if (touchX === undefined) return;
+      const touch = event.touches[0];
+      const atLeftEdge = touch.clientX <= pwaEdgeGestureWidth;
+      const atRightEdge = touch.clientX >= window.innerWidth - pwaEdgeGestureWidth;
+      if (!atLeftEdge && !atRightEdge) return;
 
-      const startedAtNavigationEdge =
-        touchX <= pwaEdgeGestureWidth || touchX >= window.innerWidth - pwaEdgeGestureWidth;
-      if (startedAtNavigationEdge && event.cancelable) {
-        event.preventDefault();
+      // Native PWA swipes can skip history created without user interaction
+      // (such as notification startup). Subpages use the header's Back action.
+      event.preventDefault();
+      if (atLeftEdge && !showMobileTab) backTouch = touch;
+    };
+
+    const handleMove = (event: TouchEvent) => {
+      if (!backTouch) return;
+      const touch = event.touches[0];
+      if (event.touches.length !== 1 || touch.identifier !== backTouch.identifier) {
+        reset();
+        return;
       }
+
+      const dx = touch.clientX - backTouch.clientX;
+      const dy = Math.abs(touch.clientY - backTouch.clientY);
+      // A vertical scroll must not later turn into a back swipe.
+      if (dy > 12 && dy > Math.abs(dx)) reset();
     };
 
-    document.addEventListener("touchstart", preventPwaEdgeNavigation, { passive: false });
-    return () => {
-      document.documentElement.classList.remove(pwaEdgeGestureClass);
-      document.removeEventListener("touchstart", preventPwaEdgeNavigation);
+    const handleEnd = (event: TouchEvent) => {
+      const start = backTouch;
+      reset();
+      if (!start || event.touches.length) return;
+
+      const touch = Array.from(event.changedTouches).find((item) => item.identifier === start.identifier);
+      if (!touch) return;
+
+      const dx = touch.clientX - start.clientX;
+      const dy = Math.abs(touch.clientY - start.clientY);
+      if (dx < 60 || dx < dy * 1.5) return;
+
+      if (event.cancelable) event.preventDefault();
+      routerBack();
     };
-  }, [showMobileTab]);
+
+    document.addEventListener("touchstart", handleStart, { passive: false, capture: true });
+    document.addEventListener("touchmove", handleMove, { passive: true, capture: true });
+    document.addEventListener("touchend", handleEnd, { passive: false, capture: true });
+    document.addEventListener("touchcancel", reset, { passive: true, capture: true });
+    return () => {
+      reset();
+      document.documentElement.classList.remove(pwaEdgeGestureClass);
+      document.removeEventListener("touchstart", handleStart, { capture: true });
+      document.removeEventListener("touchmove", handleMove, { capture: true });
+      document.removeEventListener("touchend", handleEnd, { capture: true });
+      document.removeEventListener("touchcancel", reset, { capture: true });
+    };
+  }, [routerBack, showMobileTab, navigationPath]);
 
   useLayoutEffect(() => {
     initializeAppNavigationStack(navigationPath);
