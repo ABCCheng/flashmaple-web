@@ -229,6 +229,13 @@ html.app-pwa-edge-guard body {
   overscroll-behavior-x: none;
 }
 
+.app-pwa-swipe-surface {
+  transform: translateX(var(--app-swipe-x, 0px));
+  will-change: transform;
+  background: var(--app-global-bg);
+  box-shadow: -8px 0 24px rgb(0 0 0 / 12%);
+}
+
 /* App-like scrolling. */
 body {
   min-height: var(--app-viewport-height);

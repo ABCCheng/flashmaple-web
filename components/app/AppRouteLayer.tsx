@@ -52,24 +52,29 @@ export function AppRouteLayer({
   }, [preserveScroll]);
 
   return (
-    <section
-      ref={layerRef}
-      data-slot="app-route-layer"
-      className={cn(
-        "app-route-layer fixed inset-x-0 bottom-0 top-0 overflow-y-auto overscroll-y-contain md:top-(--app-desktop-header-height)",
-        appZIndex.routeLayer,
-        className
-      )}
-      {...props}
+    <div
+      data-slot="app-route-surface"
+      className={cn("pointer-events-none fixed inset-0", appZIndex.routeLayer)}
     >
-      <div
+      <section
+        ref={layerRef}
+        data-slot="app-route-layer"
         className={cn(
-          "min-h-[calc(100%+1px)] w-full md:min-h-full md:mx-auto md:w-[min(100%,840px)]",
-          contentClassName
+          "app-route-layer pointer-events-auto fixed inset-x-0 bottom-0 top-0 overflow-y-auto overscroll-y-contain md:top-(--app-desktop-header-height)",
+          appZIndex.routeLayer,
+          className
         )}
+        {...props}
       >
-        {children}
-      </div>
-    </section>
+        <div
+          className={cn(
+            "min-h-[calc(100%+1px)] w-full md:min-h-full md:mx-auto md:w-[min(100%,840px)]",
+            contentClassName
+          )}
+        >
+          {children}
+        </div>
+      </section>
+    </div>
   );
 }

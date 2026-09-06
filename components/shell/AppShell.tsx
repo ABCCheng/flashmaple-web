@@ -378,10 +378,92 @@ export function AppShell({ children }: { children: ReactNode }) {
 
     document.documentElement.classList.add(pwaEdgeGestureClass);
     let backTouch: Touch | null = null;
+    let swipeSurface: HTMLElement | null = null;
+    let swipeAnimation: Animation | null = null;
+    let swipeOffset = 0;
+    let motionSamples: { x: number; time: number }[] = [];
+    let finishingSwipe = false;
+    let navigationTimeout = 0;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const reset = () => { backTouch = null; };
+    const clearSwipe = () => {
+      backTouch = null;
+      swipeAnimation?.cancel();
+      swipeAnimation = null;
+      swipeSurface?.classList.remove("app-pwa-swipe-surface");
+      swipeSurface?.style.removeProperty("--app-swipe-x");
+      swipeSurface = null;
+      swipeOffset = 0;
+      motionSamples = [];
+      finishingSwipe = false;
+      window.clearTimeout(navigationTimeout);
+    };
+
+    const sampleMotion = (x: number, time: number) => {
+      motionSamples = [...motionSamples.filter((sample) => time - sample.time <= 100), { x, time }].slice(-8);
+      const first = motionSamples[0];
+      const elapsed = time - first.time;
+      return elapsed > 0 ? Math.max(-2, Math.min(2, (x - first.x) / elapsed)) : 0;
+    };
+
+    const finishSwipe = (goBack: boolean, releaseVelocity = 0) => {
+      backTouch = null;
+      const surface = swipeSurface;
+      if (!surface || reducedMotion.matches) {
+        clearSwipe();
+        if (goBack) routerBack();
+        return;
+      }
+
+      finishingSwipe = true;
+      const target = goBack ? window.innerWidth : 0;
+      // Critically damped spring: preserve release velocity and settle without
+      // overshooting the viewport. These are app-tuned, not UIKit parameters.
+      const displacement = swipeOffset - target;
+      const frequency = 26;
+      const initialVelocity = releaseVelocity * 1000;
+      const coefficient = initialVelocity + frequency * displacement;
+      const frames: Keyframe[] = [];
+      let duration = 0;
+      for (let frame = 0; frame <= 72; frame++) {
+        const time = frame / 120;
+        const decay = Math.exp(-frequency * time);
+        const position = target + (displacement + coefficient * time) * decay;
+        const velocity = (initialVelocity - frequency * coefficient * time) * decay;
+        frames.push({ transform: `translateX(${Math.max(0, Math.min(window.innerWidth, position))}px)` });
+        duration = time * 1000;
+        const settled = Math.abs(position - target) < 0.5 && Math.abs(velocity) < 5;
+        const reachedBoundary = goBack ? position >= target : position <= target;
+        if (frame > 0 && (settled || reachedBoundary)) break;
+      }
+      frames[frames.length - 1] = { transform: `translateX(${target}px)` };
+      const animation = surface.animate(
+        frames,
+        { duration, easing: "linear", fill: "forwards" },
+      );
+      swipeAnimation = animation;
+      void animation.finished.then(() => {
+        if (swipeAnimation !== animation) return;
+        if (!goBack) {
+          clearSwipe();
+          return;
+        }
+        // Keep the outgoing surface offscreen until the route commits. If
+        // navigation fails, restore interaction instead of leaving a blank UI.
+        navigationTimeout = window.setTimeout(clearSwipe, 2000);
+        routerBack();
+      }).catch(() => { /* Route changes and cancelled gestures cancel the animation. */ });
+    };
+
     const handleStart = (event: TouchEvent) => {
-      reset();
+      if (finishingSwipe) {
+        if (event.cancelable) event.preventDefault();
+        return;
+      }
+      if (backTouch) {
+        finishSwipe(false);
+        return;
+      }
       if (event.touches.length !== 1 || !event.cancelable) return;
 
       const touch = event.touches[0];
@@ -392,50 +474,87 @@ export function AppShell({ children }: { children: ReactNode }) {
       // Native PWA swipes can skip history created without user interaction
       // (such as notification startup). Subpages use the header's Back action.
       event.preventDefault();
-      if (atLeftEdge && !showMobileTab) backTouch = touch;
+      if (atLeftEdge && !showMobileTab) {
+        backTouch = touch;
+        motionSamples = [{ x: touch.clientX, time: event.timeStamp }];
+      }
     };
 
     const handleMove = (event: TouchEvent) => {
       if (!backTouch) return;
       const touch = event.touches[0];
       if (event.touches.length !== 1 || touch.identifier !== backTouch.identifier) {
-        reset();
+        finishSwipe(false);
         return;
       }
 
       const dx = touch.clientX - backTouch.clientX;
       const dy = Math.abs(touch.clientY - backTouch.clientY);
+      sampleMotion(touch.clientX, event.timeStamp);
       // A vertical scroll must not later turn into a back swipe.
-      if (dy > 12 && dy > Math.abs(dx)) reset();
+      if (dy > 12 && dy > Math.abs(dx)) {
+        finishSwipe(false);
+        return;
+      }
+      if (reducedMotion.matches || (!swipeSurface && (dx <= 6 || dx < dy * 1.5))) return;
+
+      if (!swipeSurface) {
+        // Animate a viewport wrapper, not the scrolling layer: fixed headers
+        // must stay at the top even when the article is scrolled down.
+        swipeSurface = Array.from(document.querySelectorAll<HTMLElement>('[data-slot="app-route-surface"]')).at(-1)
+          ?? document.querySelector<HTMLElement>(".app-root");
+        swipeSurface?.classList.add("app-pwa-swipe-surface");
+      }
+      swipeOffset = Math.min(Math.max(0, dx), window.innerWidth);
+      swipeSurface?.style.setProperty("--app-swipe-x", `${swipeOffset}px`);
     };
 
     const handleEnd = (event: TouchEvent) => {
       const start = backTouch;
-      reset();
-      if (!start || event.touches.length) return;
+      if (!start) return;
+      if (event.touches.length) {
+        finishSwipe(false);
+        return;
+      }
 
       const touch = Array.from(event.changedTouches).find((item) => item.identifier === start.identifier);
-      if (!touch) return;
+      if (!touch) {
+        finishSwipe(false);
+        return;
+      }
 
       const dx = touch.clientX - start.clientX;
       const dy = Math.abs(touch.clientY - start.clientY);
-      if (dx < 60 || dx < dy * 1.5) return;
+      const releaseVelocity = sampleMotion(touch.clientX, event.timeStamp);
+      if (swipeSurface) {
+        swipeOffset = Math.min(Math.max(0, dx), window.innerWidth);
+        swipeSurface.style.setProperty("--app-swipe-x", `${swipeOffset}px`);
+      }
+      // A slow drag is only a preview until the finger reaches the far edge.
+      // Otherwise require a deliberate forward flick (velocity is px/ms).
+      const reachedRightEdge = touch.clientX >= window.innerWidth - 12;
+      const flickedBack = dx >= 40 && releaseVelocity >= 0.65;
+      if (dx <= 0 || dx < dy * 1.5 || releaseVelocity < -0.25 || (!reachedRightEdge && !flickedBack)) {
+        finishSwipe(false, releaseVelocity);
+        return;
+      }
 
       if (event.cancelable) event.preventDefault();
-      routerBack();
+      finishSwipe(true, releaseVelocity);
     };
+    const handleCancel = () => { if (!finishingSwipe) finishSwipe(false); };
 
     document.addEventListener("touchstart", handleStart, { passive: false, capture: true });
     document.addEventListener("touchmove", handleMove, { passive: true, capture: true });
     document.addEventListener("touchend", handleEnd, { passive: false, capture: true });
-    document.addEventListener("touchcancel", reset, { passive: true, capture: true });
+    document.addEventListener("touchcancel", handleCancel, { passive: true, capture: true });
     return () => {
-      reset();
+      clearSwipe();
       document.documentElement.classList.remove(pwaEdgeGestureClass);
       document.removeEventListener("touchstart", handleStart, { capture: true });
       document.removeEventListener("touchmove", handleMove, { capture: true });
       document.removeEventListener("touchend", handleEnd, { capture: true });
-      document.removeEventListener("touchcancel", reset, { capture: true });
+      document.removeEventListener("touchcancel", handleCancel, { capture: true });
     };
   }, [routerBack, showMobileTab, navigationPath]);
 
