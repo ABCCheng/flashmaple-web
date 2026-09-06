@@ -195,7 +195,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     // route. Clean that entry synchronously, then add the detail entry in the
     // same effect so the cold-launch target cannot be lost between renders.
     updateCurrentAppNavigationPath(cleanHomePath);
-    window.history.replaceState(null, "", cleanHomePath);
+    // This effect can run before Next.js patches replaceState during initial
+    // hydration. Preserve its internal state so popstate can restore home.
+    window.history.replaceState(window.history.state, "", cleanHomePath);
 
     if (targetPath) {
       queueNotificationNavigation(targetPath);
