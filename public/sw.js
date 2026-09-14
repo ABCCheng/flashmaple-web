@@ -3,11 +3,9 @@ const CACHE_NAME = `${CACHE_PREFIX}v4`;
 const OFFLINE_URL = "/offline.html";
 const PUSH_PREFERENCES_CACHE_NAME = `${CACHE_PREFIX}push-preferences-v1`;
 const PUSH_PREFERENCES_URL = "/__flashmaple-push-preferences__";
-const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
-const PUSH_MESSAGES_URL = "/__flashmaple-push-messages__";
 const MAX_PUSH_MESSAGES = 20;
 const PUSH_EVENT = "flashmaple:push";
-let inboxQueue = Promise.resolve();
+let inboxDatabase = null;
 const DEFAULT_PUSH_PREFERENCES = { languageCode: "en", region: "Toronto" };
 const SUPPORTED_LANGUAGES = ["en", "fr", "zh-Hans", "zh-Hant", "pa", "es", "ja", "ko", "ru", "vi"];
 const SUPPORTED_REGIONS = ["Toronto", "Vancouver", "Montreal", "Calgary", "Winnipeg", "Saskatoon", "Halifax"];
@@ -44,8 +42,7 @@ self.addEventListener("activate", (event) => {
               (key) =>
                 key.startsWith(CACHE_PREFIX) &&
                 key !== CACHE_NAME &&
-                key !== PUSH_PREFERENCES_CACHE_NAME &&
-                key !== PUSH_MESSAGES_CACHE_NAME
+                key !== PUSH_PREFERENCES_CACHE_NAME
             )
             .map((key) => caches.delete(key))
         )
@@ -302,58 +299,117 @@ async function readPushPreferences() {
   }
 }
 
-// The worker is the only inbox writer. Serialize the whole operation, including
-// badge updates and broadcasts, so a slower old result cannot reset a new badge.
-function updateInbox(command) {
-  const task = inboxQueue.then(async () => {
-    const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
-    const key = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
-    const response = await cache.match(key);
-    const stored = response ? await response.json() : [];
-    // Upgrade the existing array in place; users keep their message history.
-    const inbox = Array.isArray(stored) ? { revision: 0, messages: stored } : stored;
-    if (!inbox || !Number.isSafeInteger(inbox.revision) || !Array.isArray(inbox.messages)) {
-      throw new Error("Invalid push inbox");
+// IndexedDB serializes read/write transactions across worker instances. No
+// asynchronous platform work belongs inside the read-modify-write transaction.
+function inboxTransaction(database, change) {
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction("inbox", change ? "readwrite" : "readonly");
+    const store = transaction.objectStore("inbox");
+    const request = store.get("state");
+    let result;
+    let failure;
+    request.onsuccess = () => {
+      result = request.result;
+      try {
+        if (result && (!Number.isSafeInteger(result.revision) || !Array.isArray(result.messages))) {
+          throw new Error("Invalid push inbox");
+        }
+        if (change) {
+          const next = change(result);
+          if (next !== result) store.put(next, "state");
+          result = next;
+        }
+      } catch (error) {
+        failure = error;
+        transaction.abort();
+      }
+    };
+    transaction.oncomplete = () => resolve(result);
+    transaction.onabort = () => reject(failure || transaction.error || new Error("Inbox transaction aborted"));
+  });
+}
+
+function openInboxDatabase() {
+  if (inboxDatabase) return inboxDatabase;
+  inboxDatabase = new Promise((resolve, reject) => {
+    const request = indexedDB.open("flashmaple-push-inbox", 1);
+    request.onupgradeneeded = () => { request.result.createObjectStore("inbox");};
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const database = request.result;
+      database.onversionchange = () => {
+        database.close();
+        inboxDatabase = null;
+      };
+      resolve(database);
+    };
+  }).catch((error) => {
+    inboxDatabase = null;
+    throw error;
+  });
+
+  return inboxDatabase;
+}
+
+async function readInbox(database) {
+  return await inboxTransaction(database) ?? { revision: 0, messages: [] };
+}
+
+async function syncInboxBadge(database) {
+  try {
+    let snapshot = await readInbox(database);
+    for (;;) {
+      const unread = snapshot.messages.filter((message) => !message.read).length;
+      if (unread) await self.navigator.setAppBadge?.(unread);
+      else await self.navigator.clearAppBadge?.();
+      const latest = await readInbox(database);
+      if (latest.revision === snapshot.revision) return;
+      // Another instance may have committed while the OS call was pending.
+      // Reapply the current count instead of leaving a late, stale badge.
+      snapshot = latest;
     }
+  } catch (error) {
+    console.warn("Push badge update failed", error);
+  }
+}
+
+async function updateInbox(command) {
+  const database = await openInboxDatabase();
+  if (command.action === "list") return readInbox(database);
+  let changed = false;
+  const result = await inboxTransaction(database, (stored) => {
+    const inbox = stored ?? { revision: 0, messages: [] };
     let messages = inbox.messages;
     switch (command.action) {
-      case "list": break;
       case "receive":
-        messages = [command.message, ...messages.filter((m) => m.id !== command.message.id)]
-          .slice(0, MAX_PUSH_MESSAGES);
+        if (messages.some((message) => message.id === command.message.id)) return stored;
+        messages = [command.message, ...messages];
         break;
       case "read":
-        messages = messages.map((m) => m.id === command.id ? { ...m, read: true } : m);
+        messages = messages.map((message) => message.id === command.id && !message.read ? { ...message, read: true } : message);
         break;
-      case "delete": messages = messages.filter((m) => m.id !== command.id); break;
-      case "read-all": messages = messages.map((m) => ({ ...m, read: true })); break;
+      case "delete": messages = messages.filter((message) => message.id !== command.id); break;
+      case "read-all": messages = messages.map((message) => message.read ? message : { ...message, read: true }); break;
       case "clear": messages = []; break;
       default: throw new Error("Unknown push inbox action");
     }
-    const snapshot = { revision: inbox.revision, messages };
-    if (command.action !== "list" || Array.isArray(stored)) {
-      snapshot.revision++;
-      await cache.put(key, new Response(JSON.stringify(snapshot), {
-        headers: { "Content-Type": "application/json" },
-      }));
-    }
-    const unread = messages.filter((m) => !m.read).length;
-    try {
-      if (unread) await self.navigator.setAppBadge?.(unread);
-      else await self.navigator.clearAppBadge?.();
-    } catch {
-      // Badging permission is controlled by the OS; inbox sync still proceeds.
-    }
-    if (command.action !== "list") {
-      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-      windows.forEach((client) => {
-        try { client.postMessage({ type: PUSH_EVENT, action: "snapshot", snapshot }); } catch { /* Client closed. */ }
-      });
-    }
-    return snapshot;
+    changed = messages.length !== inbox.messages.length || messages.some((message, index) => message !== inbox.messages[index]);
+    if (!changed) return stored;
+    messages = messages.slice(0, MAX_PUSH_MESSAGES);
+    return { revision: inbox.revision + 1, messages };
   });
-  inboxQueue = task.catch(() => undefined);
-  return task;
+  const snapshot = result ?? { revision: 0, messages: [] };
+  if (changed) {
+    await Promise.all([
+      self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((windows) => {
+        windows.forEach((client) => {
+          try { client.postMessage({ type: PUSH_EVENT, action: "snapshot", snapshot }); } catch { /* Client closed. */ }
+        });
+      }).catch((error) => console.warn("Push inbox broadcast failed", error)),
+      syncInboxBadge(database),
+    ]);
+  }
+  return snapshot;
 }
 
 function notificationUrl(value) {
