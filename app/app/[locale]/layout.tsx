@@ -11,9 +11,11 @@ import { Suspense } from "react";
 export default function LocalizedLayout({
   children,
   detail,
+  messages,
 }: {
   children: ReactNode;
   detail: ReactNode;
+  messages: ReactNode;
 }) {
   return (
     <Suspense fallback={null}>
@@ -23,6 +25,8 @@ export default function LocalizedLayout({
             <PageRefreshProvider>
               <AppShell>
                 <AppPersistentRouteSlot>{children}</AppPersistentRouteSlot>
+                {/* Keep the message center below a news detail during Back. */}
+                {messages}
                 {detail}
               </AppShell>
             </PageRefreshProvider>

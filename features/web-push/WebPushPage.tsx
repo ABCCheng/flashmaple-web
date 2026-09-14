@@ -91,7 +91,10 @@ export function WebPushPage() {
       if (!cancelled) setLoading(false);
     }
 
-    void load();
+    void load().catch((error) => {
+      console.warn("Push configuration load failed", error);
+      if (!cancelled) setLoading(false);
+    });
     return () => {
       cancelled = true;
     };
@@ -340,7 +343,7 @@ export function WebPushPage() {
             ? "h-6 w-10 **:data-[slot=switch-thumb]:size-4 **:data-[slot=switch-thumb]:data-[state=checked]:translate-x-5"
             : undefined}
           checked={notificationsEnabled}
-          disabled={saving}
+          disabled={saving || loading || !config}
           aria-label={dictionary.webPushPage.title}
           onCheckedChange={(checked) => void handleToggle(checked)}
         />
@@ -348,7 +351,6 @@ export function WebPushPage() {
     );
   }
 
-  if (loading) return <AppLoadingOverlay />;
   if (!isWebPushSupported()) return null;
 
   return (

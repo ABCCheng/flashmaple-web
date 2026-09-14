@@ -93,10 +93,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const activeExploreTab = searchParams.get("tab") || "local";
   const isSearchResult = Boolean(searchParams.get("q")?.trim());
   const navigationPath = searchParams.size ? `${pathname}?${searchParams.toString()}` : pathname;
-  const notificationNavigationActiveRef = useRef(
-    currentPath === "/news/detail" && searchParams.get("source") === "notification"
-  );
-  const notificationNavigationInFlightRef = useRef(false);
   const notificationNavigationTargetRef = useRef<string | null>(null);
   const pendingNotificationTargetRef = useRef<string | null>(null);
   const [displayName, setDisplayName] = useState("");
@@ -114,13 +110,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, []);
 
   const beginNotificationNavigation = useCallback((targetPath: string, replace: boolean) => {
-    notificationNavigationActiveRef.current = true;
-    notificationNavigationInFlightRef.current = true;
     notificationNavigationTargetRef.current = targetPath;
 
     if (replace) {
-      // Keep the app's lightweight navigation stack aligned with the browser
-      // entry that Next.js is about to replace.
+      // A, B, C share one detail history entry. Back always returns to the
+      // page preceding A, regardless of how many notifications are opened.
       updateCurrentAppNavigationPath(targetPath);
       router.replace(targetPath, { scroll: false });
       return;
@@ -130,18 +124,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [router]);
 
   const queueNotificationNavigation = useCallback((targetPath: string) => {
-    if (notificationNavigationInFlightRef.current) {
+    if (notificationNavigationTargetRef.current) {
       // Notification taps can arrive together when a suspended PWA resumes.
       // Only the newest article should replace the navigation in progress.
       pendingNotificationTargetRef.current = targetPath;
       return;
     }
 
+    const currentUrl = new URL(window.location.href);
+    if (`${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}` === targetPath) return;
     const isAlreadyOnNewsDetail =
-      stripLocaleFromPathname(window.location.pathname) === "/news/detail";
+      stripLocaleFromPathname(currentUrl.pathname) === "/news/detail";
     beginNotificationNavigation(
       targetPath,
-      notificationNavigationActiveRef.current || isAlreadyOnNewsDetail,
+      isAlreadyOnNewsDetail,
     );
   }, [beginNotificationNavigation]);
 
@@ -206,15 +202,19 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pathname, queueNotificationNavigation, searchParams]);
 
   useEffect(() => {
-    const requestedTarget = notificationNavigationTargetRef.current;
-    if (!notificationNavigationInFlightRef.current || requestedTarget !== navigationPath) {
-      if (currentPath !== "/news/detail") {
-        notificationNavigationActiveRef.current = false;
-      }
-      return;
-    }
+    const cancelPendingNotificationNavigation = () => {
+      notificationNavigationTargetRef.current = null;
+      pendingNotificationTargetRef.current = null;
+    };
+    // Both the header Back action and the completed swipe use router.back().
+    window.addEventListener("popstate", cancelPendingNotificationNavigation);
+    return () => window.removeEventListener("popstate", cancelPendingNotificationNavigation);
+  }, []);
 
-    notificationNavigationInFlightRef.current = false;
+  useEffect(() => {
+    const requestedTarget = notificationNavigationTargetRef.current;
+    if (!requestedTarget || requestedTarget !== navigationPath) return;
+
     notificationNavigationTargetRef.current = null;
 
     const pendingTarget = pendingNotificationTargetRef.current;
@@ -222,7 +222,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (!pendingTarget || pendingTarget === navigationPath) return;
 
     beginNotificationNavigation(pendingTarget, true);
-  }, [beginNotificationNavigation, currentPath, navigationPath]);
+  }, [beginNotificationNavigation, navigationPath]);
 
   useEffect(() => {
     const serviceWorker = getRegistrableServiceWorker();
@@ -321,7 +321,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       if (event.data?.type !== "flashmaple:notification-navigation") return;
 
       if (typeof event.data.messageId === "string") {
-        void markWebPushMessageRead(event.data.messageId);
+        void markWebPushMessageRead(event.data.messageId).catch((error) => {
+          console.warn("Push message read update failed", error);
+        });
       }
 
       try {

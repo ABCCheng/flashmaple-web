@@ -54,20 +54,16 @@ function normalizeMessage(value: unknown): WebPushMessage | null {
 }
 
 async function readMessages(): Promise<WebPushMessage[]> {
-  if (!canUseCacheStorage()) return [];
+  if (!canUseCacheStorage()) throw new Error("CacheStorage unavailable");
 
-  try {
-    const cache = await window.caches.open(WEB_PUSH_MESSAGES_CACHE_NAME);
-    const response = await cache.match(getMessagesUrl());
-    if (!response) return [];
+  const cache = await window.caches.open(WEB_PUSH_MESSAGES_CACHE_NAME);
+  const response = await cache.match(getMessagesUrl());
+  if (!response) return [];
 
-    const payload = await response.json();
-    if (!Array.isArray(payload)) return [];
+  const payload = await response.json();
+  if (!Array.isArray(payload)) throw new Error("Invalid push message cache");
 
-    return payload.map(normalizeMessage).filter((message): message is WebPushMessage => Boolean(message));
-  } catch {
-    return [];
-  }
+  return payload.map(normalizeMessage).filter((message): message is WebPushMessage => Boolean(message));
 }
 
 async function writeMessages(messages: WebPushMessage[]) {
@@ -90,7 +86,14 @@ async function writeMessages(messages: WebPushMessage[]) {
 }
 
 export async function getWebPushMessages() {
-  cachedMessages = await readMessages();
+  try {
+    cachedMessages = await readMessages();
+  } catch (error) {
+    // Unavailable storage is not an empty inbox. Mutations must also fail
+    // before writing, rather than replacing persisted messages with [].
+    console.warn("Push message cache read failed", error);
+    return cachedMessages;
+  }
   hasLoadedMessages = true;
   messageChangeListeners.forEach((listener) => listener());
   void requestWebPushAppBadgeUpdate();

@@ -302,17 +302,14 @@ async function readPushPreferences() {
 }
 
 async function readStoredPushMessages() {
-  try {
-    const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
-    const url = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
-    const response = await cache.match(url);
-    if (!response) return [];
+  const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
+  const url = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
+  const response = await cache.match(url);
+  if (!response) return [];
 
-    const messages = await response.json();
-    return Array.isArray(messages) ? messages : [];
-  } catch {
-    return [];
-  }
+  const messages = await response.json();
+  if (!Array.isArray(messages)) throw new Error("Invalid push message cache");
+  return messages;
 }
 
 async function writeStoredPushMessages(messages) {
@@ -449,7 +446,12 @@ self.addEventListener("notificationclick", (event) => {
   const notificationData = event.notification.data || {};
   const targetUrl = new URL(notificationData.url || "/app/en", self.location.origin).href;
   event.waitUntil((async () => {
-    await markStoredPushMessageRead(notificationData.messageId);
+    try {
+      await markStoredPushMessageRead(notificationData.messageId);
+    } catch (error) {
+      // Storage failure must not prevent opening the notification.
+      console.warn("Push message read update failed", error);
+    }
     const clientList = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     const matchingClient = clientList.find((client) => client.url === targetUrl);
     const existingClient = matchingClient || clientList.find((client) => {

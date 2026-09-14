@@ -21,7 +21,7 @@ import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { AppCenteredState, AppLoadingOverlay, AppModal, AppMobileBackHeader } from "@/components/app";
 import { RedbookMark, XMark } from "@/lib/social-icons";
 import { updateCurrentAppNavigationPath } from "@/lib/stores/app-session";
-import { getLocaleFromPathname } from "@/lib/i18n";
+import { getLocaleFromPathname, stripLocaleFromPathname } from "@/lib/i18n";
 import { buildShareTitle, buildSiteTitle } from "@/lib/seo";
 import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
@@ -283,11 +283,27 @@ export function NewsDetailPage({ id }: { id: number }) {
     });
   }, []);
 
-  const showItemAtIndex = useCallback((index: number) => {
-    const boundedIndex = Math.max(0, Math.min(index, newsItemsRef.current.length - 1));
-    setActivePageIndex(boundedIndex);
+  // URL changes belong to explicit Previous/Next actions, never data loading.
+  const selectArticle = useCallback((article: NewsItemWithStatInfo, index: number) => {
+    const url = new URL(window.location.href);
+    if (stripLocaleFromPathname(url.pathname) !== "/news/detail" || url.searchParams.get("source") === "notification") return;
+
+    const currentPath = `${url.pathname}${url.search}${url.hash}`;
+    url.searchParams.set("id", String(article.id));
+    const nextPath = `${url.pathname}${url.search}${url.hash}`;
+    if (nextPath !== currentPath) {
+      updateCurrentAppNavigationPath(nextPath);
+      window.history.replaceState(null, "", nextPath);
+    }
+    setActivePageIndex(index);
     scrollDetailToTop();
   }, [scrollDetailToTop, setActivePageIndex]);
+
+  const showItemAtIndex = useCallback((index: number) => {
+    const boundedIndex = Math.max(0, Math.min(index, newsItemsRef.current.length - 1));
+    const article = newsItemsRef.current[boundedIndex];
+    if (article) selectArticle(article, boundedIndex);
+  }, [selectArticle]);
 
   const handlePreviousArticle = useCallback(() => {
     if (activeIndexRef.current <= 0) return;
@@ -312,10 +328,11 @@ export function NewsDetailPage({ id }: { id: number }) {
     }
 
     const requestVersion = requestVersionRef.current;
+    const requestUrl = window.location.href;
     setNextBusy(true);
     try {
       const result = await fetchNextNewsDetail(sourceId);
-      if (requestVersionRef.current !== requestVersion) return;
+      if (requestVersionRef.current !== requestVersion || window.location.href !== requestUrl) return;
 
       if (result.status === "error") {
         return;
@@ -331,8 +348,7 @@ export function NewsDetailPage({ id }: { id: number }) {
 
       appendItem(nextItem);
       setNextAvailability(true);
-      setActivePageIndex(existingItems.length);
-      scrollDetailToTop();
+      selectArticle(nextItem, existingItems.length);
     } catch {
       return;
     } finally {
@@ -340,17 +356,13 @@ export function NewsDetailPage({ id }: { id: number }) {
         setNextBusy(false);
       }
     }
-  }, [appendItem, dictionary.newsDetail.noMoreContent, scrollDetailToTop, setActivePageIndex, setNextAvailability, setNextBusy, showItemAtIndex]);
+  }, [appendItem, dictionary.newsDetail.noMoreContent, selectArticle, setNextAvailability, setNextBusy, showItemAtIndex]);
 
   useEffect(() => {
     const activeNews = newsItems[activeIndex];
     if (!activeNews || typeof window === "undefined") return;
 
-    const url = new URL(window.location.href);
-    url.searchParams.set("id", String(activeNews.id));
-    const nextPath = `${url.pathname}${url.search}${url.hash}`;
-    updateCurrentAppNavigationPath(nextPath);
-    window.history.replaceState(null, "", nextPath);
+    if (stripLocaleFromPathname(window.location.pathname) !== "/news/detail") return;
     document.title = buildSiteTitle(activeNews.langTitle || activeNews.title || "News");
   }, [activeIndex, newsItems]);
 
