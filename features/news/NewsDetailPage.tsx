@@ -20,7 +20,6 @@ import { formatRelativeTime } from "@/lib/time";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { AppCenteredState, AppLoadingOverlay, AppModal, AppMobileBackHeader } from "@/components/app";
 import { RedbookMark, XMark } from "@/lib/social-icons";
-import { updateCurrentAppNavigationPath } from "@/lib/stores/app-session";
 import { getLocaleFromPathname, stripLocaleFromPathname } from "@/lib/i18n";
 import { buildShareTitle, buildSiteTitle } from "@/lib/seo";
 import { cn } from "@/lib/class-names";
@@ -286,13 +285,12 @@ export function NewsDetailPage({ id }: { id: number }) {
   // URL changes belong to explicit Previous/Next actions, never data loading.
   const selectArticle = useCallback((article: NewsItemWithStatInfo, index: number) => {
     const url = new URL(window.location.href);
-    if (stripLocaleFromPathname(url.pathname) !== "/news/detail" || url.searchParams.get("source") === "notification") return;
+    if (stripLocaleFromPathname(url.pathname) !== "/news/detail") return;
 
     const currentPath = `${url.pathname}${url.search}${url.hash}`;
     url.searchParams.set("id", String(article.id));
     const nextPath = `${url.pathname}${url.search}${url.hash}`;
     if (nextPath !== currentPath) {
-      updateCurrentAppNavigationPath(nextPath);
       window.history.replaceState(null, "", nextPath);
     }
     setActivePageIndex(index);
@@ -590,8 +588,7 @@ export function NewsDetailPage({ id }: { id: number }) {
                 </a>
               </Button>
             )}
-            {!hideAdjacentNavigation ? (
-              <>
+            {!hideAdjacentNavigation && <>
                 <Button
                   type="button"
                   variant="destructive"
@@ -610,8 +607,7 @@ export function NewsDetailPage({ id }: { id: number }) {
                 >
                   {dictionary.newsDetail.nextArticle}
                 </Button>
-              </>
-            ) : null}
+            </>}
           </div>
         </div>
 
@@ -663,8 +659,7 @@ export function NewsDetailPage({ id }: { id: number }) {
           dictionary={dictionary}
         />
       </div>
-      {!hideAdjacentNavigation ? (
-        <div className={cn("app-bottom-chrome fixed inset-x-0 bottom-0 grid grid-cols-2 gap-3 border-t bg-background/92 px-4 pb-(--app-safe-footer-bottom) pt-3 backdrop-blur-xl md:hidden", appZIndex.navigation)}>
+      {!hideAdjacentNavigation && <div className={cn("app-bottom-chrome fixed inset-x-0 bottom-0 grid grid-cols-2 gap-3 border-t bg-background/92 px-4 pb-(--app-safe-footer-bottom) pt-3 backdrop-blur-xl md:hidden", appZIndex.navigation)}>
           <Button variant="destructive" disabled={!hasPreviousArticle} onClick={handlePreviousArticle} className="text-primary">
             <ArrowLeft />
             {dictionary.newsDetail.previousArticle}
@@ -673,8 +668,7 @@ export function NewsDetailPage({ id }: { id: number }) {
             {dictionary.newsDetail.nextArticle}
             <ArrowRight />
           </Button>
-        </div>
-      ) : null}
+      </div>}
 
       <AppModal
         open={shareOpen}

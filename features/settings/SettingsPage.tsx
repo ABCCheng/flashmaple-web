@@ -13,7 +13,7 @@ import type { ThemeMode } from "@/lib/stores/theme";
 import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
 import { AppMobileBackHeader, useRouterBack } from "@/components/app";
-import { getPreviousAppNavigationPath, replaceCurrentAppNavigationPath } from "@/lib/stores/app-session";
+import { getPreviousAppNavigationPath } from "@/lib/stores/app-session";
 import { Switch } from "@/components/ui/switch";
 import { DEFAULT_TTS_SETTINGS, getTTSSettings, saveTTSSettings, TTS_VOICE_OPTIONS, type TTSSettings, type TTSVoice } from "@/lib/stores/tts";
 import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
@@ -126,7 +126,6 @@ export function SettingsPage() {
     if (window.matchMedia(mobileSettingsMediaQuery).matches) {
       const previousPath = getPreviousAppNavigationPath();
       const nextPath = localizeAppPath(previousPath ?? "/", nextLocale);
-      replaceCurrentAppNavigationPath(nextPath);
 
       if (mobileBackTimerRef.current !== null) {
         window.clearTimeout(mobileBackTimerRef.current);

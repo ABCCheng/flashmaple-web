@@ -31,7 +31,7 @@ export function useRouterBack(fallbackHref = "/") {
     if (canGoBackInApp()) {
       router.back();
     } else {
-      router.push(localizePath(fallbackHref, locale, keepLocalePrefix));
+      router.replace(localizePath(fallbackHref, locale, keepLocalePrefix));
     }
   }, [fallbackHref, keepLocalePrefix, locale, router]);
 }

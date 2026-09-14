@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell, BrushCleaning, Circle, CircleCheck, ListCheck, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { AppCenteredState, AppLoadingOverlay, AppMobileBackHeader, AppModal } from "@/components/app";
@@ -34,7 +34,8 @@ import {
   clearWebPushMessages,
   deleteWebPushMessage,
   getCachedWebPushMessages,
-  getWebPushMessages,
+  getServerWebPushMessages,
+  getWebPushMessageError,
   markAllWebPushMessagesRead,
   markWebPushMessageRead,
   subscribeWebPushMessageChanges,
@@ -49,7 +50,8 @@ export function WebPushPage() {
   const pathname = usePathname();
   const router = useRouter();
   const [config, setConfig] = useState<WebPushConfig | null>(() => getCachedWebPushConfig());
-  const [messages, setMessages] = useState<WebPushMessage[]>(() => getCachedWebPushMessages());
+  const messages = useSyncExternalStore(subscribeWebPushMessageChanges, getCachedWebPushMessages, getServerWebPushMessages);
+  const messageError = useSyncExternalStore(subscribeWebPushMessageChanges, getWebPushMessageError, () => false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(() => Boolean(getCachedWebPushConfig()?.subscribed));
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [loading, setLoading] = useState(() => !getCachedWebPushConfig());
@@ -98,35 +100,6 @@ export function WebPushPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const syncMessagesFromStore = () => {
-      if (!cancelled) setMessages(getCachedWebPushMessages());
-    };
-
-    const loadMessages = () => {
-      void getWebPushMessages();
-    };
-
-    const unsubscribeMessages = subscribeWebPushMessageChanges(syncMessagesFromStore);
-    loadMessages();
-
-    return () => {
-      cancelled = true;
-      unsubscribeMessages();
-    };
-  }, []);
-
-  useEffect(() => {
-    const serviceWorker = getServiceWorkerContainer();
-    if (!serviceWorker) return;
-
-    void serviceWorker.ready.then((registration) => {
-      registration.active?.postMessage({ type: "flashmaple:clear-push-notifications" });
-    });
   }, []);
 
   async function getOrCreateSubscription() {
@@ -278,7 +251,7 @@ export function WebPushPage() {
   async function openMessage(message: WebPushMessage) {
     if (!message.read) {
       try {
-        setMessages(await markWebPushMessageRead(message.id));
+        await markWebPushMessageRead(message.id);
       } catch {
         // Navigation should still work when local message storage is unavailable.
       }
@@ -293,7 +266,7 @@ export function WebPushPage() {
 
   async function removeMessage(messageId: string) {
     try {
-      setMessages(await deleteWebPushMessage(messageId));
+      await deleteWebPushMessage(messageId);
     } catch {
       // Keep the current list when local message storage is unavailable.
     }
@@ -302,7 +275,7 @@ export function WebPushPage() {
   async function confirmClearMessages() {
     setShowClearMessagesConfirmation(false);
     try {
-      setMessages(await clearWebPushMessages());
+      await clearWebPushMessages();
     } catch {
       // Keep the current list when local message storage is unavailable.
     }
@@ -311,7 +284,7 @@ export function WebPushPage() {
   async function confirmMarkAllRead() {
     setShowMarkAllReadConfirmation(false);
     try {
-      setMessages(await markAllWebPushMessagesRead());
+      await markAllWebPushMessagesRead();
     } catch {
       // Keep the current list when local message storage is unavailable.
     }
@@ -433,7 +406,7 @@ export function WebPushPage() {
           </div>
         ) : (
           <AppCenteredState muted>
-            {dictionary.webPushPage.empty}
+            {messageError ? dictionary.webPushPage.failed : dictionary.webPushPage.empty}
           </AppCenteredState>
         )}
       </article>

@@ -19,7 +19,7 @@ export default async function InterceptedNewsDetailRoute({
 
   return (
     <AppRouteLayer data-news-detail-scroll-root aria-label="News detail">
-      <NewsDetailPage id={newsId} />
+      <NewsDetailPage key={newsId} id={newsId} />
     </AppRouteLayer>
   );
 }

@@ -1,62 +1,58 @@
-import { readSessionStorage, writeSessionStorage } from "./storage";
-
-const APP_NAVIGATION_STACK_SESSION_KEY = "FLASH_MAPLE_APP_NAVIGATION_STACK";
 export const APP_SPLASH_SESSION_KEY = "FLASH_MAPLE_PWA_SPLASH_SHOWN";
-let appNavigationStackInitialized = false;
+const HISTORY_KEY = "__flashmaple";
+let paths: string[] = [];
+let position = 0;
 
-function readAppNavigationStack() {
-  const value = readSessionStorage(APP_NAVIGATION_STACK_SESSION_KEY);
-  if (!value) return [];
+// Track real browser operations, not guesses based on repeated URLs. In
+// particular A -> B -> A is a push, whereas Back to A is a history traversal.
+export function trackAppNavigation() {
+  const history = window.history;
+  const documentId = crypto.randomUUID();
+  const originalPush = history.pushState;
+  const originalReplace = history.replaceState;
+  let active = true;
+  const currentPath = () => `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  paths = [currentPath()];
+  position = 0;
+  const entryPosition = (data: unknown) => {
+    const entry = (data as Record<string, { documentId?: string; position?: number }> | null)?.[HISTORY_KEY];
+    return entry?.documentId === documentId && Number.isInteger(entry.position) ? entry.position! : null;
+  };
+  const stamp = (data: unknown) => ({
+    ...(data && typeof data === "object" ? data : {}),
+    [HISTORY_KEY]: { documentId, position },
+  });
+  originalReplace.call(history, stamp(history.state), "");
 
-  try {
-    const stack = JSON.parse(value);
-    return Array.isArray(stack) ? stack.filter((item): item is string => typeof item === "string") : [];
-  } catch {
-    return [];
-  }
+  const push: History["pushState"] = function (data, unused, url) {
+    if (!active) return originalPush.call(history, data, unused, url);
+    const nextPosition = position + 1;
+    originalPush.call(history, { ...stamp(data), [HISTORY_KEY]: { documentId, position: nextPosition } }, unused, url);
+    paths = [...paths.slice(0, nextPosition), currentPath()];
+    position = nextPosition;
+  };
+  const replace: History["replaceState"] = function (data, unused, url) {
+    if (!active) return originalReplace.call(history, data, unused, url);
+    const restored = entryPosition(data);
+    if (restored !== null) position = restored;
+    originalReplace.call(history, stamp(data), unused, url);
+    paths[position] = currentPath();
+  };
+  const restore = (event: PopStateEvent) => {
+    const restored = entryPosition(event.state);
+    position = restored ?? 0;
+    if (restored === null) paths = [currentPath()];
+  };
+  history.pushState = push;
+  history.replaceState = replace;
+  window.addEventListener("popstate", restore);
+  return () => {
+    active = false;
+    if (history.pushState === push) history.pushState = originalPush;
+    if (history.replaceState === replace) history.replaceState = originalReplace;
+    window.removeEventListener("popstate", restore);
+  };
 }
 
-function writeAppNavigationStack(stack: string[]) {
-  writeSessionStorage(APP_NAVIGATION_STACK_SESSION_KEY, JSON.stringify(stack.slice(-50)));
-}
-
-export function initializeAppNavigationStack(path: string) {
-  if (appNavigationStackInitialized) return;
-  writeAppNavigationStack([path]);
-  appNavigationStackInitialized = true;
-}
-
-export function rememberAppNavigationPath(path: string) {
-  const stack = readAppNavigationStack();
-  const previousPath = stack.at(-2);
-  const currentPath = stack.at(-1);
-
-  if (currentPath === path) return;
-
-  if (previousPath === path) {
-    writeAppNavigationStack(stack.slice(0, -1));
-    return;
-  }
-
-  writeAppNavigationStack([...stack, path]);
-}
-
-export function canGoBackInApp() {
-  return readAppNavigationStack().length > 1;
-}
-
-export function getPreviousAppNavigationPath() {
-  return readAppNavigationStack().at(-2) ?? null;
-}
-
-export function replaceCurrentAppNavigationPath(path: string) {
-  const stack = readAppNavigationStack();
-  const nextStack = stack.length > 1 ? [...stack.slice(0, -2), path] : [path];
-  writeAppNavigationStack(nextStack);
-}
-
-export function updateCurrentAppNavigationPath(path: string) {
-  const stack = readAppNavigationStack();
-  const nextStack = stack.length ? [...stack.slice(0, -1), path] : [path];
-  writeAppNavigationStack(nextStack);
-}
+export function canGoBackInApp() { return position > 0; }
+export function getPreviousAppNavigationPath() { return paths[position - 1] ?? null; }

@@ -2,13 +2,12 @@
 
 import { Bell } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
 import { isWebPushSupported } from "@/lib/web-push-client";
 import {
   getUnreadWebPushMessageCount,
-  getWebPushMessages,
   subscribeWebPushMessageChanges,
 } from "@/lib/stores/web-push-messages";
 
@@ -27,10 +26,6 @@ export function WebPushLinkButton({ href, label }: { href: string; label: string
     getUnreadWebPushMessageCount,
     () => 0,
   );
-
-  useEffect(() => {
-    void getWebPushMessages();
-  }, []);
 
   if (!supported) return null;
 

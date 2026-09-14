@@ -6,7 +6,8 @@ const PUSH_PREFERENCES_URL = "/__flashmaple-push-preferences__";
 const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
 const PUSH_MESSAGES_URL = "/__flashmaple-push-messages__";
 const MAX_PUSH_MESSAGES = 20;
-const NOTIFICATION_LAUNCH_TARGET_PARAM = "notificationTarget";
+const PUSH_EVENT = "flashmaple:push";
+let inboxQueue = Promise.resolve();
 const DEFAULT_PUSH_PREFERENCES = { languageCode: "en", region: "Toronto" };
 const SUPPORTED_LANGUAGES = ["en", "fr", "zh-Hans", "zh-Hant", "pa", "es", "ja", "ko", "ru", "vi"];
 const SUPPORTED_REGIONS = ["Toronto", "Vancouver", "Montreal", "Calgary", "Winnipeg", "Saskatoon", "Halifax"];
@@ -162,13 +163,13 @@ self.addEventListener("message", (event) => {
     return;
   }
 
-  if (event.data?.type === "flashmaple:clear-push-notifications") {
-    event.waitUntil(clearPushNotifications());
-    return;
-  }
-
-  if (event.data?.type === "flashmaple:update-app-badge") {
-    event.waitUntil(updateAppBadge());
+  if (event.data?.type === PUSH_EVENT) {
+    const port = event.ports[0];
+    if (!port || !["list", "read", "delete", "read-all", "clear"].includes(event.data.action)) return;
+    event.waitUntil(updateInbox(event.data).then(
+      (snapshot) => port?.postMessage({ snapshot }),
+      (error) => port?.postMessage({ error: String(error) }),
+    ));
     return;
   }
 
@@ -301,97 +302,78 @@ async function readPushPreferences() {
   }
 }
 
-async function readStoredPushMessages() {
-  const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
-  const url = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
-  const response = await cache.match(url);
-  if (!response) return [];
-
-  const messages = await response.json();
-  if (!Array.isArray(messages)) throw new Error("Invalid push message cache");
-  return messages;
-}
-
-async function writeStoredPushMessages(messages) {
-  const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
-  const url = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
-  await cache.put(
-    url,
-    new Response(JSON.stringify(messages.slice(0, MAX_PUSH_MESSAGES)), {
-      headers: { "Content-Type": "application/json" },
-    })
-  );
-}
-
-async function updateAppBadge() {
-  if (typeof navigator === "undefined" || typeof navigator.setAppBadge !== "function") return;
-
-  try {
-    const messages = await readStoredPushMessages();
-    const unreadCount = messages.filter((message) => !message?.read).length;
-    if (unreadCount > 0) {
-      await navigator.setAppBadge(unreadCount);
-    } else if (typeof navigator.clearAppBadge === "function") {
-      await navigator.clearAppBadge();
+// The worker is the only inbox writer. Serialize the whole operation, including
+// badge updates and broadcasts, so a slower old result cannot reset a new badge.
+function updateInbox(command) {
+  const task = inboxQueue.then(async () => {
+    const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
+    const key = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
+    const response = await cache.match(key);
+    const stored = response ? await response.json() : [];
+    // Upgrade the existing array in place; users keep their message history.
+    const inbox = Array.isArray(stored) ? { revision: 0, messages: stored } : stored;
+    if (!inbox || !Number.isSafeInteger(inbox.revision) || !Array.isArray(inbox.messages)) {
+      throw new Error("Invalid push inbox");
     }
-  } catch {
-    // App badges are optional and unsupported on some browsers/platforms.
-  }
-}
-
-async function storeNewsPushMessage(message) {
-  const messages = await readStoredPushMessages();
-  const nextMessages = [
-    message,
-    ...messages.filter((item) => item?.id !== message.id),
-  ].slice(0, MAX_PUSH_MESSAGES);
-  await writeStoredPushMessages(nextMessages);
-  await updateAppBadge();
-
-  const clientList = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-  clientList.forEach((client) => {
-    client.postMessage({ type: "flashmaple:push-message" });
+    let messages = inbox.messages;
+    switch (command.action) {
+      case "list": break;
+      case "receive":
+        messages = [command.message, ...messages.filter((m) => m.id !== command.message.id)]
+          .slice(0, MAX_PUSH_MESSAGES);
+        break;
+      case "read":
+        messages = messages.map((m) => m.id === command.id ? { ...m, read: true } : m);
+        break;
+      case "delete": messages = messages.filter((m) => m.id !== command.id); break;
+      case "read-all": messages = messages.map((m) => ({ ...m, read: true })); break;
+      case "clear": messages = []; break;
+      default: throw new Error("Unknown push inbox action");
+    }
+    const snapshot = { revision: inbox.revision, messages };
+    if (command.action !== "list" || Array.isArray(stored)) {
+      snapshot.revision++;
+      await cache.put(key, new Response(JSON.stringify(snapshot), {
+        headers: { "Content-Type": "application/json" },
+      }));
+    }
+    const unread = messages.filter((m) => !m.read).length;
+    try {
+      if (unread) await self.navigator.setAppBadge?.(unread);
+      else await self.navigator.clearAppBadge?.();
+    } catch {
+      // Badging permission is controlled by the OS; inbox sync still proceeds.
+    }
+    if (command.action !== "list") {
+      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      windows.forEach((client) => {
+        try { client.postMessage({ type: PUSH_EVENT, action: "snapshot", snapshot }); } catch { /* Client closed. */ }
+      });
+    }
+    return snapshot;
   });
+  inboxQueue = task.catch(() => undefined);
+  return task;
 }
 
-async function markStoredPushMessageRead(id) {
-  if (!id) return;
-
-  const messages = await readStoredPushMessages();
-  await writeStoredPushMessages(messages.map((message) => (
-    message?.id === id ? { ...message, read: true } : message
-  )));
-  await updateAppBadge();
-}
-
-async function clearPushNotifications() {
-  const notifications = await self.registration.getNotifications();
-  notifications.forEach((notification) => notification.close());
-}
-
-function buildNotificationLaunchUrl(targetUrl) {
-  const target = new URL(targetUrl, self.location.origin);
-  const segments = target.pathname.split("/").filter(Boolean);
-  const isNewsDetail =
-    segments.length === 4 &&
-    segments[0] === "app" &&
-    SUPPORTED_LANGUAGES.includes(segments[1]) &&
-    segments[2] === "news" &&
-    segments[3] === "detail";
-
-  if (target.origin !== self.location.origin || !isNewsDetail) return target.href;
-
-  const launchUrl = new URL(`/app/${segments[1]}`, self.location.origin);
-  launchUrl.searchParams.set(
-    NOTIFICATION_LAUNCH_TARGET_PARAM,
-    `${target.pathname}${target.search}${target.hash}`,
-  );
-  return launchUrl.href;
+function notificationUrl(value) {
+  try {
+    const url = new URL(value, self.location.origin);
+    const parts = url.pathname.split("/").filter(Boolean);
+    const id = url.searchParams.get("id");
+    if (url.origin !== self.location.origin || parts.length !== 4 || parts[0] !== "app" ||
+        !SUPPORTED_LANGUAGES.includes(parts[1]) || parts[2] !== "news" || parts[3] !== "detail" ||
+        !id || !/^[1-9]\d*$/.test(id)) return null;
+    // Also cleans URLs on notifications delivered by an older worker.
+    return new URL(`/app/${parts[1]}/news/detail?id=${id}&source=notification`, self.location.origin).href;
+  } catch {
+    return null;
+  }
 }
 
 async function showNewsItemNotification(payload) {
   const data = payload?.data;
-  if (!data || data.type !== "news-item" || data.newsId === undefined || data.newsId === null) return;
+  if (!data || data.type !== "news-item" || !Number.isSafeInteger(Number(data.newsId)) || Number(data.newsId) <= 0) return;
 
   const preferences = await readPushPreferences();
 
@@ -408,7 +390,7 @@ async function showNewsItemNotification(payload) {
   const title = source ? `${notificationTitle} – ${source}` : notificationTitle;
 
   const languageCode = encodeURIComponent(preferences.languageCode);
-  const newsId = encodeURIComponent(String(data.newsId));
+  const newsId = String(Number(data.newsId));
   const url = new URL(
     `/app/${languageCode}/news/detail?id=${newsId}&source=notification`,
     self.location.origin,
@@ -418,15 +400,15 @@ async function showNewsItemNotification(payload) {
     : `${String(data.newsId)}:${Date.now()}`;
 
   try {
-    await storeNewsPushMessage({
+    await updateInbox({ action: "receive", message: {
       id: messageId,
-      newsId: String(data.newsId),
+      newsId,
       title,
       body: newsTitle,
       receivedAt: new Date().toISOString(),
       read: false,
       url,
-    });
+    } });
   } catch (error) {
     console.warn("Push message persistence failed", error);
   }
@@ -440,45 +422,34 @@ async function showNewsItemNotification(payload) {
   });
 }
 
+async function openNotification(target) {
+  const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+  const app = windows.find((client) => {
+    const url = new URL(client.url);
+    return url.origin === self.location.origin && isAppPath(url.pathname);
+  });
+  if (app) {
+    try {
+      // A live app pushes an ordinary history entry; it owns its return page.
+      app.postMessage({ type: PUSH_EVENT, action: "open", url: target });
+      await app.focus();
+      return;
+    } catch { /* The app closed between matchAll and focus. */ }
+  }
+  await self.clients.openWindow(target);
+}
+
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-
-  const notificationData = event.notification.data || {};
-  const targetUrl = new URL(notificationData.url || "/app/en", self.location.origin).href;
-  event.waitUntil((async () => {
-    try {
-      await markStoredPushMessageRead(notificationData.messageId);
-    } catch (error) {
-      // Storage failure must not prevent opening the notification.
-      console.warn("Push message read update failed", error);
-    }
-    const clientList = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-    const matchingClient = clientList.find((client) => client.url === targetUrl);
-    const existingClient = matchingClient || clientList.find((client) => {
-      try {
-        return new URL(client.url).origin === self.location.origin;
-      } catch {
-        return false;
-      }
-    });
-
-    if (existingClient) {
-      try {
-        if (existingClient.url !== targetUrl) {
-          existingClient.postMessage({
-            type: "flashmaple:notification-navigation",
-            url: targetUrl,
-            messageId: notificationData.messageId,
-          });
-        }
-        if ("focus" in existingClient) return existingClient.focus();
-      } catch {
-        // Fall through to opening a new app window when the existing one is unavailable.
-      }
-    }
-
-    return self.clients.openWindow(buildNotificationLaunchUrl(targetUrl));
-  })());
+  const { url, messageId } = event.notification.data || {};
+  const target = notificationUrl(url);
+  if (!target) return;
+  event.waitUntil(Promise.all([
+    openNotification(target),
+    updateInbox({ action: "read", id: messageId }).catch((error) => {
+      console.warn("Push inbox update failed", error);
+    }),
+  ]));
 });
 
 self.addEventListener("fetch", (event) => {

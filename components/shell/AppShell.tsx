@@ -1,17 +1,13 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { DesktopAppHeader } from "@/components/shell/DesktopAppHeader";
 import { useRegionContext } from "@/components/providers/region-provider";
 import { activateDevice, getProfile } from "@/lib/api/user";
-import {
-  initializeAppNavigationStack,
-  rememberAppNavigationPath,
-  updateCurrentAppNavigationPath,
-} from "@/lib/stores/app-session";
+import { trackAppNavigation } from "@/lib/stores/app-session";
 import {
   dictionaries,
   getLocaleFromPathname,
@@ -25,7 +21,8 @@ import {
   getServiceWorkerContainer,
   syncCurrentWebPushSubscription,
 } from "@/lib/web-push-client";
-import { markWebPushMessageRead } from "@/lib/stores/web-push-messages";
+import { connectWebPush } from "@/lib/stores/web-push-messages";
+import { getPushDetailPath } from "@/lib/web-push-navigation";
 import { buildSiteTitle } from "@/lib/seo";
 import { markAppSplashReady } from "@/lib/app-splash";
 import { AppMobileBottomTab, useRouterBack } from "../app";
@@ -65,21 +62,6 @@ function scheduleNonCriticalStartup(callback: () => void) {
 
 const pwaEdgeGestureClass = "app-pwa-edge-guard";
 const pwaEdgeGestureWidth = 24;
-const notificationLaunchTargetParam = "notificationTarget";
-
-function getNotificationTargetPath(value: string) {
-  try {
-    const targetUrl = new URL(value, window.location.origin);
-    if (targetUrl.origin !== window.location.origin) return null;
-    if (stripLocaleFromPathname(targetUrl.pathname) !== "/news/detail") return null;
-    if (targetUrl.searchParams.get("source") !== "notification") return null;
-
-    return `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
-  } catch {
-    return null;
-  }
-}
-
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -93,8 +75,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   const activeExploreTab = searchParams.get("tab") || "local";
   const isSearchResult = Boolean(searchParams.get("q")?.trim());
   const navigationPath = searchParams.size ? `${pathname}?${searchParams.toString()}` : pathname;
-  const notificationNavigationTargetRef = useRef<string | null>(null);
-  const pendingNotificationTargetRef = useRef<string | null>(null);
   const [displayName, setDisplayName] = useState("");
   const [avatar, setAvatar] = useState<string | null>(null);
   const isLoggedIn = useSyncExternalStore(
@@ -109,37 +89,11 @@ export function AppShell({ children }: { children: ReactNode }) {
     setAvatar(user?.avatarType === "IMAGE_URL" ? user.avatar : null);
   }, []);
 
-  const beginNotificationNavigation = useCallback((targetPath: string, replace: boolean) => {
-    notificationNavigationTargetRef.current = targetPath;
-
-    if (replace) {
-      // A, B, C share one detail history entry. Back always returns to the
-      // page preceding A, regardless of how many notifications are opened.
-      updateCurrentAppNavigationPath(targetPath);
-      router.replace(targetPath, { scroll: false });
-      return;
-    }
-
-    router.push(targetPath, { scroll: false });
-  }, [router]);
-
-  const queueNotificationNavigation = useCallback((targetPath: string) => {
-    if (notificationNavigationTargetRef.current) {
-      // Notification taps can arrive together when a suspended PWA resumes.
-      // Only the newest article should replace the navigation in progress.
-      pendingNotificationTargetRef.current = targetPath;
-      return;
-    }
-
-    const currentUrl = new URL(window.location.href);
-    if (`${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}` === targetPath) return;
-    const isAlreadyOnNewsDetail =
-      stripLocaleFromPathname(currentUrl.pathname) === "/news/detail";
-    beginNotificationNavigation(
-      targetPath,
-      isAlreadyOnNewsDetail,
-    );
-  }, [beginNotificationNavigation]);
+  useEffect(() => connectWebPush((value) => {
+    const target = getPushDetailPath(value, window.location.origin);
+    if (!target || target === `${window.location.pathname}${window.location.search}`) return;
+    router.push(target, { scroll: false });
+  }), [router]);
 
   useEffect(() => {
     const serviceWorker = getRegistrableServiceWorker();
@@ -177,52 +131,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
     return cancelStartup;
   }, []);
-
-  useEffect(() => {
-    const launchTarget = searchParams.get(notificationLaunchTargetParam);
-    if (!launchTarget) return;
-
-    const targetPath = getNotificationTargetPath(launchTarget);
-    const cleanSearchParams = new URLSearchParams(searchParams.toString());
-    cleanSearchParams.delete(notificationLaunchTargetParam);
-    const cleanQuery = cleanSearchParams.toString();
-    const cleanHomePath = `${pathname}${cleanQuery ? `?${cleanQuery}` : ""}`;
-
-    // openWindow() created the first browser entry on the localized home
-    // route. Clean that entry synchronously, then add the detail entry in the
-    // same effect so the cold-launch target cannot be lost between renders.
-    updateCurrentAppNavigationPath(cleanHomePath);
-    // This effect can run before Next.js patches replaceState during initial
-    // hydration. Preserve its internal state so popstate can restore home.
-    window.history.replaceState(window.history.state, "", cleanHomePath);
-
-    if (targetPath) {
-      queueNotificationNavigation(targetPath);
-    }
-  }, [pathname, queueNotificationNavigation, searchParams]);
-
-  useEffect(() => {
-    const cancelPendingNotificationNavigation = () => {
-      notificationNavigationTargetRef.current = null;
-      pendingNotificationTargetRef.current = null;
-    };
-    // Both the header Back action and the completed swipe use router.back().
-    window.addEventListener("popstate", cancelPendingNotificationNavigation);
-    return () => window.removeEventListener("popstate", cancelPendingNotificationNavigation);
-  }, []);
-
-  useEffect(() => {
-    const requestedTarget = notificationNavigationTargetRef.current;
-    if (!requestedTarget || requestedTarget !== navigationPath) return;
-
-    notificationNavigationTargetRef.current = null;
-
-    const pendingTarget = pendingNotificationTargetRef.current;
-    pendingNotificationTargetRef.current = null;
-    if (!pendingTarget || pendingTarget === navigationPath) return;
-
-    beginNotificationNavigation(pendingTarget, true);
-  }, [beginNotificationNavigation, navigationPath]);
 
   useEffect(() => {
     const serviceWorker = getRegistrableServiceWorker();
@@ -314,41 +222,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [syncAuthState]);
 
   useEffect(() => {
-    const serviceWorker = getServiceWorkerContainer();
-    if (!serviceWorker) return;
-
-    const handleServiceWorkerMessage = (event: MessageEvent) => {
-      if (event.data?.type !== "flashmaple:notification-navigation") return;
-
-      if (typeof event.data.messageId === "string") {
-        void markWebPushMessageRead(event.data.messageId).catch((error) => {
-          console.warn("Push message read update failed", error);
-        });
-      }
-
-      try {
-        const targetUrl = new URL(event.data.url, window.location.origin);
-        if (targetUrl.origin !== window.location.origin) return;
-        const targetPath = getNotificationTargetPath(targetUrl.toString());
-        if (!targetPath) return;
-        queueNotificationNavigation(targetPath);
-      } catch {
-        // Ignore malformed notification URLs.
-      }
-    };
-
-    serviceWorker.addEventListener("message", handleServiceWorkerMessage);
-    return () => {
-      serviceWorker.removeEventListener("message", handleServiceWorkerMessage);
-    };
-  }, [queueNotificationNavigation]);
-
-  useEffect(() => {
     return subscribeAuthStateChanged(syncAuthState);
   }, [syncAuthState]);
 
   const mobileTopRoutes = ["/", "/news", "/favorites", "/profile"];
-  // const showMobileBackHeader = !mobileTopRoutes.includes(currentPath);
   const showMobileTab = mobileTopRoutes.includes(currentPath);
   const keepMobileTabSpacing = showMobileTab || currentPath === "/news/detail";
 
@@ -560,10 +437,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     };
   }, [routerBack, showMobileTab, navigationPath]);
 
-  useLayoutEffect(() => {
-    initializeAppNavigationStack(navigationPath);
-    rememberAppNavigationPath(navigationPath);
-  }, [navigationPath]);
+  useLayoutEffect(() => trackAppNavigation(), []);
 
   useEffect(() => {
     const content = document.querySelector<HTMLElement>(".app-content-inner");

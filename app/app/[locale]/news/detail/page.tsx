@@ -113,5 +113,5 @@ export default async function LocalizedNewsDetailQueryRoute({
   const newsId = Number(id);
   if (!isLocale(locale) || !Number.isInteger(newsId) || newsId <= 0) notFound();
 
-  return <NewsDetailPage id={newsId} />;
+  return <NewsDetailPage key={newsId} id={newsId} />;
 }
