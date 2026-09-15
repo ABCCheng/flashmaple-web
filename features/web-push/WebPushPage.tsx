@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
-import { hasLocalePrefix, localizePath } from "@/lib/i18n";
+import { hasLocalePrefix, localizePath, stripLocaleFromPathname } from "@/lib/i18n";
 import { formatRelativeTime } from "@/lib/time";
 import {
   subscribeWebPush,
@@ -31,6 +31,7 @@ import {
   serializeWebPushSubscription,
 } from "@/lib/web-push-client";
 import {
+  PUSH_EVENT,
   clearWebPushMessages,
   deleteWebPushMessage,
   getCachedWebPushMessages,
@@ -59,6 +60,18 @@ export function WebPushPage() {
   const [showUnsubscribeConfirmation, setShowUnsubscribeConfirmation] = useState(false);
   const [showClearMessagesConfirmation, setShowClearMessagesConfirmation] = useState(false);
   const [showMarkAllReadConfirmation, setShowMarkAllReadConfirmation] = useState(false);
+
+  useEffect(() => {
+    if (stripLocaleFromPathname(pathname) !== "/web-push") return;
+    const worker = getServiceWorkerContainer();
+    if (!worker) return;
+    let cancelled = false;
+    void worker.ready.then((registration) => {
+      if (cancelled || stripLocaleFromPathname(window.location.pathname) !== "/web-push") return;
+      registration.active?.postMessage({ type: PUSH_EVENT, action: "dismiss-notifications" });
+    }).catch((error) => console.warn("Dismiss push notifications failed", error));
+    return () => { cancelled = true; };
+  }, [pathname]);
 
   useEffect(() => {
     let cancelled = false;

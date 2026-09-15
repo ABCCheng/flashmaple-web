@@ -161,8 +161,15 @@ self.addEventListener("message", (event) => {
   }
 
   if (event.data?.type === PUSH_EVENT) {
+    if (event.data.action === "dismiss-notifications") {
+      // System notifications are separate from inbox messages and unread state.
+      event.waitUntil(self.registration.getNotifications().then((notifications) => {
+        notifications.forEach((notification) => notification.close());
+      }).catch((error) => console.warn("Dismiss push notifications failed", error)));
+      return;
+    }
     const port = event.ports[0];
-    if (!port || !["list", "read", "delete", "read-all", "clear"].includes(event.data.action)) return;
+    if (!port || !["list", "sync", "read", "delete", "read-all", "clear"].includes(event.data.action)) return;
     event.waitUntil(updateInbox(event.data).then(
       (snapshot) => port?.postMessage({ snapshot }),
       (error) => port?.postMessage({ error: String(error) }),
@@ -357,7 +364,9 @@ async function readInbox(database) {
 
 async function syncInboxBadge(database) {
   try {
-    let snapshot = await readInbox(database);
+    let snapshot = await inboxTransaction(database);
+    // An uninitialized database is not evidence that the OS badge should clear.
+    if (!snapshot) return;
     for (;;) {
       const unread = snapshot.messages.filter((message) => !message.read).length;
       if (unread) await self.navigator.setAppBadge?.(unread);
@@ -373,9 +382,26 @@ async function syncInboxBadge(database) {
   }
 }
 
+async function syncInboxViews(database, snapshot) {
+  // Publish committed messages independently of the platform badge call.
+  await Promise.all([
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((windows) => {
+      windows.forEach((client) => {
+        try { client.postMessage({ type: PUSH_EVENT, action: "snapshot", snapshot }); } catch { /* Client closed. */ }
+      });
+    }).catch((error) => console.warn("Push inbox broadcast failed", error)),
+    syncInboxBadge(database),
+  ]);
+}
+
 async function updateInbox(command) {
   const database = await openInboxDatabase();
   if (command.action === "list") return readInbox(database);
+  if (command.action === "sync") {
+    const snapshot = await readInbox(database);
+    await syncInboxViews(database, snapshot);
+    return snapshot;
+  }
   let changed = false;
   const result = await inboxTransaction(database, (stored) => {
     const inbox = stored ?? { revision: 0, messages: [] };
@@ -399,16 +425,7 @@ async function updateInbox(command) {
     return { revision: inbox.revision + 1, messages };
   });
   const snapshot = result ?? { revision: 0, messages: [] };
-  if (changed) {
-    await Promise.all([
-      self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((windows) => {
-        windows.forEach((client) => {
-          try { client.postMessage({ type: PUSH_EVENT, action: "snapshot", snapshot }); } catch { /* Client closed. */ }
-        });
-      }).catch((error) => console.warn("Push inbox broadcast failed", error)),
-      syncInboxBadge(database),
-    ]);
-  }
+  if (changed) await syncInboxViews(database, snapshot);
   return snapshot;
 }
 

@@ -11,7 +11,7 @@ export type WebPushMessage = {
   url: string;
 };
 type InboxSnapshot = { revision: number; messages: WebPushMessage[] };
-type InboxAction = "list" | "read" | "delete" | "read-all" | "clear";
+type InboxAction = "list" | "sync" | "read" | "delete" | "read-all" | "clear";
 const emptyMessages: WebPushMessage[] = [];
 let snapshot: InboxSnapshot = { revision: -1, messages: emptyMessages };
 let syncError = false;
@@ -56,14 +56,18 @@ function request(action: InboxAction, id?: string): Promise<WebPushMessage[]> {
   });
 }
 
-export function getWebPushMessages() {
-  if (refreshRequest) return refreshRequest;
-  refreshRequest = request("list").catch((error) => {
+function loadMessages(action: "list" | "sync") {
+  return request(action).catch((error) => {
     console.warn("Push inbox sync failed", error);
     syncError = true;
     listeners.forEach((listener) => listener());
     return snapshot.messages; // Keep the last good snapshot on resume/storage failures.
-  }).finally(() => { refreshRequest = null; });
+  });
+}
+
+export function getWebPushMessages() {
+  if (refreshRequest) return refreshRequest;
+  refreshRequest = loadMessages("list").finally(() => { refreshRequest = null; });
   return refreshRequest;
 }
 
@@ -71,23 +75,26 @@ export function getWebPushMessages() {
 export function connectWebPush(onOpen: (url: string) => void) {
   const worker = getServiceWorkerContainer();
   if (!worker) return () => {};
-  const sync = () => { void getWebPushMessages(); };
+  let syncRequest: Promise<WebPushMessage[]> | null = null;
+  const sync = () => {
+    if (document.visibilityState !== "visible" || syncRequest) return;
+    // Lifecycle reconciliation is separate from ordinary, read-only loading.
+    syncRequest = loadMessages("sync").finally(() => { syncRequest = null; });
+  };
   const onMessage = (event: MessageEvent) => {
     if (event.data?.type !== PUSH_EVENT) return;
     if (event.data.action === "snapshot") publish(event.data.snapshot);
     if (event.data.action === "open" && typeof event.data.url === "string") onOpen(event.data.url);
   };
-  const onVisible = () => { if (document.visibilityState === "visible") sync(); };
+  const onVisible = () => { void sync(); };
   worker.addEventListener("message", onMessage);
   worker.addEventListener("controllerchange", sync);
   document.addEventListener("visibilitychange", onVisible);
-  window.addEventListener("focus", sync);
   sync();
   return () => {
     worker.removeEventListener("message", onMessage);
     worker.removeEventListener("controllerchange", sync);
     document.removeEventListener("visibilitychange", onVisible);
-    window.removeEventListener("focus", sync);
   };
 }
 
