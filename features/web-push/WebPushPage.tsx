@@ -36,7 +36,8 @@ import {
   deleteWebPushMessage,
   getCachedWebPushMessages,
   getServerWebPushMessages,
-  getWebPushMessageError,
+  getWebPushMessages,
+  hasLoadedWebPushMessages,
   markAllWebPushMessagesRead,
   markWebPushMessageRead,
   subscribeWebPushMessageChanges,
@@ -52,10 +53,9 @@ export function WebPushPage() {
   const router = useRouter();
   const [config, setConfig] = useState<WebPushConfig | null>(() => getCachedWebPushConfig());
   const messages = useSyncExternalStore(subscribeWebPushMessageChanges, getCachedWebPushMessages, getServerWebPushMessages);
-  const messageError = useSyncExternalStore(subscribeWebPushMessageChanges, getWebPushMessageError, () => false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(() => Boolean(getCachedWebPushConfig()?.subscribed));
+  const messagesReady = useSyncExternalStore(subscribeWebPushMessageChanges, hasLoadedWebPushMessages, () => false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState<boolean | null>(null);
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
-  const [loading, setLoading] = useState(() => !getCachedWebPushConfig());
   const [saving, setSaving] = useState(false);
   const [showUnsubscribeConfirmation, setShowUnsubscribeConfirmation] = useState(false);
   const [showClearMessagesConfirmation, setShowClearMessagesConfirmation] = useState(false);
@@ -63,6 +63,7 @@ export function WebPushPage() {
 
   useEffect(() => {
     if (stripLocaleFromPathname(pathname) !== "/web-push") return;
+    void getWebPushMessages();
     const worker = getServiceWorkerContainer();
     if (!worker) return;
     let cancelled = false;
@@ -74,46 +75,29 @@ export function WebPushPage() {
   }, [pathname]);
 
   useEffect(() => {
+    if (stripLocaleFromPathname(pathname) !== "/web-push") return;
     let cancelled = false;
 
     async function load() {
-      if (!isWebPushSupported()) {
-        setLoading(false);
-        return;
-      }
-
-      const nextConfig = await loadWebPushConfig();
-      if (cancelled) return;
-
-      if (nextConfig) {
-        cacheWebPushConfig(nextConfig);
-        setConfig(nextConfig);
-        setNotificationsEnabled(nextConfig.subscribed);
-        setLoading(false);
-      }
-
-      try {
-        const currentSubscription = await getCurrentWebPushSubscription();
-        if (!cancelled) {
-          setSubscription(currentSubscription);
-          setNotificationsEnabled(Boolean(nextConfig?.subscribed && currentSubscription));
-        }
-      } catch {
-        // Treat an unavailable local subscription as unsubscribed.
-        if (!cancelled) setNotificationsEnabled(false);
-      }
-
-      if (!cancelled) setLoading(false);
+      if (!isWebPushSupported()) return;
+      const [nextConfig, currentSubscription] = await Promise.all([
+        loadWebPushConfig(),
+        getCurrentWebPushSubscription(),
+      ]);
+      if (cancelled || !nextConfig) return;
+      // Render the switch only after both sources have resolved successfully.
+      setConfig(nextConfig);
+      setSubscription(currentSubscription);
+      setNotificationsEnabled(Boolean(nextConfig.subscribed && currentSubscription));
     }
 
     void load().catch((error) => {
       console.warn("Push configuration load failed", error);
-      if (!cancelled) setLoading(false);
     });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [pathname]);
 
   async function getOrCreateSubscription() {
     const serviceWorker = getServiceWorkerContainer();
@@ -242,7 +226,7 @@ export function WebPushPage() {
   }
 
   async function handleToggle(nextEnabled: boolean) {
-    if (saving || nextEnabled === notificationsEnabled) return;
+    if (saving || notificationsEnabled === null || nextEnabled === notificationsEnabled) return;
 
     if (!nextEnabled) {
       setShowUnsubscribeConfirmation(true);
@@ -324,15 +308,15 @@ export function WebPushPage() {
             <ListCheck />
           </Button>
         ) : null}
-        <Switch
+        {notificationsEnabled !== null && <Switch
           className={compactSwitch
             ? "h-6 w-10 **:data-[slot=switch-thumb]:size-4 **:data-[slot=switch-thumb]:data-[state=checked]:translate-x-5"
             : undefined}
           checked={notificationsEnabled}
-          disabled={saving || loading || !config}
+          disabled={saving || !config}
           aria-label={dictionary.webPushPage.title}
           onCheckedChange={(checked) => void handleToggle(checked)}
-        />
+        />}
       </>
     );
   }
@@ -417,11 +401,11 @@ export function WebPushPage() {
               {dictionary.webPushPage.latestMessagesOnly}
             </div>
           </div>
-        ) : (
+        ) : messagesReady ? (
           <AppCenteredState muted>
-            {messageError ? dictionary.webPushPage.failed : dictionary.webPushPage.empty}
+            {dictionary.webPushPage.empty}
           </AppCenteredState>
-        )}
+        ) : null}
       </article>
       <AppModal
         open={showUnsubscribeConfirmation}

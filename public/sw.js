@@ -170,10 +170,14 @@ self.addEventListener("message", (event) => {
     }
     const port = event.ports[0];
     if (!port || !["list", "sync", "read", "delete", "read-all", "clear"].includes(event.data.action)) return;
-    event.waitUntil(updateInbox(event.data).then(
-      (snapshot) => port?.postMessage({ snapshot }),
-      (error) => port?.postMessage({ error: String(error) }),
-    ));
+    // Reply when data is ready; keep badge/broadcast work alive independently.
+    let replied = false;
+    event.waitUntil(updateInbox(event.data, (snapshot) => {
+      replied = true;
+      try { port.postMessage({ snapshot }); } catch { /* Page closed. */ }
+    }).catch((error) => {
+      if (!replied) port.postMessage({ error: String(error) });
+    }));
     return;
   }
 
@@ -394,11 +398,16 @@ async function syncInboxViews(database, snapshot) {
   ]);
 }
 
-async function updateInbox(command) {
+async function updateInbox(command, onCommitted) {
   const database = await openInboxDatabase();
-  if (command.action === "list") return readInbox(database);
+  if (command.action === "list") {
+    const snapshot = await readInbox(database);
+    onCommitted?.(snapshot);
+    return snapshot;
+  }
   if (command.action === "sync") {
     const snapshot = await readInbox(database);
+    onCommitted?.(snapshot);
     await syncInboxViews(database, snapshot);
     return snapshot;
   }
@@ -425,6 +434,7 @@ async function updateInbox(command) {
     return { revision: inbox.revision + 1, messages };
   });
   const snapshot = result ?? { revision: 0, messages: [] };
+  onCommitted?.(snapshot);
   if (changed) await syncInboxViews(database, snapshot);
   return snapshot;
 }

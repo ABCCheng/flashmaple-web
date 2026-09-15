@@ -57,10 +57,14 @@ function request(action: InboxAction, id?: string): Promise<WebPushMessage[]> {
 }
 
 function loadMessages(action: "list" | "sync") {
+  const startingSnapshot = snapshot;
   return request(action).catch((error) => {
     console.warn("Push inbox sync failed", error);
-    syncError = true;
-    listeners.forEach((listener) => listener());
+    // A successful concurrent read or push supersedes this failed request.
+    if (snapshot === startingSnapshot) {
+      syncError = true;
+      listeners.forEach((listener) => listener());
+    }
     return snapshot.messages; // Keep the last good snapshot on resume/storage failures.
   });
 }
@@ -105,6 +109,7 @@ export function subscribeWebPushMessageChanges(listener: () => void) {
 export const getCachedWebPushMessages = () => snapshot.messages;
 export const getServerWebPushMessages = () => emptyMessages;
 export const getWebPushMessageError = () => syncError;
+export const hasLoadedWebPushMessages = () => snapshot.revision >= 0;
 export const getUnreadWebPushMessageCount = () => snapshot.messages.filter((message) => !message.read).length;
 export const markWebPushMessageRead = (id: string) => request("read", id);
 export const deleteWebPushMessage = (id: string) => request("delete", id);
