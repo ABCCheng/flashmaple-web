@@ -163,21 +163,18 @@ self.addEventListener("message", (event) => {
   if (event.data?.type === PUSH_EVENT) {
     if (event.data.action === "dismiss-notifications") {
       // System notifications are separate from inbox messages and unread state.
-      event.waitUntil(self.registration.getNotifications().then((notifications) => {
-        notifications.forEach((notification) => notification.close());
-      }).catch((error) => console.warn("Dismiss push notifications failed", error)));
+      event.waitUntil(dismissPushNotifications().catch((error) => {
+        console.warn("Dismiss push notifications failed", error);
+      }));
       return;
     }
-    const port = event.ports[0];
-    if (!port || !["list", "sync", "read", "delete", "read-all", "clear"].includes(event.data.action)) return;
-    // Reply when data is ready; keep badge/broadcast work alive independently.
-    let replied = false;
-    event.waitUntil(updateInbox(event.data, (snapshot) => {
-      replied = true;
-      try { port.postMessage({ snapshot }); } catch { /* Page closed. */ }
-    }).catch((error) => {
-      if (!replied) port.postMessage({ error: String(error) });
-    }));
+    if (event.data.action === "sync-inbox") {
+      event.waitUntil(openInboxDatabase().then(async (database) => {
+        await syncInboxViews(database, await readInbox(database));
+      }).catch((error) => {
+        console.warn("Push inbox sync failed", error);
+      }));
+    }
     return;
   }
 
@@ -191,6 +188,11 @@ self.addEventListener("message", (event) => {
     : DEFAULT_PUSH_PREFERENCES.region;
   event.waitUntil(writePushPreferences({ languageCode, region }));
 });
+
+async function dismissPushNotifications() {
+  const notifications = await self.registration.getNotifications();
+  notifications.forEach((notification) => notification.close());
+}
 
 self.addEventListener("push", (event) => {
   if (!event.data) return;
@@ -352,6 +354,7 @@ function openInboxDatabase() {
         database.close();
         inboxDatabase = null;
       };
+      database.onclose = () => { inboxDatabase = null; };
       resolve(database);
     };
   }).catch((error) => {
@@ -398,19 +401,8 @@ async function syncInboxViews(database, snapshot) {
   ]);
 }
 
-async function updateInbox(command, onCommitted) {
+async function updateInbox(command) {
   const database = await openInboxDatabase();
-  if (command.action === "list") {
-    const snapshot = await readInbox(database);
-    onCommitted?.(snapshot);
-    return snapshot;
-  }
-  if (command.action === "sync") {
-    const snapshot = await readInbox(database);
-    onCommitted?.(snapshot);
-    await syncInboxViews(database, snapshot);
-    return snapshot;
-  }
   let changed = false;
   const result = await inboxTransaction(database, (stored) => {
     const inbox = stored ?? { revision: 0, messages: [] };
@@ -423,9 +415,6 @@ async function updateInbox(command, onCommitted) {
       case "read":
         messages = messages.map((message) => message.id === command.id && !message.read ? { ...message, read: true } : message);
         break;
-      case "delete": messages = messages.filter((message) => message.id !== command.id); break;
-      case "read-all": messages = messages.map((message) => message.read ? message : { ...message, read: true }); break;
-      case "clear": messages = []; break;
       default: throw new Error("Unknown push inbox action");
     }
     changed = messages.length !== inbox.messages.length || messages.some((message, index) => message !== inbox.messages[index]);
@@ -434,7 +423,6 @@ async function updateInbox(command, onCommitted) {
     return { revision: inbox.revision + 1, messages };
   });
   const snapshot = result ?? { revision: 0, messages: [] };
-  onCommitted?.(snapshot);
   if (changed) await syncInboxViews(database, snapshot);
   return snapshot;
 }

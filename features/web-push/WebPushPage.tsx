@@ -31,9 +31,9 @@ import {
   serializeWebPushSubscription,
 } from "@/lib/web-push-client";
 import {
-  PUSH_EVENT,
   clearWebPushMessages,
   deleteWebPushMessage,
+  dismissWebPushNotifications,
   getCachedWebPushMessages,
   getServerWebPushMessages,
   getWebPushMessages,
@@ -64,14 +64,9 @@ export function WebPushPage() {
   useEffect(() => {
     if (stripLocaleFromPathname(pathname) !== "/web-push") return;
     void getWebPushMessages();
-    const worker = getServiceWorkerContainer();
-    if (!worker) return;
-    let cancelled = false;
-    void worker.ready.then((registration) => {
-      if (cancelled || stripLocaleFromPathname(window.location.pathname) !== "/web-push") return;
-      registration.active?.postMessage({ type: PUSH_EVENT, action: "dismiss-notifications" });
-    }).catch((error) => console.warn("Dismiss push notifications failed", error));
-    return () => { cancelled = true; };
+    void dismissWebPushNotifications().catch((error) => {
+      console.warn("Dismiss push notifications request failed", error);
+    });
   }, [pathname]);
 
   useEffect(() => {
@@ -245,20 +240,17 @@ export function WebPushPage() {
     await handleUnsubscribe();
   }
 
-  async function openMessage(message: WebPushMessage) {
-    if (!message.read) {
-      try {
-        await markWebPushMessageRead(message.id);
-      } catch {
-        // Navigation should still work when local message storage is unavailable.
-      }
-    }
-
+  function openMessage(message: WebPushMessage) {
     router.push(localizePath(
       `/news/detail?id=${encodeURIComponent(message.newsId)}&source=notification`,
       locale,
       hasLocalePrefix(pathname)
     ));
+    if (!message.read) {
+      void markWebPushMessageRead(message.id).catch((error) => {
+        console.warn("Mark push message read failed", error);
+      });
+    }
   }
 
   async function removeMessage(messageId: string) {
@@ -354,11 +346,11 @@ export function WebPushPage() {
                     animationDelay: `${Math.min(index, 5) * 45}ms`,
                     animationFillMode: "both",
                   }}
-                  onClick={() => void openMessage(message)}
+                  onClick={() => openMessage(message)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      void openMessage(message);
+                      openMessage(message);
                     }
                   }}
                 >

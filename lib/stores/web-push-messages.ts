@@ -1,104 +1,72 @@
-import { getServiceWorkerContainer } from "@/lib/web-push-client";
+﻿import { getServiceWorkerContainer } from "@/lib/web-push-client";
+import { readWebPushInbox, updateWebPushInbox, type InboxAction, type InboxSnapshot, type WebPushMessage } from "./web-push-inbox";
 
-export const PUSH_EVENT = "flashmaple:push";
-export type WebPushMessage = {
-  id: string;
-  newsId: string;
-  title: string;
-  body: string;
-  receivedAt: string;
-  read: boolean;
-  url: string;
-};
-type InboxSnapshot = { revision: number; messages: WebPushMessage[] };
-type InboxAction = "list" | "sync" | "read" | "delete" | "read-all" | "clear";
+export type { WebPushMessage } from "./web-push-inbox";
+
+const PUSH_EVENT = "flashmaple:push";
 const emptyMessages: WebPushMessage[] = [];
 let snapshot: InboxSnapshot = { revision: -1, messages: emptyMessages };
-let syncError = false;
-let refreshRequest: Promise<WebPushMessage[]> | null = null;
 const listeners = new Set<() => void>();
 
 function publish(value: InboxSnapshot) {
   if (!Number.isSafeInteger(value?.revision) || !Array.isArray(value.messages)) return;
-  if (value.revision < snapshot.revision) return; // A delayed list response must not undo a push.
-  if (value.revision === snapshot.revision && !syncError) return;
+  // A delayed read or worker broadcast must not overwrite a newer commit.
+  if (value.revision <= snapshot.revision) return;
   snapshot = value;
-  syncError = false;
   listeners.forEach((listener) => listener());
 }
 
-function request(action: InboxAction, id?: string): Promise<WebPushMessage[]> {
-  return new Promise((resolve, reject) => {
-    const worker = getServiceWorkerContainer();
-    if (!worker) { reject(new Error("Service worker unavailable")); return; }
-    const channel = new MessageChannel();
-    let finished = false;
-    const finish = (error?: Error, value?: InboxSnapshot) => {
-      if (finished) return;
-      finished = true;
-      window.clearTimeout(timer);
-      channel.port1.close();
-      if (error) { reject(error); return; }
-      publish(value!);
-      resolve(snapshot.messages);
-    };
-    const timer = window.setTimeout(() => finish(new Error("Push inbox request timed out")), 8000);
-    channel.port1.onmessage = ({ data }) => {
-      if (data?.error || !Array.isArray(data?.snapshot?.messages) || !Number.isSafeInteger(data?.snapshot?.revision)) {
-        finish(new Error(data?.error || "Invalid inbox response"));
-      } else finish(undefined, data.snapshot);
-    };
-    void worker.ready.then((registration) => {
-      if (finished) return;
-      if (!registration.active) throw new Error("No active service worker");
-      registration.active.postMessage({ type: PUSH_EVENT, action, id }, [channel.port2]);
-    }).catch((error) => finish(error));
-  });
+// One-way platform commands. Local reads/writes never wait for the worker.
+async function notifyWorker(action: "sync-inbox" | "dismiss-notifications") {
+  const worker = getServiceWorkerContainer();
+  if (!worker) return;
+  const registration = await worker.ready;
+  registration.active?.postMessage({ type: PUSH_EVENT, action });
 }
 
-function loadMessages(action: "list" | "sync") {
-  const startingSnapshot = snapshot;
-  return request(action).catch((error) => {
-    console.warn("Push inbox sync failed", error);
-    // A successful concurrent read or push supersedes this failed request.
-    if (snapshot === startingSnapshot) {
-      syncError = true;
-      listeners.forEach((listener) => listener());
-    }
-    return snapshot.messages; // Keep the last good snapshot on resume/storage failures.
-  });
+export const dismissWebPushNotifications = () => notifyWorker("dismiss-notifications");
+
+export async function getWebPushMessages() {
+  try {
+    publish(await readWebPushInbox());
+  } catch (error) {
+    // Retain the last successful snapshot; a failed read is not an empty inbox.
+    console.warn("Push inbox read failed", error);
+  }
+  return snapshot.messages;
 }
 
-export function getWebPushMessages() {
-  if (refreshRequest) return refreshRequest;
-  refreshRequest = loadMessages("list").finally(() => { refreshRequest = null; });
-  return refreshRequest;
+function syncWorkerInbox() {
+  void notifyWorker("sync-inbox").catch((error) => console.warn("Push inbox sync request failed", error));
 }
 
-// Mounted once by AppShell, regardless of whether Flash or the inbox is visible.
+async function updateMessages(action: InboxAction, id?: string) {
+  publish(await updateWebPushInbox(action, id));
+  syncWorkerInbox();
+  return snapshot.messages;
+}
+
+// Mounted once by AppShell. Refresh after background suspension and worker updates.
 export function connectWebPush(onOpen: (url: string) => void) {
   const worker = getServiceWorkerContainer();
-  if (!worker) return () => {};
-  let syncRequest: Promise<WebPushMessage[]> | null = null;
   const sync = () => {
-    if (document.visibilityState !== "visible" || syncRequest) return;
-    // Lifecycle reconciliation is separate from ordinary, read-only loading.
-    syncRequest = loadMessages("sync").finally(() => { syncRequest = null; });
+    if (document.visibilityState !== "visible") return;
+    void getWebPushMessages();
+    syncWorkerInbox();
   };
   const onMessage = (event: MessageEvent) => {
     if (event.data?.type !== PUSH_EVENT) return;
     if (event.data.action === "snapshot") publish(event.data.snapshot);
     if (event.data.action === "open" && typeof event.data.url === "string") onOpen(event.data.url);
   };
-  const onVisible = () => { void sync(); };
-  worker.addEventListener("message", onMessage);
-  worker.addEventListener("controllerchange", sync);
-  document.addEventListener("visibilitychange", onVisible);
+  worker?.addEventListener("message", onMessage);
+  worker?.addEventListener("controllerchange", sync);
+  document.addEventListener("visibilitychange", sync);
   sync();
   return () => {
-    worker.removeEventListener("message", onMessage);
-    worker.removeEventListener("controllerchange", sync);
-    document.removeEventListener("visibilitychange", onVisible);
+    worker?.removeEventListener("message", onMessage);
+    worker?.removeEventListener("controllerchange", sync);
+    document.removeEventListener("visibilitychange", sync);
   };
 }
 
@@ -108,10 +76,9 @@ export function subscribeWebPushMessageChanges(listener: () => void) {
 }
 export const getCachedWebPushMessages = () => snapshot.messages;
 export const getServerWebPushMessages = () => emptyMessages;
-export const getWebPushMessageError = () => syncError;
 export const hasLoadedWebPushMessages = () => snapshot.revision >= 0;
 export const getUnreadWebPushMessageCount = () => snapshot.messages.filter((message) => !message.read).length;
-export const markWebPushMessageRead = (id: string) => request("read", id);
-export const deleteWebPushMessage = (id: string) => request("delete", id);
-export const markAllWebPushMessagesRead = () => request("read-all");
-export const clearWebPushMessages = () => request("clear");
+export const markWebPushMessageRead = (id: string) => updateMessages("read", id);
+export const deleteWebPushMessage = (id: string) => updateMessages("delete", id);
+export const markAllWebPushMessagesRead = () => updateMessages("read-all");
+export const clearWebPushMessages = () => updateMessages("clear");
