@@ -100,7 +100,9 @@
   --app-safe-bottom: env(safe-area-inset-bottom, 0px);
   --app-tab-height: 3.5rem;
   --app-safe-footer-bottom: max(var(--app-safe-bottom), 0.5rem);
-  --app-safe-header-top: max(var(--app-safe-top), 0.5rem);
+  --app-status-bar-guard-height: 0px;
+  /* Shared by headers and their spacers, so content moves with the controls. */
+  --app-safe-header-top: calc(var(--app-safe-top) + var(--app-status-bar-guard-height) + 0.5rem);
   --app-safe-tab-bottom: calc(var(--app-safe-footer-bottom) + var(--app-tab-height) + 0.5rem);
   --app-viewport-height: 100dvh;
   --app-fill-height: calc(var(--app-safe-top) + var(--app-viewport-height) + var(--app-safe-bottom));
@@ -209,6 +211,35 @@
 }
 
 /* App viewport and chrome */
+
+.app-status-bar-guard {
+  display: none;
+}
+
+/* iOS 27's standalone top-edge blur can extend beyond the reported safe area.
+   The extra allowance is tunable, not a system inset. Keep the background
+   outside transformed route/swipe containers and align its gradient with the
+   header's full-viewport background so the safe area has no solid-color seam.
+   Reference: github.com/hunterirving/events, commit 20141c8, resources/styles.css.
+   Scope to iOS standalone portrait rather than relying on an OS version string. */
+@media (max-width: 767px) and (orientation: portrait) {
+  :root.app-ios.app-standalone {
+    --app-status-bar-guard-height: 8px;
+  }
+
+  .app-ios.app-standalone .app-status-bar-guard {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    height: calc(var(--app-safe-top) + var(--app-status-bar-guard-height));
+    z-index: 65;
+    pointer-events: none;
+    background: var(--app-global-bg);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100vw var(--app-fill-height);
+  }
+}
 
 html,
 body {

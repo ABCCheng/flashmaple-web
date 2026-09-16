@@ -47,6 +47,9 @@ const INITIAL_PREFERENCES_SCRIPT = `
     const isStandalone = window.matchMedia?.("(display-mode: standalone)").matches ||
       navigator.standalone === true;
     root.classList.toggle("app-standalone", isStandalone);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+    root.classList.toggle("app-ios", isIOS);
     const isMobileStandalone = window.matchMedia?.("(max-width: 767px)").matches && isStandalone;
     const isAppPath = normalizedPath === "/app" || normalizedPath.startsWith("/app/");
     root.classList.toggle("app-shell-active", isAppPath);
@@ -133,6 +136,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: SITE_NAME,
+    // Extend the app background behind the status bar; CSS keeps controls clear.
     statusBarStyle: "black-translucent",
   },
   formatDetection: {
@@ -176,6 +180,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <div className="app-status-bar-guard" aria-hidden="true" />
         <ViewportHeightSync />
         <AppSplashScreen />
         <SnackbarProvider>

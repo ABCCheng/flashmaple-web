@@ -12,6 +12,7 @@
  * 50  floating actions
  * 55  mobile back-to-top button above the tab bar
  * 60  mobile route layer and menus
+ * 65  iOS standalone status-bar background (below modal surfaces)
  * 70  modal surfaces
  * 100 loading overlay
  * 200 toast notifications

@@ -1,3 +1,5 @@
+import { randomId } from "@/lib/browser-crypto";
+
 export const APP_SPLASH_SESSION_KEY = "FLASH_MAPLE_PWA_SPLASH_SHOWN";
 const HISTORY_KEY = "__flashmaple";
 let paths: string[] = [];
@@ -7,7 +9,7 @@ let position = 0;
 // particular A -> B -> A is a push, whereas Back to A is a history traversal.
 export function trackAppNavigation() {
   const history = window.history;
-  const documentId = crypto.randomUUID();
+  const documentId = randomId();
   const originalPush = history.pushState;
   const originalReplace = history.replaceState;
   let active = true;
