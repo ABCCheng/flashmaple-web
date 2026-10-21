@@ -41,7 +41,7 @@ export function WebPushLinkButton({ href, label }: { href: string; label: string
         {unreadCount ? (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute -right-0.5 top-0.5 size-2 rounded-full bg-primary"
+            className="pointer-events-none absolute right-0 top-0 size-2 rounded-full bg-primary"
           />
         ) : null}
       </Link>
