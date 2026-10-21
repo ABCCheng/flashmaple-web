@@ -91,6 +91,7 @@
   --button-foreground: #ffffff;
   --switch-thumb: #ffffff;
   --app-safe-top-color: var(--app-device-bg);
+  --app-ios-header-bg: color-mix(in srgb, var(--primary) 8%, var(--app-device-bg));
   --app-safe-top-overlay: linear-gradient(transparent, transparent);
   --app-default-global-bg:
     radial-gradient(circle at 15% 5%, color-mix(in srgb, var(--primary) 10%, transparent), transparent 30rem),
@@ -100,9 +101,8 @@
   --app-safe-bottom: env(safe-area-inset-bottom, 0px);
   --app-tab-height: 3.5rem;
   --app-safe-footer-bottom: max(var(--app-safe-bottom), 0.5rem);
-  --app-status-bar-guard-height: 0px;
   /* Shared by headers and their spacers, so content moves with the controls. */
-  --app-safe-header-top: calc(var(--app-safe-top) + var(--app-status-bar-guard-height) + 0.5rem);
+  --app-safe-header-top: calc(var(--app-safe-top) + 0.5rem);
   --app-safe-tab-bottom: calc(var(--app-safe-footer-bottom) + var(--app-tab-height) + 0.5rem);
   --app-viewport-height: 100dvh;
   --app-fill-height: calc(var(--app-safe-top) + var(--app-viewport-height) + var(--app-safe-bottom));
@@ -110,6 +110,7 @@
 }
 
 .dark {
+  --app-ios-header-bg: color-mix(in srgb, var(--primary) 12%, var(--app-device-bg));
   --background: #1b1b1f;
   --foreground: #e5e5e5;
   --card: rgba(36, 35, 40, 0.64);
@@ -156,6 +157,7 @@
 }
 
 :root:not(.home-surface)[data-mood-theme="on"] {
+  --app-ios-header-bg: color-mix(in srgb, var(--app-mood-1) 18%, var(--app-device-bg));
   --app-global-bg:
     radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--app-mood-1) 42%, transparent), transparent 18rem),
     radial-gradient(circle at 100% 10%, color-mix(in srgb, var(--app-mood-2) 32%, transparent), transparent 20rem),
@@ -165,6 +167,7 @@
 }
 
 .dark:not(.home-surface)[data-mood-theme="on"] {
+  --app-ios-header-bg: color-mix(in srgb, var(--app-mood-1) 28%, var(--app-device-bg));
   --app-global-bg:
     radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--app-mood-1) 56%, transparent), transparent 19rem),
     radial-gradient(circle at 100% 10%, color-mix(in srgb, var(--app-mood-2) 48%, transparent), transparent 22rem),
@@ -216,28 +219,40 @@
   display: none;
 }
 
-/* iOS 27's standalone top-edge blur can extend beyond the reported safe area.
-   The extra allowance is tunable, not a system inset. Keep the background
-   outside transformed route/swipe containers and align its gradient with the
-   header's full-viewport background so the safe area has no solid-color seam.
-   Reference: github.com/hunterirving/events, commit 20141c8, resources/styles.css.
-   Scope to iOS standalone portrait rather than relying on an OS version string. */
-@media (max-width: 767px) and (orientation: portrait) {
-  :root.app-ios.app-standalone {
-    --app-status-bar-guard-height: 8px;
+/* WebKit uses this top-level fixed color to suppress its scroll-edge blur.
+   Empty-text clipping retains the sampled color without painting over controls.
+   Do not reintroduce status-bar-style metadata or extra avoidance padding.
+   https://zenn.dev/uakihir0/articles/260920-ios27-pwa-blur */
+html.app-ios.app-standalone:not(.home-surface) .app-status-bar-guard {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 11px;
+  z-index: 2147483647;
+  pointer-events: none;
+  background-color: var(--app-ios-header-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@media (max-width: 767px) {
+  html.app-ios.app-standalone:not(.home-surface) .app-mobile-chrome {
+    background-color: var(--app-ios-header-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
-  .app-ios.app-standalone .app-status-bar-guard {
-    display: block;
-    position: fixed;
-    inset: 0 0 auto;
-    height: calc(var(--app-safe-top) + var(--app-status-bar-guard-height));
-    z-index: 65;
-    pointer-events: none;
-    background: var(--app-global-bg);
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    background-size: 100vw var(--app-fill-height);
+  html.app-ios.app-standalone:not(.home-surface) .app-mobile-chrome::before {
+    background: var(--app-ios-header-bg);
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  html.app-ios.app-standalone:not(.home-surface) {
+    /* The status bar is system-reserved; avoid adding the 8px browser fallback. */
+    --app-safe-header-top: var(--app-safe-top);
   }
 }
 
