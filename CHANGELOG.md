@@ -10,7 +10,7 @@ This changelog is maintained in English.
 
 ### Fixed
 
-- Use an inset number without a background for unread notifications, keeping header buttons aligned.
+- Show a small red dot for unread notifications instead of a count.
 
 ## [6.2.1] - 2026-10-21
 
