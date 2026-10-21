@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [6.2.2] - 2026-10-21
+
+### Fixed
+
+- Use an inset number without a background for unread notifications, keeping header buttons aligned.
+
 ## [6.2.1] - 2026-10-21
 
 ### Changed
