@@ -5,7 +5,7 @@ import { API_ORIGIN } from "@/lib/env";
 const longCacheAssets = ["/logo.png", "/logo-192.png", "/logo-512.png", "/favicon.ico", "/logo.svg", "/og.png"];
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.2.207", "192.168.2.163"],
+  allowedDevOrigins: ["192.168.2.207", "192.168.2.177"],
   output: "standalone",
   env: {
     APP_VERSION: version,

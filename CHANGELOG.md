@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [Unreleased]
+
+### Fixed
+
+- Suppress iOS standalone header blur using a fixed color sampling element without status-bar-style metadata; remove the extra blur-avoidance gap and portrait fallback padding.
+- Keep status-bar and mobile-header colors coordinated with light, dark, and mood themes; refresh app-shell caches.
+
 ## [6.1.3] - 2026-09-16
 
 ### Changed

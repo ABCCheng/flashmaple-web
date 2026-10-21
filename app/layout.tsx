@@ -133,12 +133,6 @@ export const metadata: Metadata = {
       description: defaultDescription,
     images: ["/og.png"],
   },
-  appleWebApp: {
-    capable: true,
-    title: SITE_NAME,
-    // Extend the app background behind the status bar; CSS keeps controls clear.
-    statusBarStyle: "black-translucent",
-  },
   formatDetection: {
     telephone: false,
   },
@@ -174,6 +168,9 @@ export default function RootLayout({
   return (
     <html lang={defaultLocale} className="h-full" data-theme-mode="system" suppressHydrationWarning>
       <head>
+        {/* Keep install support without Next's automatic status-bar-style meta. */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
         <script
           id="initial-app-preferences"
           dangerouslySetInnerHTML={{ __html: INITIAL_PREFERENCES_SCRIPT }}
