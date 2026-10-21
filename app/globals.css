@@ -475,6 +475,11 @@ html[data-skip-app-splash="true"] .app-splash-screen {
   background: transparent;
 }
 
+.app-mobile-chrome {
+  /* Controls such as notification badges may extend beyond the header. */
+  overflow: visible;
+}
+
 .app-top-chrome {
   isolation: isolate;
   overflow: visible;
@@ -534,10 +539,12 @@ html[data-skip-app-splash="true"] .app-splash-screen {
     left: 0;
     right: 0;
     top: 0;
-    bottom: calc(-1 * var(--app-safe-bottom));
+    bottom: 0;
     z-index: -1;
     width: 100vw;
-    height: var(--app-fill-height);
+    /* Clip the background to the header without clipping its controls.
+       background-size below retains the viewport-sized gradient. */
+    height: 100%;
     pointer-events: none;
     background: var(--app-global-bg);
   }
