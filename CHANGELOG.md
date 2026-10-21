@@ -6,9 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [6.2.1] - 2026-10-21
+
+### Changed
+
+- Match Profile and the web splash screen to the iOS status-bar color with a 32px background fade, without moving cards or changing splash timing and logo placement.
+
+- Blend the bottom 32px of iOS standalone headers into the body background without changing header geometry, content spacing, or the status-bar color sampling layer.
+
 ## [6.2.0] - 2026-10-21
 
 ### Fixed
+
+- Remove duplicate mobile content padding after measured headers and keep an 8px header-to-content gap on Flash, Explore, and Favorites.
+
+- Measure mobile header heights for Flash, Explore, and Favorites so content and error messages stay below the header as notices, fonts, tabs, and safe areas change.
 
 - Suppress iOS standalone header blur using a fixed color sampling element without status-bar-style metadata; remove the extra blur-avoidance gap and portrait fallback padding.
 - Keep status-bar and mobile-header colors coordinated with light, dark, and mood themes; refresh app-shell caches.

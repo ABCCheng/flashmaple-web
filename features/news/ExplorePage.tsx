@@ -6,7 +6,7 @@ import { useCallback, useEffect, useEffectEvent, useId, useLayoutEffect, useMemo
 import { NewsCard } from "@/features/news/NewsCard";
 import { AppBackToTopButton } from "@/components/shell/AppBackToTopButton";
 import { AppInfiniteList, PullToRefreshIndicator, PullToRefreshSurface, usePullToRefresh } from "@/components/list";
-import { AppCenteredState, AppLoadingOverlay, AppMobileStickyHeader, AppMobileStickyHeaderSpacer, AppPage, AppSearchField, AppTabbedHeader, AppTabbedPannel, createPagedResourceCache, getPagedResourceEntry, usePagedResource } from "@/components/app";
+import { AppCenteredState, AppLoadingOverlay, AppMobileStickyHeader, AppPage, AppSearchField, AppTabbedHeader, AppTabbedPannel, createPagedResourceCache, getPagedResourceEntry, usePagedResource } from "@/components/app";
 import { useLocaleContext } from "@/components/providers/locale-provider";
 import { usePageRefreshContext, usePageRefreshHandler } from "@/components/providers/page-refresh-provider";
 import { useRegionContext } from "@/components/providers/region-provider";
@@ -330,11 +330,11 @@ export function ExplorePage() {
   ) : null;
 
   return (
-    <AppPage {...pullToRefresh.touchHandlers}>
+    <AppPage className="max-md:pt-0" {...pullToRefresh.touchHandlers}>
       {desktopRefreshing && items.length ? (
         <AppLoadingOverlay className="hidden md:flex" />
       ) : null}
-      <AppMobileStickyHeader className="space-y-2">
+      <AppMobileStickyHeader className="space-y-2" fallbackHeight={`calc(var(--app-safe-header-top) + ${searchKeyword ? "2.25rem" : "3.125rem"})`}>
         {searchHeader}
         {!searchKeyword ? (<AppTabbedHeader
           tabs={tabs}
@@ -349,9 +349,8 @@ export function ExplorePage() {
 
       {searchKeyword ? (
         <>
-          <AppMobileStickyHeaderSpacer height="calc(var(--app-safe-header-top) + 2.25rem)" />
           {pullIndicator}
-          <PullToRefreshSurface>
+          <PullToRefreshSurface className="pt-2 md:pt-0">
             <div
               key={refreshRevision}
               className={refreshRevealClassName}
@@ -363,16 +362,14 @@ export function ExplorePage() {
         </>
       ) : (
         <>
-        <AppMobileStickyHeaderSpacer height="calc(var(--app-safe-header-top) + 3.125rem)" />
         <AppTabbedPannel 
-          className="pt-4 md:pt-0"
           tabs={tabs}
           activeKey={activeTab}
           idPrefix={tabsId}
           onSelect={handleTabSelect}
           indicator={pullIndicator}
           panelWrapper={(children) => (
-            <PullToRefreshSurface>
+            <PullToRefreshSurface className="pt-2 md:pt-0">
               <div
                 key={refreshRevision}
                 className={refreshRevealClassName}

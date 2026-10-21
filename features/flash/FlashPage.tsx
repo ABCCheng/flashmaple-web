@@ -7,7 +7,7 @@ import { useCallback, useLayoutEffect, useRef, useState, type ReactNode } from "
 import { usePathname, useRouter } from "next/navigation";
 
 import { PullToRefreshIndicator, PullToRefreshSurface, usePullToRefresh } from "@/components/list";
-import { AppCenteredState, AppLoadingOverlay, AppMobileStickyHeader, AppMobileStickyHeaderSpacer, createCachedResourceCache, useCachedResource } from "@/components/app";
+import { AppCenteredState, AppLoadingOverlay, AppMobileStickyHeader, createCachedResourceCache, useCachedResource } from "@/components/app";
 import { useFlashMoodContext } from "@/components/providers/flash-mood-provider";
 import { usePageRefreshContext, usePageRefreshHandler } from "@/components/providers/page-refresh-provider";
 import {
@@ -153,7 +153,7 @@ export function FlashPage() {
       ) : (
         <PullToRefreshSurface
           key={`${currentCacheKey}:${contentRevision}`}
-          className="mt-4 space-y-4 pb-[calc(var(--app-safe-tab-bottom))] md:mt-0 md:pb-0"
+          className="mt-2 space-y-4 pb-[calc(var(--app-safe-tab-bottom))] md:mt-0 md:pb-0"
         >
           {briefing && (briefing.summary || briefing.focusList.length || briefing.watchList.length) ? (
             <FlashRevealCard delay={0}>
@@ -691,7 +691,7 @@ function MobileHeader({
   const router = useRouter();
   return (
     <div className="space-y-4 md:hidden">
-      <AppMobileStickyHeader className="space-y-2">
+      <AppMobileStickyHeader className="space-y-2" fallbackHeight="calc(var(--app-safe-header-top) + 4.5rem)">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -713,7 +713,7 @@ function MobileHeader({
           </div>
         ) : null}
       </AppMobileStickyHeader>
-      <AppMobileStickyHeaderSpacer height="calc(var(--app-safe-header-top) + 4.5rem)" />
+
     </div>
   );
 }

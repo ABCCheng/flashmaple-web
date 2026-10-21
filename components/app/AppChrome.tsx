@@ -1,4 +1,6 @@
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+"use client";
+
+import { useLayoutEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 import { cn } from "@/lib/class-names";
 import { appZIndex } from "@/lib/z-index";
@@ -20,17 +22,41 @@ export function AppPage({ className, padded = true, ...props }: AppPageProps) {
 type AppMobileStickyHeaderProps = ComponentPropsWithoutRef<"div"> & {
   top?: "safe" | "none";
   bottomSpacer?: ReactNode;
+  fallbackHeight?: string;
 };
 
 export function AppMobileStickyHeader({
   className,
   children,
   bottomSpacer,
+  fallbackHeight = "calc(var(--app-safe-header-top) + 3rem)",
   ...props
 }: AppMobileStickyHeaderProps) {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const spacerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    const spacer = spacerRef.current;
+    if (!header || !spacer) return;
+    const measure = () => {
+      const height = `${Math.ceil(header.getBoundingClientRect().height)}px`;
+      if (spacer.style.height !== height) spacer.style.height = height;
+    };
+    measure();
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
+    observer?.observe(header, { box: "border-box" });
+    window.addEventListener("resize", measure);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
   return (
     <>
       <div
+        ref={headerRef}
         data-slot="app-mobile-sticky-header"
         className={cn(
           "app-mobile-chrome fixed inset-x-0 top-0 w-full px-4 pb-2 md:hidden pt-(--app-safe-header-top)",
@@ -41,6 +67,13 @@ export function AppMobileStickyHeader({
       >
         {children}
       </div>
+      <div
+        ref={spacerRef}
+        data-slot="app-mobile-sticky-header-spacer"
+        className="md:hidden"
+        style={{ height: fallbackHeight }}
+        aria-hidden="true"
+      />
       {bottomSpacer}
     </>
   );

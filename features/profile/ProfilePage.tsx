@@ -95,7 +95,7 @@ export function ProfilePage() {
     : dictionary.profile.statusLoggedOut;
   return (
     <>
-      <div className="fixed inset-x-0 mx-auto w-[min(100%,40rem)] space-y-4 p-4 pt-(--app-safe-header-top)">
+      <div className="app-profile-surface fixed inset-x-0 mx-auto w-[min(100%,40rem)] space-y-4 p-4 pt-(--app-safe-header-top)">
         <section className="flex items-center gap-3 rounded-lg border bg-card/50 p-4 shadow-sm">
           <div className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full bg-primary/15 text-4xl font-bold text-primary">
             {user?.avatar && user.avatarType === "IMAGE_URL" ? (

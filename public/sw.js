@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "flashmaple-pwa-";
-const CACHE_NAME = `${CACHE_PREFIX}v5`;
+const CACHE_NAME = `${CACHE_PREFIX}v9`;
 const OFFLINE_URL = "/offline.html";
 const PUSH_PREFERENCES_CACHE_NAME = `${CACHE_PREFIX}push-preferences-v1`;
 const PUSH_PREFERENCES_URL = "/__flashmaple-push-preferences__";

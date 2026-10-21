@@ -5,7 +5,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExter
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { NewsFavoriteCard } from "@/features/news/NewsCard";
 import { AppInfiniteList, PullToRefreshIndicator, PullToRefreshSurface, usePullToRefresh } from "@/components/list";
-import { AppCenteredState, AppLoadingOverlay, AppMobileStickyHeader, AppMobileStickyHeaderSpacer, AppSearchField, createPagedResourceCache, usePagedResource } from "@/components/app";
+import { AppCenteredState, AppLoadingOverlay, AppMobileStickyHeader, AppSearchField, createPagedResourceCache, usePagedResource } from "@/components/app";
 import { useLocaleContext } from "@/components/providers/locale-provider";
 import { usePageRefreshContext, usePageRefreshHandler } from "@/components/providers/page-refresh-provider";
 import { Button } from "@/components/ui/button";
@@ -215,7 +215,7 @@ export function FavoritesPage() {
       ) :
       items.length ? (
         <PullToRefreshSurface
-          className="pt-4"
+          className="pt-2 md:pt-4"
         >
           <div className="space-y-3">
             <AppInfiniteList
@@ -290,7 +290,7 @@ function MobileHeader({
 }) {
   return (
     <div className="space-y-4 md:hidden">
-      <AppMobileStickyHeader>
+      <AppMobileStickyHeader fallbackHeight="calc(var(--app-safe-header-top) + 2.125rem)">
         <AppSearchField
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -299,7 +299,7 @@ function MobileHeader({
           disabled={disabled}
         />
       </AppMobileStickyHeader>
-      <AppMobileStickyHeaderSpacer height="calc(var(--app-safe-header-top) + 2.125rem)" />
+
     </div>
   );
 }

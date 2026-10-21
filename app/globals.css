@@ -238,6 +238,28 @@ html.app-ios.app-standalone:not(.home-surface) .app-status-bar-guard {
 }
 
 @media (max-width: 767px) {
+  html.app-ios.app-standalone:not(.home-surface) {
+    --app-splash-bg:
+      linear-gradient(to bottom, var(--app-ios-header-bg), transparent 32px),
+      var(--app-default-global-bg);
+  }
+
+  html.app-ios.app-standalone:not(.home-surface) .app-profile-surface {
+    isolation: isolate;
+  }
+
+  html.app-ios.app-standalone:not(.home-surface) .app-profile-surface::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(to bottom, var(--app-ios-header-bg), transparent);
+  }
+
   html.app-ios.app-standalone:not(.home-surface) .app-mobile-chrome {
     background-color: var(--app-ios-header-bg);
     -webkit-backdrop-filter: none;
@@ -245,7 +267,17 @@ html.app-ios.app-standalone:not(.home-surface) .app-status-bar-guard {
   }
 
   html.app-ios.app-standalone:not(.home-surface) .app-mobile-chrome::before {
-    background: var(--app-ios-header-bg);
+    /* Blend inside the header so no overlay covers the first content card.
+       Match the body's viewport-sized background at the lower edge; the
+       independent status-bar sampling element keeps its solid color. */
+    bottom: 0;
+    height: 100%;
+    background: var(--app-global-bg);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100vw var(--app-fill-height);
+    -webkit-mask-image: linear-gradient(to bottom, transparent max(0px, calc(100% - 32px)), #000 100%);
+    mask-image: linear-gradient(to bottom, transparent max(0px, calc(100% - 32px)), #000 100%);
   }
 }
 
@@ -321,11 +353,11 @@ body::before {
 /* Render the branded handoff only when the initial app script enables it. */
 .app-splash-screen {
   display: none;
-  background: var(--app-default-global-bg) !important;
+  background: var(--app-splash-bg, var(--app-default-global-bg)) !important;
 }
 
 .dark .app-splash-screen {
-  background: var(--app-default-global-bg) !important;
+  background: var(--app-splash-bg, var(--app-default-global-bg)) !important;
 }
 
 .app-splash-logo {
