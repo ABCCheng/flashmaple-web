@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [6.2.3] - 2026-10-22
+
+### Fixed
+
+- Correct full-screen content centering and smooth iOS page background transitions.
+- Prevent search focus outlines from being clipped.
+
 ## [6.2.2] - 2026-10-21
 
 ### Fixed

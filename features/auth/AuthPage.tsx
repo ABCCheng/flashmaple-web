@@ -491,7 +491,7 @@ export function AuthPage() {
   }
 
   return (
-    <div className="fixed inset-0 flex overflow-y-auto p-4">
+    <div className="app-screen-center fixed inset-0 flex overflow-y-auto p-4 [--app-center-gap:1rem]">
       <form noValidate onSubmit={handleSubmit} className="relative my-auto min-h-[26rem] w-full shrink-0 rounded-lg border p-4 shadow-sm md:mx-auto md:w-[min(100%,40rem)]">
         <Button type="button" size="icon" variant="destructive" className="absolute right-1 top-1 cursor-pointer text-primary"aria-label="Close"
           onClick={routerBack}

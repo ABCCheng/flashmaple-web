@@ -26,7 +26,7 @@ export function AppSplashScreen() {
       id="app-splash"
       role="status"
       aria-label="FlashMaple"
-      className={cn("app-splash-screen fixed inset-0 flex-col items-center justify-center", appZIndex.splash)}
+      className={cn("app-splash-screen app-screen-center fixed inset-0 flex-col items-center justify-center", appZIndex.splash)}
     >
       <div className="app-splash-screen-content flex flex-col items-center gap-4">
         <span

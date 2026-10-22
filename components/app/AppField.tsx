@@ -99,7 +99,7 @@ export function AppSearchField({
       leadingIcon={showLeadingIcon ? <Search className="size-4" /> : undefined}
       clearLabel={clearLabel}
       reserveErrorSpace={false}
-      inputClassName={cn("h-10 rounded-lg bg-card/50", inputClassName)}
+      inputClassName={cn("h-10 rounded-lg bg-card/50 focus-visible:ring-inset", inputClassName)}
       {...props}
     />
   );

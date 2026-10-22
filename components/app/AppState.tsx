@@ -15,7 +15,7 @@ export function AppLoadingOverlay({
   return (
     <div
       data-slot="app-loading-overlay"
-      className={cn("fixed inset-0 flex items-center justify-center", appZIndex.loading, className)}
+      className={cn("app-screen-center fixed inset-0 flex items-center justify-center", appZIndex.loading, className)}
       {...props}
     >
       <span className="inline-flex flex-col items-center gap-2 text-sm font-medium text-muted-foreground">
@@ -46,7 +46,7 @@ export function AppCenteredState({
     <div
       data-slot="app-centered-state"
       className={cn(
-        "fixed inset-0 flex items-center justify-center text-center",
+        "app-screen-center fixed inset-0 flex items-center justify-center text-center",
         appZIndex.content,
         muted && "text-sm text-muted-foreground",
         className
